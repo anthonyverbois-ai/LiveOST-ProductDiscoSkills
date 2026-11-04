@@ -1,0 +1,13 @@
+{
+  "name": "live-product-discovery",
+  "owner": {
+    "name": "Anthony Verbois"
+  },
+  "plugins": [
+    {
+      "name": "live-product-discovery",
+      "source": "./",
+      "description": "Keeps an Opportunity Solution Tree up to date every day from your customer calls, support tickets and product data."
+    }
+  ]
+}

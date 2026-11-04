@@ -1,0 +1,36 @@
+# Sources configuration for live-product-discovery.
+# Created during onboarding (/live-product-discovery:ost-setup). Values below are examples.
+# Never put credentials here: connectors handle authentication.
+
+outcome: "Reduce the time it takes a customer to build their first report"
+
+sources:
+  calls:
+    tool: "call recorder name (e.g. Gong, Modjo)"
+    via: connector          # connector | export-folder
+    filter: "calls with customers of the squad's segments"
+  tickets:
+    tool: "support tool name (e.g. Zendesk, Intercom)"
+    via: connector
+    filter: "tickets tagged with the squad's product area"
+  quantitative:
+    tool: "analytics tool name (e.g. Amplitude, Mixpanel)"
+    via: connector
+    use: sizing-only        # quantitative data never creates opportunities
+  documentation:
+    tool: "help center or product docs"
+    via: connector
+    use: reference-only     # not customer evidence
+
+export_folder: null         # folder read when a source uses via: export-folder
+
+tree:
+  workspace: notion
+  location: "the page chosen during onboarding"
+
+schedule:
+  daily: "working days, early morning"
+  weekly: "Monday morning"
+
+mode: observation           # observation for the first two weeks, then normal
+backfill_days: 60
