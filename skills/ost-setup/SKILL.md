@@ -14,7 +14,8 @@ Run this as a conversation with the user, one step at a time. Confirm each step 
 Ask for:
 - the squad's scope and the product area it owns;
 - the customer segments that matter;
-- the outcome the squad is working toward.
+- the outcome the squad is working toward;
+- optionally, the north star that outcome serves.
 
 Check the outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
 
@@ -29,7 +30,7 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 ## Step 3 – Tree workspace
 
-Create the Notion databases described in `templates/notion-data-model.md` (opportunities, evidence, solutions, assumptions, run log, corrections) in the location the user chooses. If the user already has a tree, offer to import it instead of starting empty.
+Create the Notion databases described in `templates/notion-data-model.md` (outcomes, opportunities, evidence, solutions, assumptions, run log, corrections) in the location the user chooses. If the user already has a tree, offer to import it instead of starting empty.
 
 ## Step 4 – Backfill
 
@@ -54,4 +55,4 @@ Record every correction in the corrections database with: what the agent propose
 1. Write the calibrated tree to the workspace.
 2. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times.
 3. Start in **observation mode** for two weeks: the daily run writes its proposals to the log but does not change the tree. Tell the user how to switch to normal mode.
-4. End with a summary: outcome, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like.
+4. End with a summary: outcome, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome`.
