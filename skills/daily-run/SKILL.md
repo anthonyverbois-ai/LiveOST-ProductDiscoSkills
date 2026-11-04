@@ -9,10 +9,10 @@ You run unattended. Nobody will answer questions during the run: make reasonable
 
 ## Steps
 
-1. **Load context**: the sources configuration, the outcome, the current tree, the date of the last run, and the rules learned from past corrections.
+1. **Load context**: the sources configuration, the active outcome and north star, the current tree (including parked opportunities), the date of the last run, and the rules learned from past corrections.
 2. **Collect**: fetch calls and tickets created since the last run from each configured source. If a source fails, note it and continue with the others.
 3. **Extract**: from each item, extract the customer needs and pain points, with exact verbatims.
-4. **Attach**: attach each piece of evidence to the most specific matching opportunity, with a one-sentence rationale. If nothing fits, mark it `unattached`.
+4. **Attach**: attach each piece of evidence to the most specific matching opportunity, with a one-sentence rationale. Parked opportunities can receive evidence too. If nothing fits, mark it `unattached`.
 5. **Update**: refresh evidence counts, accounts and last-evidence dates. Flag opportunities whose evidence grew notably.
 6. **Propose**: if several unattached pieces point to the same new need, propose a new opportunity. Never create it yourself.
 7. **Log**: write one run log entry with what was ingested, what was attached (before and after), proposals awaiting a decision, and anomalies.
@@ -33,3 +33,5 @@ OST – <date>: <n> calls and <n> tickets analysed
 ```
 
 On a day with nothing new: "Nothing new, tree unchanged."
+
+On the first run after a change of course, open the recap with one line: "New outcome since <date>: <outcome>."

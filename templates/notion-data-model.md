@@ -1,13 +1,24 @@
 # Notion data model
 
-The tree lives in six related Notion databases, created during onboarding.
+The tree lives in seven related Notion databases, created during onboarding.
+
+## Outcomes
+| Property | Type | Notes |
+| --- | --- | --- |
+| Outcome | Title | Measurable result the squad works toward |
+| North star | Text | Optional long-term direction the outcome serves |
+| Status | Select | active, past (only one active at a time) |
+| Start | Date | |
+| End | Date | Set when the squad changes course |
+| Reason for change | Text | Why the squad moved on |
 
 ## Opportunities
 | Property | Type | Notes |
 | --- | --- | --- |
 | Name | Title | Customer-phrased need or pain |
 | Parent | Relation (Opportunities) | Empty for top-level opportunities |
-| Status | Select | candidate, active, merged, archived |
+| Outcomes | Relation (Outcomes) | Every outcome this opportunity has served |
+| Status | Select | candidate, active, parked, merged, archived |
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | |
 | Evidence count | Rollup | |
@@ -33,7 +44,7 @@ The tree lives in six related Notion databases, created during onboarding.
 | --- | --- | --- |
 | Name | Title | |
 | Opportunity | Relation (Opportunities) | |
-| Status | Select | idea, to test, testing, validated, dropped |
+| Status | Select | idea, to test, testing, validated, paused, dropped |
 | Riskiest assumption | Relation (Assumptions) | |
 
 ## Assumptions

@@ -21,7 +21,8 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 
 1. **Onboarding** (`/live-product-discovery:ost-setup`): set your outcome, connect your sources, ingest the last 60 to 90 days, and calibrate the first tree with your team.
 2. **Daily run**: new calls and tickets are read, evidence is attached, and you get a short recap plus a detailed log entry. Every change can be undone.
-3. **Weekly synthesis**: opportunities are re-ranked, structural changes are proposed, and the agent learns from the corrections you made during the week.
+3. **Weekly synthesis**: opportunities are re-ranked, structural changes are proposed, and the agent learns from the corrections you made during the week. It also flags when the evidence starts drifting away from your outcome.
+4. **Change of course** (`/live-product-discovery:ost-change-outcome`): when the squad adopts a new outcome or north star, the tree is re-anchored. Opportunities are kept, reframed or parked, nothing is deleted, and the squad recalibrates the result.
 
 Design principles:
 
@@ -53,6 +54,7 @@ Then run `/live-product-discovery:ost-setup` and follow the conversation.
 .claude-plugin/        plugin manifest and marketplace entry
 skills/
   ost-setup/           onboarding: outcome, sources, backfill, calibration
+  ost-change-outcome/  re-anchoring the tree when the squad changes course
   ost-rules/           the OST rules every other skill follows
   daily-run/           daily ingestion, attachment, recap and log
   weekly-synthesis/    ranking, structural proposals, learning loop
