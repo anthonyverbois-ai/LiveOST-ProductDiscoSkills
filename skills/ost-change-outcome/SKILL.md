@@ -30,7 +30,7 @@ Nothing is deleted. Evidence belongs to customers, not to an outcome: every piec
 
 ## Step 3 – Re-evaluate every opportunity
 
-Go through the opportunities under the old outcome and propose one decision for each, with a one-sentence reason:
+Go through the opportunities under the old outcome and propose one decision for each, with a one-sentence reason. Use the outcome test of `build-tree` (step 3) against the new outcome:
 - **keep**: still relevant to the new outcome, as is;
 - **reframe**: relevant if reworded or moved to another branch;
 - **park**: out of scope for the new outcome. Parked opportunities keep their evidence and keep receiving new evidence, but are not ranked. They can come back later.
@@ -39,7 +39,7 @@ Solutions and assumptions under a parked opportunity move to `paused`.
 
 ## Step 4 – Look for what the old tree missed
 
-Search the evidence already collected, including unattached evidence and evidence under parked opportunities, for needs that matter for the new outcome but had no opportunity. Propose them as new `candidate` opportunities, each with its evidence.
+Search the evidence already collected, including unattached evidence and evidence under parked opportunities, for needs that matter for the new outcome but had no opportunity. Turn them into new `candidate` opportunities following `build-tree`, each with its evidence.
 
 ## Step 5 – Check the sources
 
