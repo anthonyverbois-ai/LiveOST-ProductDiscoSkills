@@ -129,12 +129,11 @@ body {
   border-radius: var(--radius-element);
 }
 .opp-stats:hover { background: var(--color-background-muted); }
-.opp-stats:hover .see-ev { text-decoration: underline; text-underline-offset: 3px; }
+.opp-stats:hover .stat { text-decoration: underline; text-underline-offset: 3px; }
 .opp-stats:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
 .stat { display: inline-flex; align-items: baseline; gap: 4px; }
 .stat-n { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
 .stat-l { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-.see-ev { margin-left: auto; font-size: var(--font-size-sm); color: var(--color-text-blue); }
 .signal { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
 .opp-last { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 

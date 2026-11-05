@@ -111,7 +111,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
           <NotionLink href={opp.notion} className="opp-name">{opp.name}</NotionLink>
         </div>
         {opp.status !== 'active' ? <span className="opp-status">{STATUS[opp.status]}</span> : null}
-        <button type="button" className="opp-stats" onClick={() => onOpen(opp.id)}>
+        <button type="button" className="opp-stats" onClick={() => onOpen(opp.id)} title="See the evidence">
           <span className="stat">
             <span className="stat-n">{opp.evidence}</span>
             <span className="stat-l">evidence</span>
@@ -121,7 +121,6 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
             <span className="stat-l">accounts</span>
           </span>
           {signal ? <Badge variant="info" label={signal} /> : null}
-          <span className="see-ev">See evidence</span>
         </button>
         <span className="opp-last">Last evidence {formatDay(opp.lastEvidence)}</span>
       </div>
@@ -154,8 +153,8 @@ function TreeMap({onOpen}) {
       </div>
       <div className="map-tools">
         <p className="map-legend">
-          Numbered by priority: 1 is the top branch, 1.1 its top sub-opportunity. Titles open Notion; the numbers of
-          evidence open the verbatims.
+          Numbered by priority: 1 is the top branch, 1.1 its top sub-opportunity. Titles open Notion; the counts open
+          the verbatims.
         </p>
         <Button
           label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
