@@ -34,7 +34,7 @@ Design principles:
 ## Roadmap
 
 - **v0.1 – The living tree**: onboarding, daily run, recap and log, weekly synthesis.
-- **v0.2 – The live view**: an always-up-to-date visual of the tree, with what changed today and one-click approvals.
+- **v0.2 – The live view**: an always-up-to-date visual of the tree, with what changed today, one-click approvals, the last refresh date and the tree's changelog. See [docs/live-view.md](docs/live-view.md).
 - **v0.3 – Solution discovery**: prototypes for solutions under test, compared side by side, and draft outreach to the customers who raised the pain.
 
 ## Install
@@ -59,6 +59,7 @@ skills/
   daily-run/           daily ingestion, attachment, recap and log
   weekly-synthesis/    ranking, structural proposals, learning loop
 templates/             Notion data model and sources config example
+docs/                  specifications of upcoming versions (live view)
 ```
 
 ## Contributing
