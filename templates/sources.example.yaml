@@ -60,6 +60,10 @@ schedule:
   daily: "working days, early morning"
   weekly: "Monday morning"
 
+freshness:
+  addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"
+  dormant_after_weeks: 12   # no evidence this long before asking whether an opportunity is still current
+
 mode: observation           # observation for the first two weeks, then normal
 trial_days: 30              # trial batch processed and calibrated first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"

@@ -21,6 +21,8 @@ Read the release notes published since the last synthesis and check them against
 
 Read the backlog items created or changed since the last synthesis, following the "Backlog" rules in `ost-rules`: propose links between items and opportunities, and ask about the two gaps (backlog items with no opportunity, top opportunities with no solution in the backlog).
 
+Check freshness, following the "Shipped features" and "Freshness" rules in `ost-rules`: opportunities past the waiting period after a release, the adoption of recently shipped features when usage data exists, and dormant opportunities to ask about.
+
 List structural proposals for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each proposal cites its evidence. List the assumptions worth testing next for solutions in progress.
 
 ## 3. Learn
