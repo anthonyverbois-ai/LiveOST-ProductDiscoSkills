@@ -15,7 +15,7 @@ Thanks for helping make continuous discovery easier for every product team. You 
 ## Proposing a change
 
 1. Fork this repository to your GitHub account.
-2. Make your change on a branch in your fork. With Claude Code, you can simply ask: "propose an improvement to the onboarding in anthonyverbois-ai/live-product-discovery-skills".
+2. Make your change on a branch in your fork. With Claude Code, you can simply ask: "propose an improvement to the onboarding in anthonyverbois-ai/LiveOST-ProductDiscoSkills".
 3. Test it on your own data, in your own environment.
 4. Open a pull request to `main` and fill in the checklist.
 5. The maintainer reviews it, may ask questions, then merges or explains why not.
