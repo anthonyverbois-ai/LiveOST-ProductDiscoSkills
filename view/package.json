@@ -1,0 +1,20 @@
+{
+  "name": "live-product-discovery-view",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@astryxdesign/core": "0.7.2",
+    "@astryxdesign/theme-neutral": "0.7.2",
+    "@stylexjs/stylex": "0.19.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "@astryxdesign/cli": "0.7.2"
+  }
+}
