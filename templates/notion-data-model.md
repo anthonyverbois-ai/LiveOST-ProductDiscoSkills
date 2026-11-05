@@ -59,11 +59,14 @@ The tree lives in seven related Notion databases, created during onboarding.
 ## Run log
 | Property | Type | Notes |
 | --- | --- | --- |
-| Run | Title | Date and type (daily, weekly) |
+| Run | Title | Date and type (daily, weekly, onboarding, change of course) |
+| Finished at | Date (with time) | Shown as "last refresh" in the live view |
+| Sources status | Text | Per source: OK, partial or failed at this run |
+| Plugin version | Text | Version of the plugin that ran |
 | Ingested | Number | Items read |
 | Attached | Number | Evidence attached |
 | Pending | Number | Unattached evidence and proposals |
-| Changes | Text | Before and after of each change |
+| Changes | Text | Before and after of each change, and who made it (agent or squad); feeds the tree changelog |
 | Anomalies | Text | Failed sources, unreadable items |
 
 ## Corrections
