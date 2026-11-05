@@ -2,6 +2,20 @@
 
 The tree lives in seven related Notion databases, created during onboarding.
 
+## Creation order
+
+A relation needs its target database to exist, and a rollup needs its relation. Create, in this order:
+
+1. Outcomes.
+2. Opportunities, with its relation to Outcomes; then add Parent as a two-way relation to itself (paired with Sub-opportunities).
+3. Evidence, with its two-way relation to Opportunities; then add the Opportunities rollups (Evidence count, Accounts, Last evidence).
+4. Solutions, with its two-way relation to Opportunities.
+5. Assumptions, with its two-way relation to Solutions.
+6. Run log; then add the two-way relation from Evidence to Run log.
+7. Corrections.
+
+The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
+
 ## Outcomes
 | Property | Type | Notes |
 | --- | --- | --- |
@@ -16,13 +30,15 @@ The tree lives in seven related Notion databases, created during onboarding.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Name | Title | Customer-phrased need or pain |
-| Parent | Relation (Opportunities) | Empty for top-level opportunities |
+| Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
+| Sub-opportunities | Relation (Opportunities) | The other side of Parent |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served |
 | Status | Select | candidate, active, parked, addressed, merged, archived |
 | Product area | Select | From the product documentation |
-| Evidence | Relation (Evidence) | |
-| Evidence count | Rollup | |
-| Accounts | Rollup | Distinct accounts |
+| Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
+| Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
+| Evidence count | Rollup | Count of Evidence |
+| Accounts | Rollup | Count of unique values of Evidence › Account: a number, used in the ranking |
 | Last evidence | Rollup | Most recent evidence date |
 | Rank | Number | Set by the weekly synthesis |
 
@@ -45,8 +61,9 @@ The tree lives in seven related Notion databases, created during onboarding.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Name | Title | |
-| Opportunity | Relation (Opportunities) | |
+| Opportunity | Relation (Opportunities), two-way | |
 | Status | Select | idea, to test, testing, validated, shipped, paused, dropped |
+| Assumptions | Relation (Assumptions) | The other side of Assumptions › Solution |
 | Documentation link | URL | For shipped solutions: the documentation page or release note |
 | Released on | Date | For shipped solutions; empty when the date is unknown |
 | Riskiest assumption | Relation (Assumptions) | |
