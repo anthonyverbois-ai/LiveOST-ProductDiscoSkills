@@ -42,7 +42,7 @@ Design principles:
 In Claude Code:
 
 ```
-/plugin marketplace add anthonyverbois-ai/live-product-discovery
+/plugin marketplace add anthonyverbois-ai/live-product-discovery-skills
 /plugin install live-product-discovery@live-product-discovery
 ```
 
