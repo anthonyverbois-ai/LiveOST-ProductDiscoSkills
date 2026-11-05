@@ -44,7 +44,7 @@ Then look for planned and in-progress backlog items that address it, following t
 
 For each opportunity, compute: the evidence count, the distinct accounts, the date of the latest evidence, and the evidence after any shipped feature. Compute them as described in "Reading the databases"; never read them from the rollups.
 
-When quantitative data is available, add how many accounts or users face the situation, how often, and what is at stake. Quantitative data sizes an opportunity; it never creates one.
+When quantitative data is available, run the saved queries (see `ost-rules`) and add how many accounts or users face the situation, how often, and the total ARR of the accounts concerned. Quantitative data sizes an opportunity; it never creates one.
 
 ## 6. Rank
 

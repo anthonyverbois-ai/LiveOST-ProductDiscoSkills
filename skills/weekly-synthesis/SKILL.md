@@ -43,6 +43,8 @@ Report the signal with its evidence and suggest discussing it with the squad. Ne
 
 ## 5. Measure
 
+When the outcome query is set up, report the outcome's metric and its trend, and note which shipped solutions may have moved it.
+
 Report the trend of:
 - the share of evidence correctly attached, measured on the evaluation set built during calibration;
 - the share of proposals accepted without edits;

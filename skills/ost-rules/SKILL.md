@@ -61,6 +61,10 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
+- Read quantitative data only through the account key and the queries saved in the configuration. Never write to the data source.
+- Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
+- Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.
+- Report revenue at the level of an opportunity (the total ARR of the accounts concerned), never per customer in the recap.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Changes and autonomy
