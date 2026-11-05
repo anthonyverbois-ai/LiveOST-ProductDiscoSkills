@@ -7,7 +7,7 @@ argument-hint: "[optional: the new outcome or north star]"
 
 # Changing course
 
-Run this as a conversation with the user when the squad changes its outcome or its north star. Follow `ost-rules` throughout. Speak the user's language.
+Run this as a conversation with the user when the squad changes its outcome or its north star. Follow `ost-rules` throughout. Speak the user's language. Keep the user oriented the same way as in `ost-setup`: show the 7 steps at the start, and open and close each step with its position and a progress line.
 
 The agent never changes the outcome or the north star on its own. It runs this skill only when the user invokes it, or after the user confirms a drift signal raised by `weekly-synthesis`.
 
