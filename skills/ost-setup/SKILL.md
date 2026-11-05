@@ -70,7 +70,7 @@ Never start processing without the user's explicit go. If the user wants to chan
 
 ## Step 5 – Trial batch
 
-Read the last month and the extra material, and extract candidate evidence, following `ost-rules`. If a source fails midway, finish the others and report what is missing.
+Read the last month and the extra material, and extract candidate evidence, following `backfill` and `ost-rules`. If a source fails midway, finish the others and report what is missing.
 
 ## Step 6 – First tree
 
@@ -93,11 +93,11 @@ This is the normal next step: propose it by default.
 1. Count what the full history holds, from the earliest item available in each source, using metadata only.
 2. Ask for the go in one short message, for example:
 
-   > The tree looks right? The full history adds 410 calls and 2,300 tickets, back to March 2023. It will take about an hour. Go?
+   > The tree looks right? The full history adds 410 calls and 2,300 tickets, back to March 2023. It will take a few hours, in batches I can resume if interrupted. Go?
 
    The user can also choose a later start date instead of all time.
-3. On go, process the full history with the rules learned in step 7. Report progress at regular intervals. Check the new evidence against shipped features, as in step 6.
-4. Merge the result into the calibrated tree, then show a short review of what changed: new opportunities proposed, opportunities whose evidence grew notably, opportunities now covered by a shipped feature. Record the user's corrections as in step 7.
+3. On go, process the full history with the rules learned in step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
+4. Merge the result into the calibrated tree, then run the review by sample described in `backfill`: low-confidence attachments, a random sample, the consolidated candidates and the opportunities that grew most. Record the user's corrections as in step 7.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.
 
