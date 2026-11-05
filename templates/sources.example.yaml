@@ -33,9 +33,15 @@ sources:
     via: connector
     filter: "tickets tagged with the squad's product area"
   quantitative:
-    tool: "analytics tool name (e.g. Amplitude, Mixpanel)"
+    tool: "data warehouse or analytics agent (e.g. MotherDuck, nao, Amplitude)"
     via: connector
-    use: sizing-only        # quantitative data never creates opportunities
+    use: sizing-only        # quantitative data never creates opportunities; read only
+    # Set up and tested with the user during onboarding (step 2):
+    account_key: "how an account is identified in the data (e.g. CRM account ID, company domain)"
+    queries:                # each query is saved as written and tested, and reused by every run
+      accounts: "ARR, segment and plan per account"
+      usage: "usage of the squad's features per account, over time"
+      outcome: "the outcome's metric over time"
   documentation:
     tool: "help center or product docs"
     via: connector
