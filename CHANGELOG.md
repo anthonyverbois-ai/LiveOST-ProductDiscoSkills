@@ -12,3 +12,6 @@ All notable changes to this plugin are listed here.
 - Templates: Notion data model and sources configuration example.
 - Change of course: new `ost-change-outcome` skill to re-anchor the tree on a new outcome or north star, with an outcome history, a `parked` status for opportunities and a `paused` status for solutions. The weekly synthesis now flags drift between the evidence and the active outcome.
 - Onboarding pre-flight check: before the backfill, a recap of what will be processed per source (connector, period, volume, filters, samples, alerts, what is left out, estimated duration), with three choices: go, adjust, or run on a two-week sample first. The backfill never starts without an explicit go.
+
+### Changed
+- The repository is now `anthonyverbois-ai/live-product-discovery-skills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
