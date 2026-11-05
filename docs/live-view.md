@@ -26,3 +26,32 @@ Everything comes from the Notion databases described in `templates/notion-data-m
 
 - The page opens in Claude (web or app) and reads Notion with the viewer's own access; the viewer approves that access the first time.
 - People outside the user's Claude organization see an empty page.
+
+## Technical choices
+
+### UI library: Astryx
+
+The view is built with [Astryx](https://github.com/meta/astryx), Meta's open-source design system (MIT, React 19). It gives the view consistent, accessible components with dark mode, instead of hand-made UI.
+
+| Need in the view | Astryx component |
+| --- | --- |
+| The tree as a navigable, keyboard-accessible list | `TreeList` |
+| Evidence of an opportunity, opened on click | `Drawer` |
+| "New today", statuses (candidate, active, parked) | `Badge`, `Token` |
+| Approve or reject a pending proposal | `Button`, `Toast` |
+| Switching between tree, pending decisions and changelog | `TabList` |
+| Last refresh and source status | `Timestamp`, `StatusDot`, `Tooltip` |
+| Tree changelog and run details | `Table`, `MetadataList` |
+| Loading and empty states | `Skeleton`, `EmptyState` |
+
+Astryx has no graph component. The visual map of the tree (outcome at the top, branches below) is drawn in SVG inside an Astryx layout; `TreeList` remains the accessible alternative to the map.
+
+### Version pinning
+
+Astryx is in beta and ships several releases a week. The view pins one exact version, at least two weeks old when it is adopted (currently `0.7.2`), and upgrades deliberately, never automatically.
+
+### Packaging: one self-contained file
+
+Pages published in Claude can load scripts only from a few public CDNs (Astryx's own CDN guide relies on esm.sh, which is not one of them), and stylesheets only from Google Fonts. The view is therefore built into a single self-contained HTML file: React, Astryx and its CSS are bundled and inlined at build time, and only the Figtree font is loaded from Google Fonts.
+
+The repository keeps the view's source, the build script and the built file. Users of the plugin never build anything: the onboarding publishes the built file.

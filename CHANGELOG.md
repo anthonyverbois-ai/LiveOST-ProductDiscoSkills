@@ -5,6 +5,7 @@ All notable changes to this plugin are listed here.
 ## Unreleased
 
 ### Added
+- Live view technical choices in `docs/live-view.md`: built with Astryx (Meta's design system), pinned version, packaged as one self-contained file.
 - Live view metadata: the run log now records the finish time, the status of each source and the plugin version, and who made each change (agent or squad). They feed the "last refresh" date and the tree changelog of the v0.2 live view, specified in `docs/live-view.md`.
 - Repository skeleton: plugin manifest, marketplace entry, contribution guide, pull request and issue templates.
 - Draft skills: `ost-setup` (onboarding), `ost-rules`, `daily-run`, `weekly-synthesis`.
