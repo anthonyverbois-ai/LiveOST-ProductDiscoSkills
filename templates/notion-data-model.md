@@ -18,7 +18,7 @@ The tree lives in seven related Notion databases, created during onboarding.
 | Name | Title | Customer-phrased need or pain |
 | Parent | Relation (Opportunities) | Empty for top-level opportunities |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served |
-| Status | Select | candidate, active, parked, merged, archived |
+| Status | Select | candidate, active, parked, addressed, merged, archived |
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | |
 | Evidence count | Rollup | |
@@ -44,7 +44,9 @@ The tree lives in seven related Notion databases, created during onboarding.
 | --- | --- | --- |
 | Name | Title | |
 | Opportunity | Relation (Opportunities) | |
-| Status | Select | idea, to test, testing, validated, paused, dropped |
+| Status | Select | idea, to test, testing, validated, shipped, paused, dropped |
+| Documentation link | URL | For shipped solutions: the documentation page or release note |
+| Released on | Date | For shipped solutions; empty when the date is unknown |
 | Riskiest assumption | Relation (Assumptions) | |
 
 ## Assumptions

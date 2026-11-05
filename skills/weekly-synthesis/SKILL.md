@@ -13,7 +13,9 @@ Rank opportunities by volume and recency of evidence and number of distinct acco
 
 ## 2. Propose
 
-List structural proposals for the squad to decide on: new opportunities, merges, splits, reframes, archives. Each proposal cites its evidence. List the assumptions worth testing next for solutions in progress.
+Read the release notes published since the last synthesis and check them against active opportunities, following the "Shipped features" rules in `ost-rules`.
+
+List structural proposals for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each proposal cites its evidence. List the assumptions worth testing next for solutions in progress.
 
 ## 3. Learn
 
