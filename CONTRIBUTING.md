@@ -1,4 +1,4 @@
-# Contributing to live-product-discovery
+# Contributing to LiveOST
 
 Thanks for helping make continuous discovery easier for every product team. You don't need to code to contribute: most of this plugin is plain-text instructions for Claude.
 
