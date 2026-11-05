@@ -2,12 +2,14 @@
 name: ost-change-outcome
 description: Re-anchors the tree when the squad changes course - a new outcome, or a new north star the outcome serves. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and recalibrates with the squad. Nothing is deleted.
 disable-model-invocation: true
-argument-hint: "[optional: the new outcome or north star]"
+argument-hint: "[optional: squad name] [optional: the new outcome or north star]"
 ---
 
 # Changing course
 
 Run this as a conversation with the user when the squad changes its outcome or its north star. Follow `ost-rules` throughout. Speak the user's language. Keep the user oriented the same way as in `ost-setup`: show the 7 steps at the start, and open and close each step with its position and a progress line.
+
+When several squads are set up, work on one squad only: the one named as argument, or ask which one. The other squads' trees do not change.
 
 The agent never changes the outcome or the north star on its own. It runs this skill only when the user invokes it, or after the user confirms a drift signal raised by `weekly-synthesis`.
 

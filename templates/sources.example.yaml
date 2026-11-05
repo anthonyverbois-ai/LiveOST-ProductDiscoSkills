@@ -1,6 +1,9 @@
 # Sources configuration for live-product-discovery.
 # Created during onboarding (/live-product-discovery:ost-setup). Values below are examples.
 # Never put credentials here: connectors handle authentication.
+# One configuration per squad. A PM who follows several squads runs the onboarding once per squad.
+
+squad: "Squad A"   # labels this squad's Notion page, recap section and live view
 
 north_star: "Customers make better decisions with their data"   # optional
 outcome: "Reduce the time it takes a customer to build their first report"
