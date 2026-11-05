@@ -1,6 +1,6 @@
 ---
 name: ost-setup
-description: Onboarding for live-product-discovery. Sets the outcome, connects the sources, builds and calibrates a first tree on a one-month trial batch, then extends it to the full history after the user's go, and schedules the daily and weekly runs.
+description: Onboarding for live-product-discovery, one squad at a time. Sets the outcome, connects the sources, builds and calibrates a first tree on a one-month trial batch, then extends it to the full history after the user's go, and schedules the daily and weekly runs. Run it again to add another squad.
 disable-model-invocation: true
 argument-hint: "[optional: squad name]"
 ---
@@ -23,9 +23,17 @@ The user must always know what is done, what is happening and what comes next.
 - **When something changes the path** (a step skipped, an existing tree imported, the full history declined), say so and update the progress line.
 - **When the user comes back after a pause**, or asks where they are, restate the progress line and what is waiting on them.
 
+## Several squads
+
+A PM can follow several squads. Each squad gets its own tree: its own configuration (outcome, scope, source filters), its own Notion page and databases, its own learned rules and its own live view. Corrections made for one squad never change another squad's tree.
+
+- **Name the squad first.** Use the name given as argument, or ask for it. The name labels the configuration, the Notion page, the recap section and the live view.
+- **Look for squads already set up** before step 1. If there are some, list them and ask whether to add a new squad or redo one of them. Never overwrite another squad's configuration.
+- **Reuse what is shared.** Connectors already connected for another squad do not need connecting again: test them, then set this squad's own filters. The schedule is shared too (step 9).
+
 ## Step 1 – Frame
 
-Ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features:
+If the squad has no name yet, ask for it (see "Several squads"). Then ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features:
 - **what the squad owns**: the product areas and features, named as they appear in the product and its documentation;
 - **what is explicitly out of scope**: neighboring areas owned by other squads, where ambiguity usually sits;
 - **the customer segments and personas** that matter;
@@ -52,7 +60,7 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 The tree lives in seven Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections.
 
-1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
+1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Each squad has its own page and databases: never reuse another squad's databases. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
 2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `templates/notion-data-model.md`): do not ask the user about their plan.
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
@@ -105,6 +113,6 @@ The user may decline, for example when the product changed so much that older fe
 
 ## Step 9 – Activation
 
-1. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times.
-2. Start in **observation mode** for two weeks: the daily run writes its proposals to the log but does not change the tree. Tell the user how to switch to normal mode.
-3. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome`.
+1. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times. If they already exist for another squad, add this squad to them instead of creating new ones: one daily run and one weekly synthesis cover all the squads, so the user gets one notification a day.
+2. Start this squad in **observation mode** for two weeks (other squads keep their own mode): the daily run writes its proposals to the log but does not change the tree. Tell the user how to switch to normal mode.
+3. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, and that running this onboarding again adds another squad.

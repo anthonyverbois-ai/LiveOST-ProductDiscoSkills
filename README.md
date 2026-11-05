@@ -48,6 +48,8 @@ In Claude Code:
 
 Then run `/live-product-discovery:ost-setup` and follow the conversation.
 
+Following several squads? Run the onboarding once per squad. Each squad gets its own tree, rules and live view, and a single daily recap covers them all.
+
 ## Repository layout
 
 ```

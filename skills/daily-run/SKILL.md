@@ -7,6 +7,8 @@ description: The daily run of live-product-discovery. Reads new calls and ticket
 
 You run unattended. Nobody will answer questions during the run: make reasonable decisions, log them, and finish. Follow `ost-rules`.
 
+When several squads are set up, run the steps below for each squad in turn, each with its own configuration, tree, learned rules and mode (observation or normal). A failure on one squad does not stop the others. End with a single recap covering all the squads.
+
 ## Steps
 
 1. **Load context**, reading Notion as described in "Reading the databases" in `templates/notion-data-model.md`: the sources configuration, the active outcome and north star, the current tree (including parked opportunities), the date of the last run, and the rules learned from past corrections.
@@ -29,10 +31,14 @@ OST – <date>: <n> calls and <n> tickets analysed
 • Trending: "<opportunity>" (+<n> evidence, now #<rank>)
 • To decide: new opportunity "<name>" (<n> evidence, <n> accounts)
 • To sort: <n> unattached verbatims
-• Out of scope: <n> verbatims about other squads' areas
+• Out of scope: <n> verbatims about other squads' areas (<n> for <other squad set up here>)
 • Sources: <status of each source>
 ```
 
 On a day with nothing new: "Nothing new, tree unchanged."
+
+With several squads, send one recap: a first line with the date, then one section per squad with the lines above, the squad's name as its title. A squad with nothing new takes one line: "<squad>: nothing new, tree unchanged." List the sources once, at the end.
+
+Out-of-scope evidence that falls within another squad set up here is not moved by this run: that squad's own pass reads the same sources with its own filters and attaches it. The recap only counts it.
 
 On the first run after a change of course, open the recap with one line: "New outcome since <date>: <outcome>."

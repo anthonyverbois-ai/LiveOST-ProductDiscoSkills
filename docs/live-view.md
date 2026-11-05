@@ -1,6 +1,6 @@
 # Live view (v0.2) – specification
 
-The live view is a page that shows the tree as it is now. Notion stays the source of truth: the page reads it each time it opens, so it never needs to be republished. The onboarding publishes it for each user, connected to their own Notion databases.
+The live view is a page that shows the tree as it is now. Notion stays the source of truth: the page reads it each time it opens, so it never needs to be republished. The onboarding publishes it for each user, connected to their own Notion databases. A PM who follows several squads gets one view per squad; a summary page across squads may come later.
 
 ## Main content
 
