@@ -19,7 +19,7 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 
 ## How it works
 
-1. **Onboarding** (`/live-product-discovery:ost-setup`): set your outcome, connect your sources, review a pre-flight recap of what will be processed (volumes, samples, alerts), ingest the last 60 to 90 days (or all time) once you give the go, check the result against features you already shipped, and calibrate the first tree with your team.
+1. **Onboarding** (`/live-product-discovery:ost-setup`): set your outcome, connect your sources, build and calibrate a first tree on the last month, checked against the features you already shipped, then extend it to your full history with the rules learned from your corrections. Nothing is processed before you give the go.
 2. **Daily run**: new calls and tickets are read, evidence is attached, and you get a short recap plus a detailed log entry. Every change can be undone.
 3. **Weekly synthesis**: opportunities are re-ranked, structural changes are proposed, and the agent learns from the corrections you made during the week. It also flags when the evidence starts drifting away from your outcome.
 4. **Change of course** (`/live-product-discovery:ost-change-outcome`): when the squad adopts a new outcome or north star, the tree is re-anchored. Opportunities are kept, reframed or parked, nothing is deleted, and the squad recalibrates the result.

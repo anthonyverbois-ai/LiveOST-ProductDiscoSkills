@@ -40,4 +40,5 @@ schedule:
   weekly: "Monday morning"
 
 mode: observation           # observation for the first two weeks, then normal
-backfill_days: 60           # number of days, or "all" for all time
+trial_days: 30              # trial batch processed and calibrated first
+history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"
