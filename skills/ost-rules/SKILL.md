@@ -23,6 +23,16 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
 - An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
 - A `parked` opportunity is out of scope for the active outcome. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
+- An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
+
+## Shipped features
+
+- Product documentation and release notes tell what the product already does. Before proposing, ranking or reviving an opportunity, check whether a shipped feature already addresses it.
+- When one does, record it as a solution with status `shipped`, linked to the documentation page or release note, with its release date. Never guess a release date: if the sources do not give one, write "date unknown".
+- Split the opportunity's evidence into before and after the release. Never delete evidence from before the release: it is history, and it weighs less in the ranking.
+- Evidence after the release means the need persists despite the feature (incomplete, unknown to customers, or not adopted). Keep the opportunity active and say so in the recap.
+- No evidence after the release, with enough time elapsed for customers to use the feature: propose marking the opportunity `addressed`. A human decides.
+- A match between a feature and an opportunity is a proposal, not a fact: state why they match, in one sentence.
 
 ## Evidence
 
@@ -31,12 +41,12 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
-- Product and support documentation is a reference for locating opportunities by product area. It is not customer evidence. Support tickets are.
+- Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Changes and autonomy
 
 - The agent may, on its own: attach evidence, update counts and dates, flag an opportunity as trending.
-- The agent proposes, and a human decides: creating, renaming, merging, splitting, moving, parking or archiving an opportunity; changing priorities; any change to solutions or assumptions.
+- The agent proposes, and a human decides: creating, renaming, merging, splitting, moving, parking, marking as addressed or archiving an opportunity; linking a shipped feature to an opportunity; changing priorities; any change to solutions or assumptions.
 - Only a human changes the outcome or the north star. The agent may only flag a possible drift.
 - Every change the agent applies is logged with a before and after, so it can be undone.
 

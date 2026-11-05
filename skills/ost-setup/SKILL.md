@@ -21,7 +21,7 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 ## Step 2 – Sources
 
-1. Ask where each kind of input lives: customer calls, support tickets, product analytics, product or support documentation.
+1. Ask where each kind of input lives: customer calls, support tickets, product analytics, product or support documentation, and release notes or a product changelog (they tell which features shipped, and when).
 2. Check which matching connectors are already available in this session.
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
@@ -36,11 +36,12 @@ Create the Notion databases described in `templates/notion-data-model.md` (outco
 
 The backfill is the heaviest step of the onboarding: it takes time, uses a lot of tokens and produces the first tree everything else builds on. Before starting it, show the user exactly what will be processed and wait for an explicit go.
 
-1. Ask how far back to go (default: 60 days; 90 for low-volume squads).
+1. Ask how far back to go: 60 days (default), 90 days for low-volume squads, a custom start date, or **all time** (since the earliest item available in each source). All time gives the fullest picture but the largest volume, and older evidence may concern needs already addressed since: step 6 checks this against shipped features.
 2. Ask for any extra material: interview notes, research reports, an existing tree.
 3. Count what is in scope **without reading the content**: list items through each connector or folder using metadata only (title, date, size).
 4. Present the pre-flight recap:
-   - **per source**: the connector or folder used, the period covered, the number of items found and the filters applied;
+   - **per source**: the connector or folder used, the period covered (for all time, the date of the earliest item found), the number of items found and the filters applied;
+   - **documentation**: the number of documentation pages and release notes found, and the period the release notes cover;
    - **samples**: two or three items per source (title and date), so the user can check they are the right calls, tickets or documents;
    - **alerts**: a source returning nothing, an unusual volume (very low or very high for the period), partial access (for example only the user's own calls are visible), extra material that cannot be read;
    - **left out**: declared tools without a working source, items outside the period, items excluded by the filters, and why;
@@ -48,7 +49,7 @@ The backfill is the heaviest step of the onboarding: it takes time, uses a lot o
 5. Offer three choices:
    - **Go**: run the full backfill.
    - **Adjust**: change a source, a filter or the period, then show the recap again.
-   - **Sample first**: run the backfill on the most recent two weeks only, show the first tree and a sample of attachments, then come back to this recap to go full or adjust. Recommend this on a first onboarding.
+   - **Sample first**: run the backfill on the most recent two weeks only, show the first tree and a sample of attachments, then come back to this recap to go full or adjust. Recommend this on a first onboarding, and always with all time.
 
 Never start the backfill without the user's explicit go.
 
@@ -58,7 +59,9 @@ Read everything in the confirmed scope and extract candidate evidence, following
 
 ## Step 6 – First tree
 
-Group the evidence into a first set of opportunities under the outcome. Every opportunity must show its evidence count and accounts. Present the tree to the user as a short outline before writing it.
+1. Group the evidence into a first set of opportunities under the outcome. Every opportunity must show its evidence count and accounts.
+2. Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`: search the product documentation and release notes for a feature that already addresses it. When one does, record it as a `shipped` solution and split the evidence into before and after the release.
+3. Present the tree to the user as a short outline before writing it. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature.
 
 ## Step 7 – Calibration
 
