@@ -35,7 +35,7 @@ The tree lives in seven related Notion databases, created during onboarding.
 | Account | Text | |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
-| Status | Select | attached, unattached, proposed |
+| Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
 | Run | Relation (Run log) | Run that created it |
 

@@ -28,7 +28,8 @@ List structural proposals for the squad to decide on: new opportunities, merges,
 
 Flag a possible drift when the evidence no longer matches the active outcome, for example:
 - a growing share of new evidence fits no active opportunity, or lands on parked ones;
-- a parked opportunity gathers more new evidence than most active ones.
+- a parked opportunity gathers more new evidence than most active ones;
+- a growing share of evidence is marked out of scope, which may mean the squad's scope has changed.
 
 Report the signal with its evidence and suggest discussing it with the squad. Never change the outcome or the north star: if the user confirms a change of course, they run `ost-change-outcome`.
 

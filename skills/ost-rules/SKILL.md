@@ -38,6 +38,7 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 
 - No evidence without a source. Each piece carries: the verbatim (exact words), the source type (call, ticket, …), a link to the original, the account, the date.
 - Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field.
+- First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.

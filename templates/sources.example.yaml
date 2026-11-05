@@ -7,6 +7,19 @@ outcome: "Reduce the time it takes a customer to build their first report"
 # To change course later, run /live-product-discovery:ost-change-outcome
 # instead of editing these two lines: it keeps the history and recalibrates the tree.
 
+scope:
+  owns:                     # product areas and features, named as in the product
+    - "Report builder"
+    - "Report templates"
+  out_of_scope:             # neighboring areas owned by other squads
+    - "Data connectors"
+    - "Billing"
+  segments: ["mid-market finance teams"]
+  signals:                  # how the scope shows up in the sources
+    ticket_tags: ["reports", "templates"]
+    call_topics: ["building a report", "report layout"]
+    doc_sections: ["Reports", "Templates"]
+
 sources:
   calls:
     tool: "call recorder name (e.g. Gong, Modjo)"
