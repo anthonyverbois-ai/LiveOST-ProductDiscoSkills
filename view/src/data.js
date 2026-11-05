@@ -1,15 +1,17 @@
 // Fictional demo data, mirroring the demo tree used to test the Notion data model.
 // In the live version, this module is replaced by a reader of the user's Notion databases.
+// The notion links point to the demo pages created to test the data model: private, fictional content.
 
 export const meta = {
   squad: 'Demo squad',
   northStar: 'Customers make better decisions with their data',
   outcome: 'Reduce the time to build a first report from 3 days to 1 day',
   outcomeSince: '2026-09-01',
+  outcomeNotion: 'https://www.notion.so/40f5d4385f6f81e58152c865d4ad9561',
   lastRefresh: '2026-11-05T07:42:00',
   pluginVersion: '0.1.0',
   changelogUrl:
-    'https://github.com/anthonyverbois-ai/live-product-discovery-skills/blob/main/CHANGELOG.md',
+    'https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills/blob/main/CHANGELOG.md',
   sources: [
     {name: 'Calls', status: 'success', detail: 'OK at the last run'},
     {name: 'Tickets', status: 'success', detail: 'OK at the last run'},
@@ -20,7 +22,7 @@ export const meta = {
     analysed: '3 calls and 7 tickets',
     lines: [
       '12 pieces of evidence attached (9 to existing opportunities, 3 pending)',
-      'Trending: “I lose time reformatting my exports” (+4 evidence, now #3)',
+      'Trending: “I lose time reformatting my exports” (+4 evidence, moved up from 3 to 2)',
       'To decide: new opportunity “I’m not sure my numbers are up to date”',
       'Out of scope: 2 verbatims about other squads’ areas',
     ],
@@ -30,6 +32,7 @@ export const meta = {
 export const opportunities = [
   {
     id: 'start',
+    notion: 'https://www.notion.so/40f5d4385f6f81fcb992dacdebac5bda',
     name: 'I don’t know where to start when building a report',
     status: 'active',
     rank: 1,
@@ -41,6 +44,7 @@ export const opportunities = [
   },
   {
     id: 'template',
+    notion: 'https://www.notion.so/40f5d4385f6f8130b9b9f40746faad0e',
     parent: 'start',
     name: 'I can’t find the right template for my use case',
     status: 'active',
@@ -52,6 +56,7 @@ export const opportunities = [
   },
   {
     id: 'rebuild',
+    notion: 'https://www.notion.so/40f5d4385f6f81cb8bd9fbb18dcc482b',
     parent: 'start',
     name: 'I rebuild the same layout every month',
     status: 'active',
@@ -64,10 +69,11 @@ export const opportunities = [
   },
   {
     id: 'exports',
+    notion: 'https://www.notion.so/40f5d4385f6f813a8c08d598fd7826a2',
     name: 'I lose time reformatting my exports',
     status: 'active',
     rank: 3,
-    previousRank: 5,
+    movedFrom: '3',
     area: 'Report builder',
     evidence: 12,
     accounts: 7,
@@ -77,6 +83,7 @@ export const opportunities = [
   },
   {
     id: 'charts',
+    notion: 'https://www.notion.so/40f5d4385f6f81e2ade5cbf49575dba2',
     parent: 'exports',
     name: 'Charts break when I paste them elsewhere',
     status: 'addressed',
@@ -88,6 +95,7 @@ export const opportunities = [
   },
   {
     id: 'freshness',
+    notion: 'https://www.notion.so/40f5d4385f6f81cd8e7ec19e4fe2d89a',
     name: 'I’m not sure my numbers are up to date',
     status: 'candidate',
     area: 'Report builder',
@@ -97,6 +105,7 @@ export const opportunities = [
   },
   {
     id: 'external',
+    notion: 'https://www.notion.so/40f5d4385f6f81219b73ff80a9bad7b4',
     name: 'I need to share reports with people outside my company',
     status: 'parked',
     area: 'Report builder',
@@ -118,17 +127,17 @@ export const evidence = [
   {opp: 'rebuild', verbatim: 'Every first of the month I rebuild the exact same report from scratch.', source: 'Call', account: 'Account H', date: '2026-11-05', rationale: 'Recurring rebuild of the same layout.', confidence: 'high'},
   {opp: 'charts', verbatim: 'Our charts turned into blurry pictures when we pasted them into slides.', source: 'Ticket', account: 'Account B', date: '2026-06-12', rationale: 'Before the “Export as image” release (Jul 2026); no evidence since.', confidence: 'high'},
   {opp: 'freshness', verbatim: 'I can’t tell when the data behind this chart was last refreshed.', source: 'Call', account: 'Account C', date: '2026-11-05', rationale: 'A new need not covered by the tree: proposed as a candidate.', confidence: 'medium'},
-  {opp: 'external', verbatim: 'Our auditors want a link to the report, but they don’t have an account.', source: 'Ticket', account: 'Account I', date: '2026-10-28', rationale: 'External sharing; parked under the current outcome.', confidence: 'high'},
+  {opp: 'external', verbatim: 'Our auditors want a link to the report, but they don’t have an account.', source: 'Ticket', account: 'Account I', date: '2026-10-28', rationale: 'External sharing; set aside under the current outcome.', confidence: 'high'},
 ];
 
 export const solutions = [
-  {opp: 'exports', name: 'Export presets saved per team', status: 'to test', assumption: 'Teams always export to the same two or three formats', assumptionResult: 'untested'},
-  {opp: 'exports', name: 'Apply a house style on export', status: 'idea'},
-  {opp: 'start', name: 'Guided first report', status: 'idea'},
-  {opp: 'template', name: 'Template finder by use case', status: 'to test', assumption: 'Templates can be tagged by use case without a rewrite', assumptionResult: 'untested'},
-  {opp: 'rebuild', name: 'Duplicate last month’s report', status: 'testing', assumption: 'Users can find the duplicate action without help', assumptionResult: 'unclear'},
-  {opp: 'charts', name: 'Export as image', status: 'shipped', released: '2026-07-08'},
-  {opp: 'external', name: 'Share link for external viewers', status: 'paused'},
+  {opp: 'exports', name: 'Export presets saved per team', notion: 'https://www.notion.so/40f5d4385f6f8149af40f828d29666fa', status: 'to test', assumption: 'Teams always export to the same two or three formats', assumptionResult: 'untested'},
+  {opp: 'exports', name: 'Apply a house style on export', notion: 'https://www.notion.so/40f5d4385f6f8126b467ef040a0fa8b7', status: 'idea'},
+  {opp: 'start', name: 'Guided first report', notion: 'https://www.notion.so/40f5d4385f6f8166b814f1e848f7c87a', status: 'idea'},
+  {opp: 'template', name: 'Template finder by use case', notion: 'https://www.notion.so/40f5d4385f6f81dfa079f69f75d7537d', status: 'to test', assumption: 'Templates can be tagged by use case without a rewrite', assumptionResult: 'untested'},
+  {opp: 'rebuild', name: 'Duplicate last month’s report', notion: 'https://www.notion.so/40f5d4385f6f810c8dfcfaaa52b24010', status: 'testing', assumption: 'Users can find the duplicate action without help', assumptionResult: 'unclear'},
+  {opp: 'charts', name: 'Export as image', notion: 'https://www.notion.so/40f5d4385f6f8188a868d3ae5fd48210', status: 'shipped', released: '2026-07-08'},
+  {opp: 'external', name: 'Share link for external viewers', notion: 'https://www.notion.so/40f5d4385f6f81669b9cfb860eac6744', status: 'paused'},
 ];
 
 export const pending = [
@@ -148,7 +157,7 @@ export const pending = [
 ];
 
 export const changelog = [
-  {date: '2026-11-05', change: 'Exports opportunity: +4 evidence, rank #5 → #3', by: 'agent'},
+  {date: '2026-11-05', change: 'Exports opportunity: +4 evidence, moved up from 3 to 2', by: 'agent'},
   {date: '2026-11-05', change: 'Candidate proposed: “I’m not sure my numbers are up to date”', by: 'agent'},
   {date: '2026-11-04', change: 'Template opportunity: +3 evidence', by: 'agent'},
   {date: '2026-11-03', change: 'Evidence about PDF page breaks moved to the exports opportunity', by: 'squad'},

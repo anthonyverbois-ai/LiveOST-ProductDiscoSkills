@@ -4,9 +4,14 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 
 ## Main content
 
-- **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions. The size or color of each opportunity reflects the volume and recency of its evidence. Parked opportunities are shown apart, dimmed.
+- **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions.
+  - Opportunities are numbered by priority among their siblings: 1, 2, 3 for branches, 1.1, 1.2 for the sub-opportunities of branch 1. Never show the global rank on the tree: it reads like an outline number.
+  - Each opportunity shows its evidence and accounts counts in large type, then the date of its last evidence.
+  - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all.
+  - Candidates sit below the tree, unnumbered, under "Waiting for a decision". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
+- **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
-- **Evidence**: clicking an opportunity shows its verbatims, each with a link to the original call or ticket.
+- **Evidence**: clicking the counts of an opportunity shows its verbatims, each with a link to the original call or ticket.
 - **Pending decisions**: approve or reject structural proposals from the page. The decision is written to Notion and logged as a correction when it differs from the agent's proposal.
 - **Timeline**: see the tree as it was on a past date, rebuilt from the run log.
 
@@ -39,14 +44,16 @@ The view is built with [Astryx](https://github.com/meta/astryx), Meta's open-sou
 | --- | --- |
 | The tree as a navigable, keyboard-accessible list | `TreeList` |
 | Evidence of an opportunity, opened on click | `Drawer` |
-| "New today", statuses (candidate, active, parked) | `Badge`, `Token` |
+| Solutions folded under each opportunity | `Collapsible` |
+| Link to the Notion page | `Icon` (`externalLink`) |
+| "New today" and statuses, as plain text | `Text` |
 | Approve or reject a pending proposal | `Button`, `Toast` |
 | Switching between tree, pending decisions and changelog | `TabList` |
 | Last refresh and source status | `Timestamp`, `StatusDot`, `Tooltip` |
 | Tree changelog and run details | `Table`, `MetadataList` |
 | Loading and empty states | `Skeleton`, `EmptyState` |
 
-Astryx has no graph component. The visual map of the tree (outcome at the top, branches below) is drawn in SVG inside an Astryx layout; `TreeList` remains the accessible alternative to the map.
+Astryx has no graph component. The visual map of the tree (outcome at the top, branches below) is drawn with plain layout and CSS around Astryx components; `TreeList` remains the accessible alternative to the map.
 
 ### Version pinning
 
