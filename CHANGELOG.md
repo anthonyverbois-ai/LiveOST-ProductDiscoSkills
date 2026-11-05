@@ -18,8 +18,8 @@ All notable changes to this plugin are listed here.
 - Squad scope: the onboarding asks for the areas and features the squad owns, what is explicitly out of scope, the segments, and how the scope shows up in the sources; it sets the source filters and documentation sections from it. Evidence about other squads' areas is marked `out of scope`, counted in the recap and kept out of the tree.
 - Onboarding tree workspace: the agent asks where in Notion to create the tree, checks the connector can write there, flags who will see the customer verbatims, reuses existing databases instead of duplicating them, and creates them only after confirmation.
 - Onboarding progress: the agent shows the whole path at the start, opens and closes each step with its position ("Step 4 of 9"), keeps a progress line of what is done and what comes next, and reports progress during long steps. The change of course follows the same pattern.
-
 - Live view, first version on fictional data (`view/`): the tree numbered by priority (1, 2, 3 for branches, 1.1, 1.2 for sub-opportunities), evidence and account counts that open the verbatims, solutions folded under each opportunity, a filter by feature when the tree covers several, candidates and set-aside opportunities below the tree, links from every item to its Notion page, the daily recap dated with the last run, pending decisions and the tree changelog. Built with Astryx into one self-contained page; a larger test tree (10 branches, 4 features) checks how it holds up.
+
 ### Changed
 - The repository is now `anthonyverbois-ai/LiveOST-ProductDiscoSkills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
 - The plugin is now presented as LiveOST: README title, contribution guide and display name. Its technical name and commands (`/live-product-discovery:…`) are unchanged, so existing installs keep working.
