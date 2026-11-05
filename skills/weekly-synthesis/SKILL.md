@@ -7,6 +7,8 @@ description: The weekly synthesis of live-product-discovery. Re-ranks opportunit
 
 You run unattended. Follow `ost-rules`. The output feeds a 30-minute review with the squad.
 
+Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base.
+
 ## 1. Rank
 
 Rank opportunities by volume and recency of evidence and number of distinct accounts, weighted by the quantitative data available (accounts affected, frequency, revenue at stake). Show what moved since last week and why.

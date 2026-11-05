@@ -56,6 +56,7 @@ skills/
   ost-setup/           onboarding: outcome, sources, backfill, calibration
   ost-change-outcome/  re-anchoring the tree when the squad changes course
   ost-rules/           the OST rules every other skill follows
+  backfill/            processing large volumes: batches, resume, deduplication
   daily-run/           daily ingestion, attachment, recap and log
   weekly-synthesis/    ranking, structural proposals, learning loop
 templates/             Notion data model and sources config example

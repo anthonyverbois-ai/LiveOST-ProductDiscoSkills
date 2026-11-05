@@ -31,12 +31,14 @@ The tree lives in seven related Notion databases, created during onboarding.
 | --- | --- | --- |
 | Verbatim | Title | Exact customer words |
 | Source type | Select | call, ticket, interview, other |
+| Source ID | Text | ID of the call, ticket or document in its source tool; used to never ingest it twice |
 | Source link | URL | Link to the original |
 | Account | Text | |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
 | Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
+| Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |
 | Run | Relation (Run log) | Run that created it |
 
 ## Solutions

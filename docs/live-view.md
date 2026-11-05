@@ -20,6 +20,8 @@ Shown discreetly, at the bottom or in the margin of the page:
 
 ## Data it reads
 
+The view loads the tree and its counts only. An opportunity's verbatims load when it is opened, so the page stays fast with thousands of pieces of evidence.
+
 Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log and corrections. The page writes only decisions on pending proposals.
 
 ## Constraints
