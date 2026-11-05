@@ -149,6 +149,8 @@ body {
   flex-direction: column;
   gap: var(--spacing-2);
 }
+/* Unfolded solutions: the rail sits under the chevron and the names line up with the "N solutions" label. */
+.sol-block .sol-tree { margin-left: 7px; padding-left: 16px; }
 .sol-tree li { display: flex; flex-wrap: wrap; gap: var(--spacing-1) var(--spacing-2); align-items: baseline; }
 .sol-name { font-weight: var(--font-weight-medium); }
 .sol-status { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
