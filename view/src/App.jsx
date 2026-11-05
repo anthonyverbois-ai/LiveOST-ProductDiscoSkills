@@ -7,7 +7,6 @@ import {MetadataList, MetadataListItem} from '@astryxdesign/core/MetadataList';
 import {StatusDot} from '@astryxdesign/core/StatusDot';
 import {Tab, TabList} from '@astryxdesign/core/TabList';
 import {Timestamp} from '@astryxdesign/core/Timestamp';
-import {Token} from '@astryxdesign/core/Token';
 import {TreeList} from '@astryxdesign/core/TreeList';
 import {Text} from '@astryxdesign/core/Text';
 import {
@@ -19,21 +18,12 @@ import {
   solutions,
 } from './data.js';
 
+// One visual language for status: plain words, no colored tags. Color is kept for the evidence bar only.
 const STATUS = {
-  active: {label: 'Active', color: 'green'},
-  candidate: {label: 'Candidate', color: 'yellow'},
-  parked: {label: 'Parked', color: 'gray'},
-  addressed: {label: 'Addressed', color: 'purple'},
-};
-
-const SOLUTION_STATUS = {
-  idea: 'gray',
-  'to test': 'yellow',
-  testing: 'blue',
-  validated: 'green',
-  shipped: 'green',
-  paused: 'purple',
-  dropped: 'red',
+  active: 'Active',
+  candidate: 'Candidate, to decide',
+  parked: 'Parked',
+  addressed: 'Addressed by a shipped feature',
 };
 
 const byId = Object.fromEntries(opportunities.map((o) => [o.id, o]));
@@ -45,18 +35,14 @@ function formatDay(iso) {
   return `${months[m - 1]} ${d}, ${y}`;
 }
 
-function StatusToken({status}) {
-  const s = STATUS[status];
-  return <Token label={s.label} color={s.color} size="sm" />;
+function signalText(opp) {
+  if (opp.isNewToday) return 'New today';
+  if (opp.trend) return `+${opp.trend} today`;
+  return null;
 }
 
-function OppSignals({opp}) {
-  return (
-    <span className="signals">
-      {opp.isNewToday ? <Badge variant="info" label="New today" /> : null}
-      {opp.trend ? <Badge variant="warning" label={`Trending +${opp.trend}`} /> : null}
-    </span>
-  );
+function solutionLine(sols) {
+  return sols.map((s) => `${s.name} (${s.status})`).join(' · ');
 }
 
 function OppCard({opp, onOpen, isChild}) {
@@ -67,9 +53,8 @@ function OppCard({opp, onOpen, isChild}) {
     <div className={`opp${isChild ? ' opp-child' : ''}${dim ? ' opp-dim' : ''}`}>
       <button type="button" className="opp-card" onClick={() => onOpen(opp.id)}>
         <span className="opp-top">
-          <span className="opp-rank">{opp.rank ? `#${opp.rank}` : '—'}</span>
-          {opp.status !== 'active' ? <StatusToken status={opp.status} /> : null}
-          <OppSignals opp={opp} />
+          <span className="opp-rank">{opp.rank ? `#${opp.rank}` : STATUS[opp.status]}</span>
+          {signalText(opp) ? <span className="signal">{signalText(opp)}</span> : null}
         </span>
         <span className="opp-name">{opp.name}</span>
         <span className="opp-bar" aria-hidden="true">
@@ -79,15 +64,7 @@ function OppCard({opp, onOpen, isChild}) {
           {opp.evidence} evidence · {opp.accounts} accounts · last {formatDay(opp.lastEvidence)}
         </span>
       </button>
-      {sols.length > 0 ? (
-        <ul className="sol-list" aria-label={`Solutions for ${opp.name}`}>
-          {sols.map((s) => (
-            <li key={s.name}>
-              <Token label={s.name} color={SOLUTION_STATUS[s.status]} size="sm" description={s.status} />
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      {sols.length > 0 ? <p className="sol-line">Solutions: {solutionLine(sols)}</p> : null}
     </div>
   );
 }
@@ -131,15 +108,15 @@ function TreeAsList({onOpen, selected}) {
   const toItem = (opp) => ({
     id: opp.id,
     label: opp.name,
-    description: `${opp.evidence} evidence · ${opp.accounts} accounts`,
+    description: [
+      opp.status !== 'active' ? STATUS[opp.status] : null,
+      `${opp.evidence} evidence · ${opp.accounts} accounts`,
+      signalText(opp),
+    ]
+      .filter(Boolean)
+      .join(' · '),
     isSelected: selected === opp.id,
     onClick: () => onOpen(opp.id),
-    endContent: (
-      <span className="signals">
-        {opp.status !== 'active' ? <StatusToken status={opp.status} /> : null}
-        <OppSignals opp={opp} />
-      </span>
-    ),
     isExpanded: true,
     children: [
       ...(opp.children ?? []).map((cid) => toItem(byId[cid])),
@@ -179,7 +156,7 @@ function Pending({decisions, onDecide, onOpen}) {
             <p className="panel-text">{p.detail}</p>
             {decision ? (
               <p className="decided">
-                <Badge variant={decision === 'Approved' ? 'success' : 'neutral'} label={decision} />
+                <strong>{decision}.</strong>
                 <span>Demo only. In the live view, this decision is written to Notion and logged in Corrections.</span>
               </p>
             ) : (
@@ -203,7 +180,7 @@ function Changelog() {
         <li key={i}>
           <span className="cl-date">{formatDay(c.date)}</span>
           <span className="cl-change">{c.change}</span>
-          <Badge variant={c.by === 'squad' ? 'blue' : 'neutral'} label={c.by === 'squad' ? 'Squad' : 'Agent'} />
+          <span className="cl-by">{c.by === 'squad' ? 'Squad' : 'Agent'}</span>
         </li>
       ))}
     </ol>
@@ -224,7 +201,7 @@ function OppDrawer({isOpen, oppId, onClose}) {
             <LayoutContent>
               <div className="drawer-body">
                 <MetadataList columns={2}>
-                  <MetadataListItem label="Status"><StatusToken status={opp.status} /></MetadataListItem>
+                  <MetadataListItem label="Status">{STATUS[opp.status]}</MetadataListItem>
                   <MetadataListItem label="Rank">
                     {opp.rank ? `#${opp.rank}` : 'Not ranked'}
                     {opp.previousRank ? ` (was #${opp.previousRank})` : ''}
@@ -250,9 +227,8 @@ function OppDrawer({isOpen, oppId, onClose}) {
                       <li key={i}>
                         <blockquote>“{e.verbatim}”</blockquote>
                         <div className="ev-meta">
-                          <Token label={e.source} size="sm" color={e.source === 'Call' ? 'blue' : e.source === 'Ticket' ? 'yellow' : 'purple'} />
-                          <span>{e.account} · {formatDay(e.date)}</span>
-                          {e.confidence !== 'high' ? <Badge variant="warning" label={`${e.confidence} confidence`} /> : null}
+                          {e.source} · {e.account} · {formatDay(e.date)}
+                          {e.confidence !== 'high' ? ` · ${e.confidence} confidence` : ''}
                         </div>
                         <p className="ev-why">{e.rationale}</p>
                       </li>
@@ -270,7 +246,7 @@ function OppDrawer({isOpen, oppId, onClose}) {
                       {sols.map((s) => (
                         <li key={s.name}>
                           <span className="sol-name">{s.name}</span>
-                          <Token label={s.status} size="sm" color={SOLUTION_STATUS[s.status]} />
+                          <span className="sol-status">{s.status}</span>
                           {s.assumption ? (
                             <span className="sol-assumption">
                               Riskiest assumption: {s.assumption} ({s.assumptionResult})
