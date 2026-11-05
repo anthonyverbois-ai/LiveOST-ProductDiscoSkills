@@ -45,7 +45,13 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 ## Step 3 – Tree workspace
 
-Create the Notion databases described in `templates/notion-data-model.md` (outcomes, opportunities, evidence, solutions, assumptions, run log, corrections) in the location the user chooses. If the user already has a tree, offer to import it instead of starting empty.
+The tree lives in seven Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections.
+
+1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
+2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later.
+3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
+4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
+5. **Confirm, then create**: recap the location, the seven databases and who will have access, and create them only after the user confirms.
 
 ## Step 4 – Trial batch: go
 
