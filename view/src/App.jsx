@@ -27,6 +27,9 @@ const STATUS = {
 };
 
 const byId = Object.fromEntries(opportunities.map((o) => [o.id, o]));
+// Priority is shown by order, never by a number on the card: a global rank reads like an outline number in a tree.
+const byPriority = (a, b) => (a.rank ?? 99) - (b.rank ?? 99);
+const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).sort(byPriority);
 const maxEvidence = Math.max(...opportunities.map((o) => o.evidence));
 
 function formatDay(iso) {
@@ -52,10 +55,12 @@ function OppCard({opp, onOpen, isChild}) {
   return (
     <div className={`opp${isChild ? ' opp-child' : ''}${dim ? ' opp-dim' : ''}`}>
       <button type="button" className="opp-card" onClick={() => onOpen(opp.id)}>
-        <span className="opp-top">
-          <span className="opp-rank">{opp.rank ? `#${opp.rank}` : STATUS[opp.status]}</span>
-          {signalText(opp) ? <span className="signal">{signalText(opp)}</span> : null}
-        </span>
+        {opp.status !== 'active' || signalText(opp) ? (
+          <span className="opp-top">
+            {opp.status !== 'active' ? <span className="opp-status">{STATUS[opp.status]}</span> : null}
+            {signalText(opp) ? <span className="signal">{signalText(opp)}</span> : null}
+          </span>
+        ) : null}
         <span className="opp-name">{opp.name}</span>
         <span className="opp-bar" aria-hidden="true">
           <span style={{width: `${share}%`}} />
@@ -80,12 +85,13 @@ function TreeMap({onOpen}) {
         <Text type="supporting">Active outcome · since {formatDay(meta.outcomeSince)}</Text>
         <div className="outcome-text">{meta.outcome}</div>
       </div>
+      <p className="map-legend">Highest priority first: branches from left to right, sub-opportunities from top to bottom.</p>
       <div className="branches">
         {roots.map((root) => (
           <div className="branch" key={root.id}>
             <OppCard opp={root} onOpen={onOpen} />
-            {(root.children ?? []).map((cid) => (
-              <OppCard key={cid} opp={byId[cid]} onOpen={onOpen} isChild />
+            {childrenOf(root).map((child) => (
+              <OppCard key={child.id} opp={child} onOpen={onOpen} isChild />
             ))}
           </div>
         ))}
@@ -119,7 +125,7 @@ function TreeAsList({onOpen, selected}) {
     onClick: () => onOpen(opp.id),
     isExpanded: true,
     children: [
-      ...(opp.children ?? []).map((cid) => toItem(byId[cid])),
+      ...childrenOf(opp).map(toItem),
       ...solutions
         .filter((s) => s.opp === opp.id)
         .map((s) => ({
@@ -202,7 +208,7 @@ function OppDrawer({isOpen, oppId, onClose}) {
               <div className="drawer-body">
                 <MetadataList columns={2}>
                   <MetadataListItem label="Status">{STATUS[opp.status]}</MetadataListItem>
-                  <MetadataListItem label="Rank">
+                  <MetadataListItem label="Priority, all levels">
                     {opp.rank ? `#${opp.rank}` : 'Not ranked'}
                     {opp.previousRank ? ` (was #${opp.previousRank})` : ''}
                   </MetadataListItem>

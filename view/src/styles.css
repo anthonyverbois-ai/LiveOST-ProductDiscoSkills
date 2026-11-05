@@ -110,7 +110,8 @@ body {
 .opp-card:hover { border-color: var(--color-border-emphasized); box-shadow: var(--shadow-low); }
 .opp-card:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .opp-top { display: flex; flex-wrap: wrap; gap: var(--spacing-1-5); align-items: center; min-height: 22px; }
-.opp-rank { font-variant-numeric: tabular-nums; font-weight: var(--font-weight-semibold); color: var(--color-text-secondary); }
+.opp-status { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.map-legend { margin: calc(-1 * var(--spacing-2)) 0 0; text-align: center; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .opp-name { font-weight: var(--font-weight-medium); line-height: 1.35; }
 .opp-bar { display: block; height: 6px; border-radius: 3px; background: var(--lpd-bar-track); overflow: hidden; }
 .opp-bar span { display: block; height: 100%; background: var(--lpd-bar); border-radius: 3px; }
