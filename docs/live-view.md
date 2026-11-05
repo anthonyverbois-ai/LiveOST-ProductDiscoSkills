@@ -10,6 +10,7 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 - **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree.
   - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all.
   - Candidates sit below the tree, unnumbered, under "Waiting for a decision". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
+- **Filter by feature**: when the tree covers several features of the squad, a filter shows one feature at a time. Opportunities keep their priority number when filtered.
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
 - **Evidence**: clicking the counts of an opportunity shows its verbatims, each with a link to the original call or ticket.
@@ -65,3 +66,7 @@ Astryx is in beta and ships several releases a week. The view pins one exact ver
 Pages published in Claude can load scripts only from a few public CDNs (Astryx's own CDN guide relies on esm.sh, which is not one of them), and stylesheets only from Google Fonts. The view is therefore built into a single self-contained HTML file: React, Astryx and its CSS are bundled and inlined at build time, and only the Figtree font is loaded from Google Fonts.
 
 The repository keeps the view's source, the build script and the built file. Users of the plugin never build anything: the onboarding publishes the built file.
+
+### Demo and test data
+
+Until the view reads Notion, it runs on fictional data in `view/src/data.js`, mirroring the demo tree used to test the Notion data model. `view/src/data-large.js` is a larger tree (10 branches across 4 features) to check how the view holds up; build it with `LPD_DATA=large node build.mjs`.
