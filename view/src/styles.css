@@ -2,8 +2,6 @@
    Colors, type and radii come from the Astryx neutral theme tokens, in light mode. */
 :root {
   --lpd-map-rail: var(--color-border-emphasized);
-  --lpd-bar: var(--color-icon-secondary);
-  --lpd-bar-track: var(--color-background-muted);
 }
 
 /* Light-only by choice: the theme's colors resolve with light-dark(), so the color scheme stays light
@@ -138,8 +136,6 @@ body {
 .stat-l { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .see-ev { margin-left: auto; font-size: var(--font-size-sm); color: var(--color-text-blue); }
 .signal { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
-.opp-bar { display: block; height: 4px; border-radius: 2px; background: var(--lpd-bar-track); overflow: hidden; }
-.opp-bar span { display: block; height: 100%; background: var(--lpd-bar); border-radius: 2px; }
 .opp-last { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 
 /* Solutions: a foldable level under each opportunity. */

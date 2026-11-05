@@ -32,7 +32,6 @@ const byId = Object.fromEntries(opportunities.map((o) => [o.id, o]));
 const byPriority = (a, b) => (a.rank ?? 99) - (b.rank ?? 99);
 const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).sort(byPriority);
 const solutionsOf = (oppId) => solutions.filter((s) => s.opp === oppId);
-const maxEvidence = Math.max(...opportunities.map((o) => o.evidence));
 
 // The tree holds the opportunities the squad works with. Candidates and set-aside ones sit below it.
 const inTree = (o) => o.status === 'active' || o.status === 'addressed';
@@ -101,7 +100,6 @@ function SolutionTree({sols, isOpen, onToggle}) {
 
 function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
   const sols = solutionsOf(opp.id);
-  const share = Math.max(6, Math.round((opp.evidence / maxEvidence) * 100));
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
   const signal = signalText(opp);
@@ -125,9 +123,6 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
           {signal ? <Badge variant="info" label={signal} /> : null}
           <span className="see-ev">See evidence</span>
         </button>
-        <span className="opp-bar" aria-hidden="true">
-          <span style={{width: `${share}%`}} />
-        </span>
         <span className="opp-last">Last evidence {formatDay(opp.lastEvidence)}</span>
       </div>
       {sols.length > 0 ? (
