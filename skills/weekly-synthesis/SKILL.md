@@ -7,7 +7,7 @@ description: The weekly synthesis of live-product-discovery. Re-ranks opportunit
 
 You run unattended. Follow `ost-rules`. The output feeds a 30-minute review with the squad.
 
-Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base.
+Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base. Read Notion and compute the counts as described in "Reading the databases" in `templates/notion-data-model.md`.
 
 ## 1. Rank
 

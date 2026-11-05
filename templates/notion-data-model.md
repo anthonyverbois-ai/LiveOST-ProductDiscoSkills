@@ -8,13 +8,26 @@ A relation needs its target database to exist, and a rollup needs its relation. 
 
 1. Outcomes.
 2. Opportunities, with its relation to Outcomes; then add Parent as a two-way relation to itself (paired with Sub-opportunities).
-3. Evidence, with its two-way relation to Opportunities; then add the Opportunities rollups (Evidence count, Accounts, Last evidence).
+3. Evidence, with its two-way relation to Opportunities; then add the Opportunities rollups (Evidence count, Accounts, Last evidence). They are for people reading the tree in Notion: the plugin computes these numbers itself (see "Reading the databases").
 4. Solutions, with its two-way relation to Opportunities.
 5. Assumptions, with its two-way relation to Solutions.
 6. Run log; then add the two-way relation from Evidence to Run log.
 7. Corrections.
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
+
+## Reading the databases
+
+The plugin must work on every Notion plan, free included. Read the databases this way:
+
+- **One database per query.** Never join several databases in one query: the Notion connector allows it only on Business and Enterprise plans.
+- **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
+- **Never rely on rollup values.** The connector returns a reference instead of the value, on every plan. Keep the rollups for people who read the tree in Notion, but compute the numbers yourself:
+  - Evidence count: the number of pages in the opportunity's Evidence relation.
+  - Accounts: the distinct Account values among the evidence attached to the opportunity.
+  - Last evidence: the latest Date among that evidence.
+- **Grouped counts when allowed.** A query that groups and counts within one database (for example the Evidence database grouped by opportunity) gives all three numbers in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, fall back to row reads.
+- **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
 ## Outcomes
 | Property | Type | Notes |
