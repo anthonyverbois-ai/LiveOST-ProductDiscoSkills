@@ -53,7 +53,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Evidence count | Rollup | Count of Evidence |
 | Accounts | Rollup | Count of unique values of Evidence › Account: a number, used in the ranking |
 | Last evidence | Rollup | Most recent evidence date |
-| Rank | Number | Set by the weekly synthesis |
+| Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
 | Property | Type | Notes |

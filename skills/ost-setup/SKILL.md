@@ -84,9 +84,8 @@ Read the last month and the extra material, and extract candidate evidence, foll
 
 ## Step 6 – First tree
 
-1. Group the evidence into a first set of opportunities under the outcome. Every opportunity must show its evidence count and accounts.
-2. Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`: search the product documentation and release notes for a feature that already addresses it. When one does, record it as a `shipped` solution and split the evidence into before and after the release.
-3. Present the tree to the user as a short outline before writing it. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature.
+1. Build the first set of opportunities under the outcome, following `build-tree`: the needs behind the evidence, grouping from the specific up, the link to the outcome, the check against shipped features, sizing and a first ranking.
+2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they do not move the outcome.
 
 ## Step 7 – Calibration
 
