@@ -34,9 +34,11 @@ For each top-level opportunity, answer in one sentence: if this need were fully 
 
 Sub-opportunities follow their parent. Check them only when they drift from the parent's topic.
 
-## 4. Check what already shipped
+## 4. Check what already shipped and what is planned
 
-Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`. When a feature already addresses it, record it as a `shipped` solution and split the evidence into before and after the release.
+Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`: the documentation, the release notes and the delivered items of the squad's backlog. When a feature already addresses it, record it as a `shipped` solution and split the evidence into before and after the release.
+
+Then look for planned and in-progress backlog items that address it, following the "Backlog" rules in `ost-rules`, and propose them as solutions with their backlog link.
 
 ## 5. Size
 

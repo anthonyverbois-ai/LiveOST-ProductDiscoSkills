@@ -44,6 +44,11 @@ sources:
     tool: "release notes or product changelog"
     via: connector
     use: shipped-features   # which features shipped, and when
+  backlog:
+    tool: "issue tracker (e.g. Jira, Linear)"
+    via: connector
+    filter: "the squad's project, board or labels"
+    use: delivery           # what the squad delivered and plans; read only, not customer evidence
 
 export_folder: null         # folder read when a source uses via: export-folder
 

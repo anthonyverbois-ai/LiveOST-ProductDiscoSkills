@@ -34,6 +34,15 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - No evidence after the release, with enough time elapsed for customers to use the feature: propose marking the opportunity `addressed`. A human decides.
 - A match between a feature and an opportunity is a proposal, not a fact: state why they match, in one sentence.
 
+## Backlog
+
+- The squad's backlog, in its issue tracker, tells what the squad delivered and what it plans. Like the documentation, it is not customer evidence.
+- Delivered items (done, with a completion or release date) are shipped features: apply the "Shipped features" rules to them.
+- Planned and in-progress items are solutions in the making. When one addresses an opportunity, propose linking it as a solution, with its backlog link and one sentence on why it matches. A human decides.
+- Keep two statuses apart: the solution's discovery status (idea, to test, testing, validated, …) is decided by the squad; its backlog status is copied from the tracker.
+- Raise two gaps as questions, never as judgments: backlog items that match no opportunity (work with no known customer need), and top opportunities with no solution in the backlog.
+- Never change the backlog: read it only. Never create, edit or comment on an item.
+
 ## Evidence
 
 - No evidence without a source. Each piece carries: the verbatim (exact words), the source type (call, ticket, …), the ID of the source item, a link to the original, the account, the date.

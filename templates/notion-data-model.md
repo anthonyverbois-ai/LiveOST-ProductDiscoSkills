@@ -80,6 +80,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Documentation link | URL | For shipped solutions: the documentation page or release note |
 | Released on | Date | For shipped solutions; empty when the date is unknown |
 | Riskiest assumption | Relation (Assumptions) | |
+| Backlog link | URL | The backlog item that delivers this solution, if any |
+| Backlog status | Text | Copied from the backlog at each run (for example: to do, in progress, done) |
 
 ## Assumptions
 | Property | Type | Notes |
