@@ -1,8 +1,8 @@
-# live-product-discovery
+# LiveOST
 
 **An Opportunity Solution Tree that keeps itself up to date.**
 
-`live-product-discovery` is an open-source Claude plugin for product managers who practice continuous discovery. Every day, an agent reads your squad's new customer calls and support tickets, attaches each piece of customer evidence to the right opportunity in your tree, and tells you exactly what changed. Your team stays in charge of the decisions; the agent does the linking.
+LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery. Every day, an agent reads your squad's new customer calls and support tickets, attaches each piece of customer evidence to the right opportunity in your tree, and tells you exactly what changed. Your team stays in charge of the decisions; the agent does the linking.
 
 > Status: **v0.1 in progress.** The structure is in place; the skills are being written and tested on real squads.
 
@@ -10,7 +10,7 @@
 
 Opportunity Solution Trees (the continuous discovery framework popularized by Teresa Torres) are powerful, but they go stale fast: nobody has time to re-read every call and ticket and connect the dots. Existing OST skills generate a tree once from notes you paste in. This plugin maintains it over time:
 
-| | One-shot OST generators | live-product-discovery |
+| | One-shot OST generators | LiveOST |
 | --- | --- | --- |
 | How it runs | Once, on demand | Every day, on a schedule |
 | Inputs | Notes pasted by hand | Calls, tickets and product data through your connectors |
@@ -42,7 +42,7 @@ Design principles:
 In Claude Code:
 
 ```
-/plugin marketplace add anthonyverbois-ai/live-product-discovery-skills
+/plugin marketplace add anthonyverbois-ai/LiveOST-ProductDiscoSkills
 /plugin install live-product-discovery@live-product-discovery
 ```
 

@@ -20,4 +20,5 @@ All notable changes to this plugin are listed here.
 - Onboarding progress: the agent shows the whole path at the start, opens and closes each step with its position ("Step 4 of 9"), keeps a progress line of what is done and what comes next, and reports progress during long steps. The change of course follows the same pattern.
 
 ### Changed
-- The repository is now `anthonyverbois-ai/live-product-discovery-skills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
+- The repository is now `anthonyverbois-ai/LiveOST-ProductDiscoSkills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
+- The plugin is now presented as LiveOST: README title, contribution guide and display name. Its technical name and commands (`/live-product-discovery:…`) are unchanged, so existing installs keep working.

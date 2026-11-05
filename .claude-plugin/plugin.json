@@ -1,13 +1,13 @@
 {
   "name": "live-product-discovery",
-  "displayName": "Live Product Discovery",
+  "displayName": "LiveOST",
   "version": "0.1.0",
   "description": "Keeps an Opportunity Solution Tree up to date every day from your customer calls, support tickets and product data, and learns from your team's corrections.",
   "author": {
     "name": "Anthony Verbois"
   },
-  "homepage": "https://github.com/anthonyverbois-ai/live-product-discovery-skills",
-  "repository": "https://github.com/anthonyverbois-ai/live-product-discovery-skills",
+  "homepage": "https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills",
+  "repository": "https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills",
   "license": "MIT",
   "keywords": [
     "product-management",
