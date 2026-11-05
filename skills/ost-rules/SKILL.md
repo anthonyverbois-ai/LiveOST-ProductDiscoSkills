@@ -40,7 +40,7 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 
 ## Freshness
 
-- An active opportunity with no new evidence during the dormancy period (`dormant_after_weeks`, 12 weeks by default) may no longer be current. Never archive it yourself: list it in the weekly synthesis with its latest evidence, and ask the squad to keep, park or archive it.
+- An active opportunity with no new evidence during the dormancy period (`dormant_after_weeks`, 24 weeks by default) may no longer be current. Never archive it yourself: list it in the weekly synthesis with its latest evidence, and ask the squad to keep, park or archive it.
 - Ask once. If the squad keeps it, ask again only after another dormancy period without evidence.
 
 ## Backlog
