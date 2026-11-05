@@ -1,0 +1,364 @@
+import {useMemo, useState} from 'react';
+import {Badge} from '@astryxdesign/core/Badge';
+import {Button} from '@astryxdesign/core/Button';
+import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
+import {Layout, LayoutContent} from '@astryxdesign/core/Layout';
+import {MetadataList, MetadataListItem} from '@astryxdesign/core/MetadataList';
+import {StatusDot} from '@astryxdesign/core/StatusDot';
+import {Tab, TabList} from '@astryxdesign/core/TabList';
+import {Timestamp} from '@astryxdesign/core/Timestamp';
+import {Token} from '@astryxdesign/core/Token';
+import {TreeList} from '@astryxdesign/core/TreeList';
+import {Text} from '@astryxdesign/core/Text';
+import {
+  changelog,
+  evidence,
+  meta,
+  opportunities,
+  pending as pendingSeed,
+  solutions,
+} from './data.js';
+
+const STATUS = {
+  active: {label: 'Active', color: 'green'},
+  candidate: {label: 'Candidate', color: 'yellow'},
+  parked: {label: 'Parked', color: 'gray'},
+  addressed: {label: 'Addressed', color: 'purple'},
+};
+
+const SOLUTION_STATUS = {
+  idea: 'gray',
+  'to test': 'yellow',
+  testing: 'blue',
+  validated: 'green',
+  shipped: 'green',
+  paused: 'purple',
+  dropped: 'red',
+};
+
+const byId = Object.fromEntries(opportunities.map((o) => [o.id, o]));
+const maxEvidence = Math.max(...opportunities.map((o) => o.evidence));
+
+function formatDay(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[m - 1]} ${d}, ${y}`;
+}
+
+function StatusToken({status}) {
+  const s = STATUS[status];
+  return <Token label={s.label} color={s.color} size="sm" />;
+}
+
+function OppSignals({opp}) {
+  return (
+    <span className="signals">
+      {opp.isNewToday ? <Badge variant="info" label="New today" /> : null}
+      {opp.trend ? <Badge variant="warning" label={`Trending +${opp.trend}`} /> : null}
+    </span>
+  );
+}
+
+function OppCard({opp, onOpen, isChild}) {
+  const sols = solutions.filter((s) => s.opp === opp.id);
+  const share = Math.max(6, Math.round((opp.evidence / maxEvidence) * 100));
+  const dim = opp.status === 'parked' || opp.status === 'addressed';
+  return (
+    <div className={`opp${isChild ? ' opp-child' : ''}${dim ? ' opp-dim' : ''}`}>
+      <button type="button" className="opp-card" onClick={() => onOpen(opp.id)}>
+        <span className="opp-top">
+          <span className="opp-rank">{opp.rank ? `#${opp.rank}` : '—'}</span>
+          {opp.status !== 'active' ? <StatusToken status={opp.status} /> : null}
+          <OppSignals opp={opp} />
+        </span>
+        <span className="opp-name">{opp.name}</span>
+        <span className="opp-bar" aria-hidden="true">
+          <span style={{width: `${share}%`}} />
+        </span>
+        <span className="opp-meta">
+          {opp.evidence} evidence · {opp.accounts} accounts · last {formatDay(opp.lastEvidence)}
+        </span>
+      </button>
+      {sols.length > 0 ? (
+        <ul className="sol-list" aria-label={`Solutions for ${opp.name}`}>
+          {sols.map((s) => (
+            <li key={s.name}>
+              <Token label={s.name} color={SOLUTION_STATUS[s.status]} size="sm" description={s.status} />
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
+function TreeMap({onOpen}) {
+  const roots = opportunities
+    .filter((o) => !o.parent && o.status !== 'parked')
+    .sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99));
+  const parked = opportunities.filter((o) => o.status === 'parked');
+  return (
+    <div className="map">
+      <div className="outcome-node">
+        <Text type="supporting">Active outcome · since {formatDay(meta.outcomeSince)}</Text>
+        <div className="outcome-text">{meta.outcome}</div>
+      </div>
+      <div className="branches">
+        {roots.map((root) => (
+          <div className="branch" key={root.id}>
+            <OppCard opp={root} onOpen={onOpen} />
+            {(root.children ?? []).map((cid) => (
+              <OppCard key={cid} opp={byId[cid]} onOpen={onOpen} isChild />
+            ))}
+          </div>
+        ))}
+      </div>
+      {parked.length > 0 ? (
+        <div className="parked">
+          <Text type="label">Parked under the current outcome</Text>
+          <div className="parked-row">
+            {parked.map((o) => (
+              <OppCard key={o.id} opp={o} onOpen={onOpen} />
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function TreeAsList({onOpen, selected}) {
+  const toItem = (opp) => ({
+    id: opp.id,
+    label: opp.name,
+    description: `${opp.evidence} evidence · ${opp.accounts} accounts`,
+    isSelected: selected === opp.id,
+    onClick: () => onOpen(opp.id),
+    endContent: (
+      <span className="signals">
+        {opp.status !== 'active' ? <StatusToken status={opp.status} /> : null}
+        <OppSignals opp={opp} />
+      </span>
+    ),
+    isExpanded: true,
+    children: [
+      ...(opp.children ?? []).map((cid) => toItem(byId[cid])),
+      ...solutions
+        .filter((s) => s.opp === opp.id)
+        .map((s) => ({
+          id: `${opp.id}-${s.name}`,
+          label: s.name,
+          description: `Solution · ${s.status}`,
+        })),
+    ],
+  });
+  const items = [
+    {
+      id: 'outcome',
+      label: meta.outcome,
+      description: 'Active outcome',
+      isExpanded: true,
+      children: opportunities
+        .filter((o) => !o.parent)
+        .sort((a, b) => (a.rank ?? 99) - (b.rank ?? 99))
+        .map(toItem),
+    },
+  ];
+  return <TreeList items={items} aria-label="Opportunity Solution Tree" />;
+}
+
+function Pending({decisions, onDecide, onOpen}) {
+  return (
+    <div className="pending">
+      {pendingSeed.map((p) => {
+        const decision = decisions[p.id];
+        return (
+          <section className="panel" key={p.id} aria-labelledby={`${p.id}-title`}>
+            <Text type="label">{p.kind}</Text>
+            <h3 id={`${p.id}-title`} className="panel-title">{p.title}</h3>
+            <p className="panel-text">{p.detail}</p>
+            {decision ? (
+              <p className="decided">
+                <Badge variant={decision === 'Approved' ? 'success' : 'neutral'} label={decision} />
+                <span>Demo only. In the live view, this decision is written to Notion and logged in Corrections.</span>
+              </p>
+            ) : (
+              <div className="actions">
+                <Button label="Approve" variant="primary" onClick={() => onDecide(p.id, 'Approved')} />
+                <Button label="Reject" variant="secondary" onClick={() => onDecide(p.id, 'Rejected')} />
+                {p.opp ? <Button label="See the evidence" variant="ghost" onClick={() => onOpen(p.opp)} /> : null}
+              </div>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+function Changelog() {
+  return (
+    <ol className="changelog">
+      {changelog.map((c, i) => (
+        <li key={i}>
+          <span className="cl-date">{formatDay(c.date)}</span>
+          <span className="cl-change">{c.change}</span>
+          <Badge variant={c.by === 'squad' ? 'blue' : 'neutral'} label={c.by === 'squad' ? 'Squad' : 'Agent'} />
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function OppDrawer({isOpen, oppId, onClose}) {
+  const opp = oppId ? byId[oppId] : null;
+  const items = useMemo(() => evidence.filter((e) => e.opp === oppId), [oppId]);
+  const sols = solutions.filter((s) => s.opp === oppId);
+  const shipped = sols.find((s) => s.status === 'shipped');
+  return (
+    <Drawer isOpen={isOpen} onOpenChange={(open) => (!open ? onClose() : null)} label="Opportunity details" width={520}>
+      {opp ? (
+        <Layout
+          header={<DrawerHeader title={opp.name} subtitle={opp.area} onOpenChange={(open) => (!open ? onClose() : null)} />}
+          content={
+            <LayoutContent>
+              <div className="drawer-body">
+                <MetadataList columns={2}>
+                  <MetadataListItem label="Status"><StatusToken status={opp.status} /></MetadataListItem>
+                  <MetadataListItem label="Rank">
+                    {opp.rank ? `#${opp.rank}` : 'Not ranked'}
+                    {opp.previousRank ? ` (was #${opp.previousRank})` : ''}
+                  </MetadataListItem>
+                  <MetadataListItem label="Evidence">{opp.evidence}</MetadataListItem>
+                  <MetadataListItem label="Accounts">{opp.accounts}</MetadataListItem>
+                  <MetadataListItem label="Last evidence">{formatDay(opp.lastEvidence)}</MetadataListItem>
+                  <MetadataListItem label="Shipped solution">
+                    {shipped ? `${shipped.name}, ${formatDay(shipped.released)}` : 'None found'}
+                  </MetadataListItem>
+                </MetadataList>
+
+                {opp.status === 'addressed' ? (
+                  <p className="note">No evidence since the release of “{shipped?.name}”: proposed as addressed. New evidence would make it active again.</p>
+                ) : null}
+
+                <h3 className="drawer-h">Evidence</h3>
+                {items.length === 0 ? (
+                  <p className="panel-text">No verbatim in the demo data for this opportunity.</p>
+                ) : (
+                  <ul className="evidence">
+                    {items.map((e, i) => (
+                      <li key={i}>
+                        <blockquote>“{e.verbatim}”</blockquote>
+                        <div className="ev-meta">
+                          <Token label={e.source} size="sm" color={e.source === 'Call' ? 'blue' : e.source === 'Ticket' ? 'yellow' : 'purple'} />
+                          <span>{e.account} · {formatDay(e.date)}</span>
+                          {e.confidence !== 'high' ? <Badge variant="warning" label={`${e.confidence} confidence`} /> : null}
+                        </div>
+                        <p className="ev-why">{e.rationale}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {items.length > 0 && items.length < opp.evidence ? (
+                  <p className="panel-text">Showing {items.length} of {opp.evidence}.</p>
+                ) : null}
+
+                {sols.length > 0 ? (
+                  <>
+                    <h3 className="drawer-h">Solutions</h3>
+                    <ul className="sols">
+                      {sols.map((s) => (
+                        <li key={s.name}>
+                          <span className="sol-name">{s.name}</span>
+                          <Token label={s.status} size="sm" color={SOLUTION_STATUS[s.status]} />
+                          {s.assumption ? (
+                            <span className="sol-assumption">
+                              Riskiest assumption: {s.assumption} ({s.assumptionResult})
+                            </span>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+              </div>
+            </LayoutContent>
+          }
+        />
+      ) : (
+        <div />
+      )}
+    </Drawer>
+  );
+}
+
+export function App() {
+  const [tab, setTab] = useState('map');
+  const [openId, setOpenId] = useState(null);
+  const [lastOpened, setLastOpened] = useState(null);
+  const [decisions, setDecisions] = useState({});
+  const pendingLeft = pendingSeed.filter((p) => !decisions[p.id]).length;
+
+  const open = (id) => {
+    setOpenId(id);
+    setLastOpened(id);
+  };
+
+  return (
+    <div className="page">
+      <header className="head">
+        <div className="head-title">
+          <Text type="label">Opportunity Solution Tree · {meta.squad}</Text>
+          <h1>{meta.outcome}</h1>
+          <p className="north">North star: {meta.northStar}</p>
+        </div>
+        <Badge variant="warning" label="Demo data, fictional" />
+      </header>
+
+      <section className="recap" aria-labelledby="recap-title">
+        <h2 id="recap-title" className="recap-title">Today · {meta.recap.analysed} analysed</h2>
+        <ul>
+          {meta.recap.lines.map((l) => (
+            <li key={l}>{l}</li>
+          ))}
+        </ul>
+      </section>
+
+      <TabList value={tab} onChange={setTab} hasDivider>
+        <Tab value="map" label="Tree" />
+        <Tab value="list" label="Outline" />
+        <Tab value="pending" label={`Pending decisions${pendingLeft ? ` (${pendingLeft})` : ''}`} />
+        <Tab value="changelog" label="Changelog" />
+      </TabList>
+
+      <main className="tab-body">
+        {tab === 'map' ? <TreeMap onOpen={open} /> : null}
+        {tab === 'list' ? <TreeAsList onOpen={open} selected={openId} /> : null}
+        {tab === 'pending' ? (
+          <Pending decisions={decisions} onDecide={(id, d) => setDecisions((x) => ({...x, [id]: d}))} onOpen={open} />
+        ) : null}
+        {tab === 'changelog' ? <Changelog /> : null}
+      </main>
+
+      <footer className="foot">
+        <span className="foot-item">
+          Last refresh <Timestamp value={meta.lastRefresh} format="date_time" type="supporting" />
+        </span>
+        <span className="foot-item foot-sources">
+          {meta.sources.map((s) => (
+            <span key={s.name} className="source">
+              <StatusDot variant={s.status} label={s.detail} tooltip={s.detail} />
+              {s.name}
+            </span>
+          ))}
+        </span>
+        <span className="foot-item">
+          Plugin v{meta.pluginVersion} ·{' '}
+          <a href={meta.changelogUrl} target="_blank" rel="noreferrer">changelog</a>
+        </span>
+      </footer>
+
+      <OppDrawer isOpen={Boolean(openId)} oppId={lastOpened} onClose={() => setOpenId(null)} />
+    </div>
+  );
+}
