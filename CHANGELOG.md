@@ -21,3 +21,4 @@ All notable changes to this plugin are listed here.
 
 ### Changed
 - The repository is now `anthonyverbois-ai/LiveOST-ProductDiscoSkills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
+- The plugin is now presented as LiveOST: README title, contribution guide and display name. Its technical name and commands (`/live-product-discovery:…`) are unchanged, so existing installs keep working.

@@ -1,6 +1,6 @@
 # Rules for working in this repository
 
-This is the public repository of the `live-product-discovery` Claude plugin. Anyone, including Claude sessions opened from a company account, may contribute here. These rules apply to every session.
+This is the public repository of LiveOST, the `live-product-discovery` Claude plugin. Anyone, including Claude sessions opened from a company account, may contribute here. These rules apply to every session.
 
 ## Never commit real data
 
