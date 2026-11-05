@@ -41,7 +41,7 @@ Search the evidence already collected, including unattached evidence and evidenc
 
 ## Step 5 – Check the sources
 
-A new direction can mean a new segment or product area. Ask whether the sources and filters in the configuration still fit. Update them with the user, and test any new source as in `ost-setup`, step 2. If a new source brings in past items to read, show a pre-flight recap of that extra volume first, as in `ost-setup`, step 4.
+A new direction can mean a new segment or product area. Ask whether the sources and filters in the configuration still fit. Update them with the user, and test any new source as in `ost-setup`, step 2. If a new source brings in past items to read, give the user the volume and ask for their go first, as in `ost-setup`, step 4.
 
 ## Step 6 – Recalibrate with the squad
 
