@@ -9,6 +9,18 @@ argument-hint: "[optional: squad name]"
 
 Run this as a conversation with the user, one step at a time. Confirm each step before moving to the next. Follow `ost-rules` throughout. Speak the user's language.
 
+## Keep the user oriented
+
+The user must always know what is done, what is happening and what comes next.
+
+- **At the start**, show the whole path: the 8 steps, one line each, and a rough duration for the onboarding. Say that nothing heavy happens before step 5, and that step 5 starts only after their explicit go.
+- **At the start of each step**, open with its title and position ("Step 4 of 8 – Scope and pre-flight check"), then one sentence on what the step does and what you need from the user.
+- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 8 done – 7 databases created in the chosen page"), then a progress line:
+  `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Scope and pre-flight check · Then: 5 Backfill, 6 First tree, 7 Calibration, 8 Activation`
+- **During long steps** (the backfill above all), report progress at regular intervals: items processed out of the total, sources finished, time remaining.
+- **When something changes the path** (a step skipped, an existing tree imported, a return to the pre-flight recap after a sample), say so and update the progress line.
+- **When the user comes back after a pause**, or asks where they are, restate the progress line and what is waiting on them.
+
 ## Step 1 – Frame
 
 Ask for:

@@ -14,6 +14,7 @@ All notable changes to this plugin are listed here.
 - Onboarding pre-flight check: before the backfill, a recap of what will be processed per source (connector, period, volume, filters, samples, alerts, what is left out, estimated duration), with three choices: go, adjust, or run on a two-week sample first. The backfill never starts without an explicit go.
 - All-time backfill: the onboarding can go back to the earliest item in each source; the pre-flight recap shows that date per source.
 - Shipped features check: opportunities are checked against documentation and release notes. A feature that addresses an opportunity becomes a `shipped` solution with its release date, evidence is split before and after the release, and opportunities with no evidence since the release are proposed as `addressed`. The weekly synthesis checks new release notes.
+- Onboarding progress: the agent shows the whole path at the start, opens and closes each step with its position ("Step 4 of 8"), keeps a progress line of what is done and what comes next, and reports progress during long steps. The change of course follows the same pattern.
 
 ### Changed
 - The repository is now `anthonyverbois-ai/live-product-discovery-skills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
