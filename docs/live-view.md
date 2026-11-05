@@ -21,7 +21,8 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 
 Shown discreetly, at the bottom or in the margin of the page:
 
-- **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. The status of each source at that run sits at the bottom. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
+- **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
+- **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), with the tool, the last successful read and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Read from the Sources database.
 - **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to the run log entry. Built from the `Changes` of the run log and from the corrections database.
 - **Plugin version**: the version that produced the last run, with a link to the plugin's `CHANGELOG.md` on GitHub.
 
@@ -29,7 +30,7 @@ Shown discreetly, at the bottom or in the margin of the page:
 
 The view loads the tree and its counts only. An opportunity's verbatims load when it is opened, so the page stays fast with thousands of pieces of evidence.
 
-Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log and corrections. The page writes only decisions on pending proposals.
+Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources. The page writes only decisions on pending proposals.
 
 The page reads Notion with the viewer's own connector, so it follows "Reading the databases" in the data model: one database per query, and counts computed from relations and evidence rows (or a grouped count when the plan allows it), never from rollups. It works on every Notion plan.
 
@@ -53,7 +54,7 @@ The view is built with [Astryx](https://github.com/meta/astryx), Meta's open-sou
 | "New today" and statuses, as plain text | `Text` |
 | Approve or reject a pending proposal | `Button`, `Toast` |
 | Switching between tree, pending decisions and changelog | `TabList` |
-| Last refresh and source status | `Timestamp`, `StatusDot`, `Tooltip` |
+| Last refresh and source health | `Timestamp`, `StatusDot`, `Banner` |
 | Tree changelog and run details | `Table`, `MetadataList` |
 | Loading and empty states | `Skeleton`, `EmptyState` |
 

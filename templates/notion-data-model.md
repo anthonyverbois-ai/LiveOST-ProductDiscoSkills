@@ -1,6 +1,6 @@
 # Notion data model
 
-The tree lives in seven related Notion databases, created during onboarding.
+The tree lives in eight related Notion databases, created during onboarding.
 
 ## Creation order
 
@@ -13,6 +13,7 @@ A relation needs its target database to exist, and a rollup needs its relation. 
 5. Assumptions, with its two-way relation to Solutions.
 6. Run log; then add the two-way relation from Evidence to Run log.
 7. Corrections.
+8. Sources.
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
 
@@ -104,6 +105,19 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Pending | Number | Unattached evidence and proposals |
 | Changes | Text | Before and after of each change, and who made it (agent or squad); feeds the tree changelog |
 | Anomalies | Text | Failed sources, unreadable items |
+
+## Sources
+One row per source, kept up to date by every run, so anyone can see at a glance that the tree is fed.
+
+| Property | Type | Notes |
+| --- | --- | --- |
+| Source | Title | The kind of input: calls, tickets, quantitative, documentation, release notes, backlog |
+| Tool | Text | The tool behind it, as declared in the configuration |
+| Status | Select | ok (green), partial (yellow), failed (red), not connected (gray) |
+| Last successful read | Date (with time) | |
+| Last check | Date (with time) | The last time a run tried to read it |
+| Items read | Number | At the last check |
+| Detail | Text | One sentence: what went wrong and what the tree may miss, or what was read |
 
 ## Corrections
 | Property | Type | Notes |

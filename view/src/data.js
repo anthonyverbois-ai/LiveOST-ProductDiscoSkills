@@ -12,11 +12,15 @@ export const meta = {
   pluginVersion: '0.1.0',
   changelogUrl:
     'https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills/blob/main/CHANGELOG.md',
+  // Mirrors the Sources database. Status: success (ok), warning (partial), error (failed), neutral (not connected).
+  // One source is partial in the demo, to show the warning banner.
   sources: [
-    {name: 'Calls', status: 'success', detail: 'OK at the last run'},
-    {name: 'Tickets', status: 'success', detail: 'OK at the last run'},
-    {name: 'Analytics', status: 'success', detail: 'OK at the last run (partial on Nov 4)'},
-    {name: 'Docs and release notes', status: 'success', detail: 'OK at the last run'},
+    {name: 'Calls', tool: 'Call recorder', status: 'success', lastOk: '2026-11-05T07:40:00', detail: '3 calls read'},
+    {name: 'Tickets', tool: 'Support tool', status: 'success', lastOk: '2026-11-05T07:41:00', detail: '7 tickets read'},
+    {name: 'Usage and ARR', tool: 'Data warehouse', status: 'warning', lastOk: '2026-11-03T07:39:00', detail: 'The usage table has not been refreshed since Nov 3. Sizing by usage may be out of date.'},
+    {name: 'Docs', tool: 'Help center', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No change since the last run'},
+    {name: 'Release notes', tool: 'Product changelog', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No new release'},
+    {name: 'Backlog', tool: 'Issue tracker', status: 'success', lastOk: '2026-11-05T07:42:00', detail: '2 items changed'},
   ],
   recap: {
     analysed: '3 calls and 7 tickets',

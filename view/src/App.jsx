@@ -1,5 +1,6 @@
 import {useMemo, useState} from 'react';
 import {Badge} from '@astryxdesign/core/Badge';
+import {Banner} from '@astryxdesign/core/Banner';
 import {Button} from '@astryxdesign/core/Button';
 import {Collapsible} from '@astryxdesign/core/Collapsible';
 import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
@@ -57,6 +58,47 @@ function formatDay(iso) {
   const [y, m, d] = iso.split('-').map(Number);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[m - 1]} ${d}, ${y}`;
+}
+
+const SOURCE_STATUS = {success: 'OK', warning: 'Partial', error: 'Failed', neutral: 'Not connected'};
+
+function formatDateTime(iso) {
+  const [day, time] = iso.split('T');
+  return `${formatDay(day)}, ${time.slice(0, 5)}`;
+}
+
+// Source health: one dot per source next to the recap title, and a banner when a source is not fully OK.
+function SourceDots() {
+  return (
+    <ul className="source-dots" aria-label="Sources">
+      {meta.sources.map((s) => {
+        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}. Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
+        return (
+          <li key={s.name} className={`source source-${s.status}`} title={tip}>
+            <StatusDot variant={s.status} label={tip} />
+            {s.name}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function SourceAlerts() {
+  const issues = meta.sources.filter((s) => s.status === 'warning' || s.status === 'error');
+  if (issues.length === 0) return null;
+  return (
+    <div className="source-alerts">
+      {issues.map((s) => (
+        <Banner
+          key={s.name}
+          status={s.status}
+          title={`${s.name}: ${SOURCE_STATUS[s.status].toLowerCase()} since ${formatDateTime(s.lastOk)}`}
+          description={s.detail}
+        />
+      ))}
+    </div>
+  );
 }
 
 function signalText(opp) {
@@ -435,15 +477,20 @@ export function App() {
       </header>
 
       <section className="recap" aria-labelledby="recap-title">
-        <h2 id="recap-title" className="recap-title">
-          Last run, <Timestamp value={meta.lastRefresh} format="date_time" /> · {meta.recap.analysed} analysed
-        </h2>
+        <div className="recap-head">
+          <h2 id="recap-title" className="recap-title">
+            Last run, <Timestamp value={meta.lastRefresh} format="date_time" /> · {meta.recap.analysed} analysed
+          </h2>
+          <SourceDots />
+        </div>
         <ul>
           {meta.recap.lines.map((l) => (
             <li key={l}>{l}</li>
           ))}
         </ul>
       </section>
+
+      <SourceAlerts />
 
       <TabList value={tab} onChange={setTab} hasDivider>
         <Tab value="map" label="Tree" />
@@ -462,14 +509,6 @@ export function App() {
       </main>
 
       <footer className="foot">
-        <span className="foot-item foot-sources">
-          {meta.sources.map((s) => (
-            <span key={s.name} className="source">
-              <StatusDot variant={s.status} label={s.detail} tooltip={s.detail} />
-              {s.name}
-            </span>
-          ))}
-        </span>
         <span className="foot-item">
           Plugin v{meta.pluginVersion} ·{' '}
           <a href={meta.changelogUrl} target="_blank" rel="noreferrer">changelog</a>
