@@ -122,7 +122,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
             <span className="stat-n">{opp.accounts}</span>
             <span className="stat-l">accounts</span>
           </span>
-          {signal ? <span className="signal">{signal}</span> : null}
+          {signal ? <Badge variant="info" label={signal} /> : null}
           <span className="see-ev">See evidence</span>
         </button>
         <span className="opp-bar" aria-hidden="true">
@@ -155,6 +155,7 @@ function TreeMap({onOpen}) {
       <div className="outcome-node">
         <Text type="supporting">Active outcome · since {formatDay(meta.outcomeSince)}</Text>
         <NotionLink href={meta.outcomeNotion} className="outcome-text">{meta.outcome}</NotionLink>
+        {meta.northStar ? <Text type="supporting">North star: {meta.northStar}</Text> : null}
       </div>
       <div className="map-tools">
         <p className="map-legend">
@@ -410,16 +411,14 @@ export function App() {
   return (
     <div className="page">
       <header className="head">
-        <div className="head-title">
-          <Text type="label">Opportunity Solution Tree · {meta.squad}</Text>
-          <h1>{meta.outcome}</h1>
-          <p className="north">North star: {meta.northStar}</p>
-        </div>
+        <h1 className="page-title">Opportunity Solution Tree · {meta.squad}</h1>
         <Badge variant="warning" label="Demo data, fictional" />
       </header>
 
       <section className="recap" aria-labelledby="recap-title">
-        <h2 id="recap-title" className="recap-title">Today · {meta.recap.analysed} analysed</h2>
+        <h2 id="recap-title" className="recap-title">
+          Last run, <Timestamp value={meta.lastRefresh} format="date_time" /> · {meta.recap.analysed} analysed
+        </h2>
         <ul>
           {meta.recap.lines.map((l) => (
             <li key={l}>{l}</li>
@@ -444,9 +443,6 @@ export function App() {
       </main>
 
       <footer className="foot">
-        <span className="foot-item">
-          Last refresh <Timestamp value={meta.lastRefresh} format="date_time" type="supporting" />
-        </span>
         <span className="foot-item foot-sources">
           {meta.sources.map((s) => (
             <span key={s.name} className="source">

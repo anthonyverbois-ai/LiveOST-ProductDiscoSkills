@@ -6,7 +6,8 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 
 - **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions.
   - Opportunities are numbered by priority among their siblings: 1, 2, 3 for branches, 1.1, 1.2 for the sub-opportunities of branch 1. Never show the global rank on the tree: it reads like an outline number.
-  - Each opportunity shows its evidence and accounts counts in large type, then the date of its last evidence.
+  - Each opportunity shows its evidence and accounts counts in large type, then the date of its last evidence. "New today" and "+N today" are the only tags on a card.
+- **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree.
   - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all.
   - Candidates sit below the tree, unnumbered, under "Waiting for a decision". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
@@ -19,7 +20,7 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 
 Shown discreetly, at the bottom or in the margin of the page:
 
-- **Last refresh**: date and time of the last run (`Finished at` in the run log), with the status of each source at that run. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
+- **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. The status of each source at that run sits at the bottom. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
 - **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to the run log entry. Built from the `Changes` of the run log and from the corrections database.
 - **Plugin version**: the version that produced the last run, with a link to the plugin's `CHANGELOG.md` on GitHub.
 
