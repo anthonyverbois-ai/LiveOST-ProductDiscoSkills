@@ -6,6 +6,7 @@ import {Drawer, DrawerHeader} from '@astryxdesign/core/Drawer';
 import {Icon} from '@astryxdesign/core/Icon';
 import {Layout, LayoutContent} from '@astryxdesign/core/Layout';
 import {MetadataList, MetadataListItem} from '@astryxdesign/core/MetadataList';
+import {SegmentedControl, SegmentedControlItem} from '@astryxdesign/core/SegmentedControl';
 import {StatusDot} from '@astryxdesign/core/StatusDot';
 import {Tab, TabList} from '@astryxdesign/core/TabList';
 import {Timestamp} from '@astryxdesign/core/Timestamp';
@@ -39,6 +40,10 @@ const roots = opportunities.filter((o) => !o.parent && inTree(o)).sort(byPriorit
 const candidates = opportunities.filter((o) => o.status === 'candidate');
 const setAside = opportunities.filter((o) => o.status === 'parked');
 
+// Features (product areas) of the squad, in the order of their highest-priority branch.
+const features = [...new Set([...roots, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
+const hasFeatures = features.length > 1;
+
 // Outline numbers follow priority among siblings: 1, 2, 3 for branches; 1.1, 1.2 under branch 1.
 const numberOf = {};
 roots.forEach((root, i) => {
@@ -65,6 +70,7 @@ function plural(n, word) {
 }
 
 function NotionLink({href, children, className}) {
+  if (!href) return <span className={className}>{children}</span>;
   return (
     <a className={`notion-link ${className ?? ''}`} href={href} target="_blank" rel="noreferrer" title="Open in Notion">
       {children}
@@ -98,7 +104,7 @@ function SolutionTree({sols, isOpen, onToggle}) {
   );
 }
 
-function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
+function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
   const sols = solutionsOf(opp.id);
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
@@ -122,7 +128,9 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols}) {
           </span>
           {signal ? <Badge variant="info" label={signal} /> : null}
         </button>
-        <span className="opp-last">Last evidence {formatDay(opp.lastEvidence)}</span>
+        <span className="opp-last">
+          {showFeature && !isChild && opp.area ? `${opp.area} · ` : ''}Last evidence {formatDay(opp.lastEvidence)}
+        </span>
       </div>
       {sols.length > 0 ? (
         <SolutionTree sols={sols} isOpen={openSols.has(opp.id)} onToggle={() => toggleSols(opp.id)} />
@@ -142,7 +150,12 @@ function TreeMap({onOpen}) {
       else next.add(id);
       return next;
     });
-  const cardProps = {onOpen, openSols, toggleSols};
+  const [feature, setFeature] = useState('all');
+  const inFeature = (o) => feature === 'all' || o.area === feature;
+  const cardProps = {onOpen, openSols, toggleSols, showFeature: hasFeatures && feature === 'all'};
+  const shownRoots = roots.filter(inFeature);
+  const shownCandidates = candidates.filter(inFeature);
+  const shownSetAside = setAside.filter(inFeature);
 
   return (
     <div className="map">
@@ -162,8 +175,19 @@ function TreeMap({onOpen}) {
           onClick={() => setOpenSols(allOpen ? new Set() : new Set(withSolutions))}
         />
       </div>
+      {hasFeatures ? (
+        <div className="feature-filter">
+          <SegmentedControl label="Feature" value={feature} onChange={setFeature} size="sm" layout="hug">
+            <SegmentedControlItem value="all" label="All features" />
+            {features.map((f) => (
+              <SegmentedControlItem key={f} value={f} label={f} />
+            ))}
+          </SegmentedControl>
+        </div>
+      ) : null}
       <div className="branches">
-        {roots.map((root) => (
+        {shownRoots.length === 0 ? <p className="aside-note">No branch in the tree for this feature.</p> : null}
+        {shownRoots.map((root) => (
           <div className="branch" key={root.id}>
             <OppCard opp={root} {...cardProps} />
             {childrenOf(root).map((child) => (
@@ -173,21 +197,21 @@ function TreeMap({onOpen}) {
         ))}
       </div>
 
-      {candidates.length > 0 ? (
+      {shownCandidates.length > 0 ? (
         <section className="aside" aria-labelledby="candidates-title">
           <h2 id="candidates-title" className="aside-title">Waiting for a decision</h2>
           <p className="aside-note">
             New needs proposed by the agent. Accept one in Pending decisions and it gets a place and a number in the tree.
           </p>
           <div className="aside-row">
-            {candidates.map((o) => (
+            {shownCandidates.map((o) => (
               <OppCard key={o.id} opp={o} {...cardProps} />
             ))}
           </div>
         </section>
       ) : null}
 
-      {setAside.length > 0 ? (
+      {shownSetAside.length > 0 ? (
         <section className="aside" aria-labelledby="aside-title">
           <h2 id="aside-title" className="aside-title">Set aside for now</h2>
           <p className="aside-note">
@@ -195,7 +219,7 @@ function TreeMap({onOpen}) {
             evidence and come back if the outcome changes.
           </p>
           <div className="aside-row">
-            {setAside.map((o) => (
+            {shownSetAside.map((o) => (
               <OppCard key={o.id} opp={o} {...cardProps} />
             ))}
           </div>
@@ -228,6 +252,7 @@ function TreeAsList() {
     id: opp.id,
     label: numberOf[opp.id] ? `${numberOf[opp.id]}  ${opp.name}` : opp.name,
     description: [
+      hasFeatures && !opp.parent ? opp.area : null,
       opp.status !== 'active' ? STATUS[opp.status] : null,
       `${opp.evidence} evidence · ${opp.accounts} accounts`,
       signalText(opp),

@@ -7,6 +7,19 @@ import {createRequire} from 'node:module';
 const require = createRequire(import.meta.url);
 const css = async (spec) => readFile(require.resolve(spec), 'utf8');
 
+// LPD_DATA=large swaps the demo data for the larger test tree (src/data-large.js).
+const variant = process.env.LPD_DATA === 'large' ? 'large' : null;
+const swapData = {
+  name: 'swap-data',
+  setup(b) {
+    b.onResolve({filter: /^\.\/data\.js$/}, (args) =>
+      variant && args.importer.endsWith('App.jsx')
+        ? {path: new URL('./src/data-large.js', import.meta.url).pathname}
+        : undefined,
+    );
+  },
+};
+
 const result = await build({
   entryPoints: ['src/main.jsx'],
   bundle: true,
@@ -17,6 +30,7 @@ const result = await build({
   target: 'es2020',
   define: {'process.env.NODE_ENV': '"production"'},
   logLevel: 'warning',
+  plugins: [swapData],
 });
 
 const js = result.outputFiles[0].text.replace(/<\/script/gi, '<\\/script');
@@ -44,5 +58,6 @@ ${js}
 `;
 
 await mkdir('dist', {recursive: true});
-await writeFile('dist/live-view.html', page);
-console.log(`dist/live-view.html: ${(page.length / 1024).toFixed(0)} KB`);
+const out = variant ? `dist/live-view-${variant}.html` : 'dist/live-view.html';
+await writeFile(out, variant ? page.replace('<title>Live OST view</title>', '<title>Live OST view, large test</title>') : page);
+console.log(`${out}: ${(page.length / 1024).toFixed(0)} KB`);

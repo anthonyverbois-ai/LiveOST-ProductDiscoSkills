@@ -164,6 +164,9 @@ body {
 .aside-note { margin: 0; max-width: 720px; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .aside-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--spacing-4); padding-top: var(--spacing-1); }
 
+.feature-filter { max-width: 100%; overflow-x: auto; padding-bottom: 2px; }
+.feature-filter > * { width: max-content; min-width: max-content; }
+
 .outline { display: flex; flex-direction: column; gap: var(--spacing-3); max-width: 860px; }
 
 /* Pending decisions */
