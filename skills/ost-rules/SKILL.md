@@ -31,8 +31,17 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - When one does, record it as a solution with status `shipped`, linked to the documentation page or release note, with its release date. Never guess a release date: if the sources do not give one, write "date unknown".
 - Split the opportunity's evidence into before and after the release. Never delete evidence from before the release: it is history, and it weighs less in the ranking.
 - Evidence after the release means the need persists despite the feature (incomplete, unknown to customers, or not adopted). Keep the opportunity active and say so in the recap.
-- No evidence after the release, with enough time elapsed for customers to use the feature: propose marking the opportunity `addressed`. A human decides.
+- No evidence after the release during the waiting period set in the configuration (`addressed_after_weeks`, 8 weeks by default): propose marking the opportunity `addressed`. A human decides.
+- Use usage data when it exists. If the feature is little used, do not propose `addressed` yet: report "shipped but little used". If it is widely used, say so in the proposal.
+- A feature may cover only part of a need. Link it to the most specific opportunity it addresses; the parent stays active. Say in the match sentence what the feature covers and what it does not.
+- Evidence after the release that criticizes the feature itself (slow, broken, hard to find) is a new need, not the old one coming back. Propose it as a new opportunity, usually a sub-opportunity of the original. Only evidence that the original need persists (the feature is unknown, or does not cover the case) keeps or makes the opportunity active.
+- The squad's own solutions ship too. When a solution of the tree appears as delivered in the release notes or the backlog, propose marking it `shipped`, with its date, and apply these rules to its opportunity.
 - A match between a feature and an opportunity is a proposal, not a fact: state why they match, in one sentence.
+
+## Freshness
+
+- An active opportunity with no new evidence during the dormancy period (`dormant_after_weeks`, 24 weeks by default) may no longer be current. Never archive it yourself: list it in the weekly synthesis with its latest evidence, and ask the squad to keep, park or archive it.
+- Ask once. If the squad keeps it, ask again only after another dormancy period without evidence.
 
 ## Backlog
 
