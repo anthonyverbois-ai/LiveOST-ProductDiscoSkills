@@ -17,7 +17,7 @@ The user must always know what is done, what is happening and what comes next.
 
 - **At the start**, show the whole path: the 9 steps, one line each, and a rough duration for the onboarding. Say that processing starts only after their explicit go, at step 4 for the trial batch and at step 8 for the full history.
 - **At the start of each step**, open with its title and position ("Step 4 of 9 – Trial batch: go"), then one sentence on what the step does and what you need from the user.
-- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – 7 databases created in the chosen page"), then a progress line:
+- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – 8 databases created in the chosen page"), then a progress line:
   `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Trial batch: go · Then: 5 Trial batch, 6 First tree, 7 Calibration, 8 Full history, 9 Activation`
 - **During long steps** (the full history above all), report progress at regular intervals: items processed out of the total, sources finished, time remaining.
 - **When something changes the path** (a step skipped, an existing tree imported, the full history declined), say so and update the progress line.
@@ -63,14 +63,14 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 ## Step 3 – Tree workspace
 
-The tree lives in seven Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections.
+The tree lives in eight Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources.
 
 1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Each squad has its own page and databases: never reuse another squad's databases. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
 2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `templates/notion-data-model.md`): do not ask the user about their plan.
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
-5. **Confirm, then create**: recap the location, the seven databases and who will have access, and create them only after the user confirms. Follow the creation order in `templates/notion-data-model.md`: a relation needs its target database to exist, and a rollup needs its relation.
-6. **Set up the views**: on the tree's page, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
+5. **Confirm, then create**: recap the location, the eight databases and who will have access, and create them only after the user confirms. Follow the creation order in `templates/notion-data-model.md`: a relation needs its target database to exist, and a rollup needs its relation.
+6. **Set up the views**: at the top of the tree's page, a table of the Sources database (source, tool, status, last successful read, detail), filled with the results of the step 2 tests; then, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
 7. **Ask for the one manual step**: the nested display of sub-opportunities cannot be turned on through the connector. Ask the user to open the tree view's menu, turn on Sub-items and choose the Parent property, then check with them that sub-opportunities now appear under their parent.
 
 ## Step 4 – Trial batch: go
