@@ -47,12 +47,12 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
 
 ## Step 2 – Sources
 
-1. Ask where each kind of input lives: customer calls, support tickets, product analytics, product or support documentation, and release notes or a product changelog (they tell which features shipped, and when).
+1. Ask where each kind of input lives: customer calls, support tickets, product analytics, product or support documentation, release notes or a product changelog (they tell which features shipped, and when), and the squad's backlog in its issue tracker (what the squad delivered and what it plans; read only).
 2. Check which matching connectors are already available in this session.
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
 5. If no connector exists for a tool, offer the fallback: the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
-6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them.
+6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave, and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them.
 7. Ask for any extra material: interview notes, research reports, an existing tree.
 8. Save the scope and the sources in the configuration (see `templates/sources.example.yaml`).
 
