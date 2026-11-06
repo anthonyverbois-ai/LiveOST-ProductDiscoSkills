@@ -34,7 +34,7 @@ The view loads the tree and its counts only. An opportunity's verbatims load whe
 
 Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources. The page writes only decisions on pending proposals.
 
-The page reads Notion with the viewer's own connector, so it follows "Reading the databases" in the data model: one database per query, and counts computed from relations and evidence rows (or a grouped count when the plan allows it), never from rollups. It works on every Notion plan.
+The page reads Notion with the viewer's own connector, so it follows "Reading the databases" in the data model: one database per query, and the counts stored on each opportunity, never rollups. It works on every Notion plan.
 
 ## Constraints
 

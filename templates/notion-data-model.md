@@ -13,11 +13,11 @@ Each squad has one configuration page, a child of the tree's page, titled `LiveO
 
 ## Creation order
 
-A relation needs its target database to exist, and a rollup needs its relation. Create, in this order:
+A relation needs its target database to exist. Create, in this order:
 
 1. Outcomes.
 2. Opportunities, with its relation to Outcomes; then add Parent as a two-way relation to itself (paired with Sub-opportunities).
-3. Evidence, with its two-way relation to Opportunities; then add the Opportunities rollups (Evidence count, Accounts, Last evidence). They are for people reading the tree in Notion: the plugin computes these numbers itself (see "Reading the databases").
+3. Evidence, with its two-way relation to Opportunities.
 4. Solutions, with its two-way relation to Opportunities.
 5. Assumptions, with its two-way relation to Solutions.
 6. Run log; then add the two-way relation from Evidence to Run log.
@@ -33,11 +33,12 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 
 - **One database per query.** Never join several databases in one query: the Notion connector allows it only on Business and Enterprise plans.
 - **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
-- **Never rely on rollup values.** The connector returns a reference instead of the value, on every plan. Keep the rollups for people who read the tree in Notion, but compute the numbers yourself:
-  - Evidence count: the number of pages in the opportunity's Evidence relation.
-  - Accounts: the distinct Account values among the evidence attached to the opportunity.
+- **Counts are stored, never rolled up.** The connector returns a reference instead of a rollup's value, on every plan. So the plugin writes Evidence count, Accounts and Last evidence on each opportunity itself, and everyone (runs, live view, people in Notion) reads them as plain properties:
+  - Evidence count: the evidence attached to the opportunity.
+  - Accounts: the distinct Account values among that evidence.
   - Last evidence: the latest Date among that evidence.
-- **Grouped counts when allowed.** A query that groups and counts within one database (for example the Evidence database grouped by opportunity) gives all three numbers in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, fall back to row reads.
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
+- **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
 ## Outcomes
@@ -61,9 +62,9 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
-| Evidence count | Rollup | Count of Evidence |
-| Accounts | Rollup | Count of unique values of Evidence › Account: a number, used in the ranking |
-| Last evidence | Rollup | Most recent evidence date |
+| Evidence count | Number | Written by the plugin: evidence attached |
+| Accounts | Number | Written by the plugin: distinct accounts among that evidence; used in the ranking |
+| Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
@@ -77,6 +78,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
+| Agent choice | Text | Where the agent put it: the opportunity's name, `unattached` or `out of scope`. When it no longer matches Opportunity or Status, a person moved it |
 | Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |

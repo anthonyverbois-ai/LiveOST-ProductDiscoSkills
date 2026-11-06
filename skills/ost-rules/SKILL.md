@@ -62,7 +62,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field.
 - First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
-- Every attachment carries a one-sentence rationale.
+- Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice): a later move by a person then shows as a correction.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
 - Read quantitative data only through the account key and the queries saved in the configuration. Never write to the data source.
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
