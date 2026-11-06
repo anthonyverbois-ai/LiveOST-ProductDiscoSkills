@@ -55,6 +55,7 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 ## Evidence
 
 - No evidence without a source. Each piece carries: the verbatim (exact words), the source type (call, ticket, …), the ID of the source item, a link to the original, the account, the date.
+- Keep the customer contact (name, email) when the source gives it: it is how the squad reaches the customers who raised a need, for solution discovery. The agent never contacts them itself: it only drafts messages that a person sends.
 - Never ingest the same source item twice: skip any item whose source ID is already in the evidence database. Right after a source tool is replaced, source IDs change: also compare date, account and verbatim (see `ost-change-sources`).
 - Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field.
 - First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
@@ -71,8 +72,13 @@ Every other skill in this plugin follows these rules. When a rule and a user req
   - Take the evidence from the message or reply that states the need, and keep its permalink as the source link, so the Notion card opens that exact message. Use the message or reply ID as the source ID.
   - Most messages are feedback relayed by a colleague ("a customer told me…"). Always capture it: relayed feedback is evidence like any other and counts toward its opportunity. Say in the rationale that it was relayed. Its confidence reflects how sure the attachment is, as for any evidence, not the fact that it was relayed.
   - When the message names no account, still capture it, with the account left empty: it counts as evidence but not as an account.
-  - Keep the customer need, the account and the link. Do not store the name of the colleague who posted.
+  - Keep the customer need, the account, the customer contact when the message names one, and the link. Do not store the name of the colleague who posted: a colleague is not a customer contact.
   - These channels cover the whole product and get no filter at the source: the scope check above does the filtering. Messages with no customer need (announcements, internal chat) are skipped, not stored.
+- File imports (a CSV or Excel export of customer feedback, such as survey answers, NPS comments or an old tool's export) are evidence too:
+  - Read the columns as mapped with the user: verbatim, date, account, contact, ID, link, kind of feedback.
+  - When the file has no ID column, build a stable ID from the file name and a fingerprint of the row's content. A later version of the same file then adds only its new rows.
+  - Skip empty rows, exact duplicates and answers with no content ("n/a", "nothing to add"). Count them apart.
+  - The source type says what the file holds (survey, import). With no link to the original, leave the source link empty: the source ID names the file and row.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Changes and autonomy

@@ -61,6 +61,17 @@ sources:
     filter: "the squad's project, board or labels"
     use: delivery           # what the squad delivered and plans; read only, not customer evidence
 
+imports:                    # files of customer feedback, mapped with the user during onboarding
+  - file: "feedback-export.csv"
+    kind: survey            # survey | import
+    columns:                # column names in the file; null when the file has none
+      verbatim: "Comment"
+      date: "Created at"
+      account: "Company"
+      contact: "Email"
+      id: null              # no ID column: a stable ID is built from the file name and the row's content
+      link: null
+
 export_folder: null         # folder read when a source uses via: export-folder
 
 tree:

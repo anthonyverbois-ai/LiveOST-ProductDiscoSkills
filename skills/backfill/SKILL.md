@@ -17,7 +17,7 @@ Use this whenever more items must be processed than fit comfortably in one pass:
 
 ## Batches
 
-Process the items in batches of about 100, oldest first. For each batch:
+Process the items in batches of about 100, oldest first. A row of a feedback file is an item; read the file in slices, never whole, and process undated rows after the dated ones. For each batch:
 
 1. **Context, kept compact**: the scope, the learned rules, and a summary of the tree (each opportunity's name, a one-line definition and two or three representative verbatims). Never load the whole evidence base.
 2. **Extract** the needs and pain points with exact verbatims, and record each item's source ID.
