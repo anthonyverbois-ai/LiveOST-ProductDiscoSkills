@@ -220,6 +220,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
   return (
     <div className={`opp${isChild ? ' opp-child' : ''}${dim ? ' opp-dim' : ''}`}>
       <div className="opp-card">
+        {showFeature && !isChild && opp.area ? <span className="opp-feature">Feature: {opp.area}</span> : null}
         <div className="opp-head">
           {number ? <span className={`opp-num${isChild ? ' opp-num-child' : ''}`}>{number}</span> : null}
           <NotionLink href={opp.notion} className="opp-name">{opp.name}</NotionLink>
@@ -237,7 +238,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
           {signal ? <Badge variant="info" label={signal} /> : null}
         </button>
         <span className="opp-last">
-          {showFeature && !isChild && opp.area ? `${opp.area} · ` : ''}Last evidence {formatDay(opp.lastEvidence)}
+          Last evidence {formatDay(opp.lastEvidence)}
           {opp.byAgent ? (
             <span className="by-agent" title={opp.byAgent}>
               {' '}· {opp.byAgentLabel ?? 'Changed by the agent'}
