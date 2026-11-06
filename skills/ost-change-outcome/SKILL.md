@@ -37,7 +37,7 @@ Go through the opportunities under the changed outcome (all of them when the squ
 - **reframe**: relevant if reworded or moved to another branch;
 - **park**: moves none of the active outcomes. Parked opportunities keep their evidence and keep receiving new evidence, but are not ranked. They can come back later.
 
-Solutions and assumptions under a parked opportunity move to `paused`.
+Solutions under a parked opportunity move to `paused`; their assumptions keep their result.
 
 ## Step 4 – Look for what the old tree missed
 
@@ -51,7 +51,7 @@ A new direction can mean a new segment or product area. Ask whether the squad's 
 
 Show the new tree and what the agent is unsure of, as in the quick review of `ost-setup`, step 7. Record every correction in the corrections database.
 
-Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them (status `retired` in the Rules database). Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
+Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them (status `retired` in the Rules database). A rule whose test cases all sit under parked opportunities is flagged too.
 
 ## Step 7 – Restart
 

@@ -26,7 +26,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Phrase every opportunity from the customer's point of view, in their words where possible: "I lose time reformatting my exports", not "Improve export formatting".
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
 - An opportunity holds one need. One that gathers evidence much faster than its siblings, with generic rationales, is often several needs under one name: propose a split.
-- An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
+- An opportunity must be backed by at least one piece of evidence. A creation awaiting the squad's decision has the status `proposed`. Once created, below 2 pieces from 2 different accounts its status stays `candidate`; from 2 it is `active`.
 - A `parked` opportunity moves none of the active outcomes. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
 - An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
 
@@ -46,7 +46,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 ## Freshness
 
 - An active opportunity with no new evidence during the dormancy period (`dormant_after_weeks`, 24 weeks by default) may no longer be current. Never archive it yourself: list it in the weekly synthesis with its latest evidence, and ask the squad to keep, park or archive it.
-- Ask once. If the squad keeps it, ask again only after another dormancy period without evidence.
+- Ask once: write the date in Freshness asked on, and do not ask again while it is set. New evidence clears it. If the squad keeps the opportunity, ask again only after another dormancy period without evidence.
 
 ## Backlog
 
@@ -83,7 +83,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
   - Most messages are feedback relayed by a colleague ("a customer told me…"). Always capture it: relayed feedback is evidence like any other and counts toward its opportunity. Say in the rationale that it was relayed. Its confidence reflects how sure the attachment is, as for any evidence, not the fact that it was relayed.
   - When the message names no account, still capture it, with the account left empty: it counts as evidence but not as an account.
   - Keep the customer need, the account, the customer contact when the message names one, and the link. Do not store the name of the colleague who posted: a colleague is not a customer contact.
-  - These channels cover the whole product and get no filter at the source: the scope check above does the filtering. Messages with no customer need (announcements, internal chat) are skipped, not stored.
+  - These channels cover the whole product and get no filter at the source: the scope check above does the filtering. Messages with no product content (announcements, internal chat) are skipped, not stored. A colleague's own product opinion is stored as `internal` evidence: it is attached, counts as no account, and is never a customer contact.
 - File imports (a CSV or Excel export of customer feedback, such as survey answers, NPS comments or an old tool's export) are evidence too:
   - Read the columns as mapped with the user: verbatim, date, account, contact, ID, link, kind of feedback.
   - When the file has no ID column, build a stable ID from the file name and a fingerprint of the row's content. A later version of the same file then adds only its new rows.

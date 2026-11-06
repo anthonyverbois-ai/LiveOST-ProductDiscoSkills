@@ -61,14 +61,15 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
-| Status | Select | candidate, active, parked, addressed, merged, archived |
-| Product area | Select | From the product documentation |
+| Status | Select | proposed, candidate, active, parked, addressed, merged, archived |
+| Product area | Select | One of the areas the squad owns (scope of the configuration); set by `build-tree` |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
 | Evidence count | Number | Written by the plugin: evidence attached, duplicates excluded |
-| Accounts | Number | Written by the plugin: distinct customer accounts among that evidence; used in the ranking |
+| Accounts | Number | Written by the plugin: distinct customer and unknown accounts among that evidence; used in the ranking |
 | Prospects | Number | Written by the plugin: distinct prospect accounts among that evidence, shown apart |
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
+| Freshness asked on | Date | Set by the weekly synthesis when it asks whether a dormant opportunity is still current; cleared when evidence arrives |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
 | Ledger | Text | Written by the plugin at every attachment, move or undo: one line per customer or unknown account with the inputs of its best piece of evidence (source, kind, date, before or after release), for example `Contoso · call · need · 2026-10-20 · after`. The score is computed from it without reading the evidence |
