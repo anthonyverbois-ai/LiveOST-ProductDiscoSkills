@@ -1,6 +1,6 @@
 # Notion data model
 
-Each squad's tree lives in one Notion page, created during onboarding: a configuration page and nine related databases. Everything a run needs is there, never in local files: a scheduled run may not see the user's computer.
+Each squad's tree lives in one Notion page, created during onboarding: a configuration page and ten related databases. Everything a run needs is there, never in local files: a scheduled run may not see the user's computer.
 
 ## Configuration page
 
@@ -24,6 +24,7 @@ A relation needs its target database to exist. Create, in this order:
 7. Corrections.
 8. Sources.
 9. Rules, with its two-way relation to Corrections (paired with Rule).
+10. Changes, with its relations to Opportunities and Evidence, and its two-way relation to Run log (paired with Changes).
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
 
@@ -116,7 +117,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Ingested | Number | Items read |
 | Attached | Number | Evidence attached |
 | Pending | Number | Unattached evidence and proposals |
-| Changes | Text | Before and after of each change, and who made it (agent or squad); feeds the tree changelog |
+| Changes | Relation (Changes) | The changes made or proposed during the run; the other side of Changes › Run |
 | Anomalies | Text | Failed sources, unreadable items |
 
 ## Sources
@@ -153,3 +154,19 @@ What the agent learned from the squad's corrections. Runs apply only the `active
 | Learned from | Relation (Corrections), two-way | The corrections it comes from; they are its test cases |
 | Replay | Text | Result of the replay on past attachments: errors fixed, new errors |
 | Outcome | Relation (Outcomes) | Set when the rule only makes sense for one outcome |
+
+## Changes
+Every structural change to the tree, made by the agent or proposed to the squad. It feeds the recap, the pending decisions and the tree changelog of the live view, and it is what `ost-undo` reads. A re-rank is one row per synthesis, with the order before and after.
+
+| Property | Type | Notes |
+| --- | --- | --- |
+| Change | Title | One line, for example "Merged 'A' into 'B'" |
+| Type | Select | create, merge, rename, move, re-rank, link shipped feature, link backlog item, mark shipped, mark addressed, park, split, archive |
+| Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
+| Opportunities | Relation (Opportunities) | The opportunities it touches |
+| Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |
+| Before | Text | Enough to restore the previous state: names, parent, status, rank |
+| After | Text | The new state |
+| Reason | Text | One sentence, citing the evidence |
+| Run | Relation (Run log), two-way | The run that made or proposed it |
+| Decided on | Date | When the squad accepted, edited, rejected or undid it |

@@ -95,7 +95,7 @@ The agent is proactive from the first day: it acts on its own whenever it is sur
 
   When one condition fails, propose instead.
 - **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
-- Every change the agent makes on its own is logged with a before and after and a one-sentence reason, listed in the recap under "Done by the agent", and can be undone from the run log. An undo is recorded as a correction.
+- Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
 - A squad that prefers to decide everything sets `autonomy: propose-only` in the configuration: then every change beyond attaching evidence and updating counts is a proposal.
 
 ## Data handling
