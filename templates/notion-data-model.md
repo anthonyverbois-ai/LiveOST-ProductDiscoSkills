@@ -35,9 +35,10 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 - **One database per query.** Never join several databases in one query: the Notion connector allows it only on Business and Enterprise plans.
 - **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
 - **Counts are stored, never rolled up.** The connector returns a reference instead of a rollup's value, on every plan. So the plugin writes Evidence count, Accounts and Last evidence on each opportunity itself, and everyone (runs, live view, people in Notion) reads them as plain properties:
-  - Evidence count: the evidence attached to the opportunity.
-  - Accounts: the distinct Account values among that evidence.
+  - Evidence count: the evidence attached to the opportunity, duplicates excluded.
+  - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
+  - Kinds: the number of needs, bugs and questions among that evidence.
 - **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
@@ -47,7 +48,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | --- | --- | --- |
 | Outcome | Title | Measurable result the squad works toward |
 | North star | Text | Optional long-term direction the outcome serves |
-| Status | Select | active, past (only one active at a time) |
+| Status | Select | active, past. Several may be active at once, one per area of the squad; none while the squad has no outcome yet |
 | Start | Date | |
 | End | Date | Set when the squad changes course |
 | Reason for change | Text | Why the squad moved on |
@@ -58,28 +59,34 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Name | Title | Customer-phrased need or pain |
 | Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
-| Outcomes | Relation (Outcomes) | Every outcome this opportunity has served |
+| Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
 | Status | Select | candidate, active, parked, addressed, merged, archived |
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
-| Evidence count | Number | Written by the plugin: evidence attached |
-| Accounts | Number | Written by the plugin: distinct accounts among that evidence; used in the ranking |
+| Evidence count | Number | Written by the plugin: evidence attached, duplicates excluded |
+| Accounts | Number | Written by the plugin: distinct customer accounts among that evidence; used in the ranking |
+| Prospects | Number | Written by the plugin: distinct prospect accounts among that evidence, shown apart |
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
+| Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
+| Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
 | Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
 | Property | Type | Notes |
 | --- | --- | --- |
 | Verbatim | Title | Exact customer words |
-| Source type | Select | call, ticket, message, survey, import, interview, other |
+| Source type | Select | call, ticket, message, insight, survey, import, interview, other |
+| Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |
 | Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply; empty for a file import |
 | Account | Text | |
+| Account type | Select | customer, prospect, internal, unknown; customers and unknown accounts count in Accounts |
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
 | Agent choice | Text | Where the agent put it: the opportunity's name, `unattached` or `out of scope`. When it no longer matches Opportunity or Status, a person moved it |
+| Duplicate of | Relation (Evidence) | The piece it repeats, from another source: shown with it, never counted again |
 | Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |

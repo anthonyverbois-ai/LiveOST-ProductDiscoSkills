@@ -42,23 +42,26 @@ If the squad has no name yet, ask for it (see "Several squads"). Then ask for th
 - **how the scope shows up in the sources**: ticket tags or categories, call topics, documentation sections. Step 2 uses them to set the filters.
 
 Then ask for:
-- the outcome the squad is working toward;
-- optionally, the north star that outcome serves.
+- the outcome the squad is working toward. A squad that owns several product areas may set one outcome per area; a squad with no outcome yet can start without one;
+- optionally, the north star the outcomes serve.
 
-Check the outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
+Check each outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
+
+Without an outcome, say what changes: the tree is ranked on evidence alone and nothing is parked for lack of a link. The squad can add an outcome later with `ost-change-outcome`.
 
 ## Step 2 – Sources
 
-1. Ask where each kind of input lives: customer calls, support tickets, team chat channels where colleagues share customer feedback (Slack, Teams: ask for the exact channels), product analytics and account data (usage, ARR per account: often one data warehouse or analytics agent), product or support documentation, release notes or a product changelog (they tell which features shipped, and when), and the squad's backlog in its issue tracker (what the squad delivered and what it plans; read only).
+1. Ask where each kind of input lives: customer calls, support tickets, team chat channels where colleagues share customer feedback (Slack, Teams: ask for the exact channels), insight platforms that already gather customer feedback (a product feedback tool, a research repository: ask which conversations they already cover), product analytics and account data (usage, ARR per account: often one data warehouse or analytics agent), product or support documentation, release notes or a product changelog (they tell which features shipped, and when), and the squad's backlog in its issue tracker (what the squad delivered and what it plans; read only).
 2. Check which matching connectors are already available in this session.
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
 5. If no connector exists for a tool, offer the fallback: the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
-6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them.
+6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them. Then ask, for each source, whether it counts in the ranking (`rank_weight`: 1 by default, 0 to keep it visible but out of the ranking). A source whose items carry no customer words (only a category and tags) is set up as a signal source (see `ost-rules`).
 7. Set up the quantitative source (a data warehouse, an analytics tool or an analytics agent), read only:
    - Explore what it holds: the tables or metrics available. Ask the user where things are rather than guessing.
    - With the user, write and test three queries: **accounts** (ARR, segment and plan per account), **usage** (usage of the squad's features per account, over time) and **outcome** (the outcome's metric over time). Show a sample of each result and let the user confirm it.
    - Agree on the **account key**: how an account named in a call or a ticket is found in the data (CRM account ID, company domain, exact name). Test it on a few recent accounts and report the ones that do not match.
+   - Ask for the company's own name and email domains (`own_company`): feedback logged under them is resolved to the customer it names, or marked internal.
    - If a query cannot be written (the data does not exist), say so and continue without it: the plugin works without quantitative data.
 8. Ask for any extra material: interview notes, research reports, an existing tree, and files of customer feedback (CSV or Excel exports, survey answers, NPS comments). For each feedback file:
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
@@ -95,13 +98,14 @@ Read the last month and the extra material, and extract candidate evidence. For 
 ## Step 6 – First tree
 
 1. Build the first set of opportunities under the outcome, following `build-tree`: the needs behind the evidence, grouping from the specific up, the link to the outcome, the check against shipped features, sizing and a first ranking.
-2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they do not move the outcome.
+2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they move none of the active outcomes.
 
 ## Step 7 – Quick review
 
 The tree is already written. Do not walk the user through every branch. Show:
 - a short summary: the opportunities in order, with their evidence and accounts;
 - only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing.
+- when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm.
 
 The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Corrections become rules and test cases.
 

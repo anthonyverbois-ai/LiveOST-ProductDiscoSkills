@@ -12,10 +12,11 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 ## Structure
 
-- The tree has one **active outcome** at the top. The squad sets it; the agent never creates or changes it.
-- An optional **north star** sits above the outcome as context: the long-term direction the outcome serves.
-- When the squad changes course (a new outcome or a new north star), follow `ost-change-outcome`. Past outcomes are kept with their dates, and opportunities are never deleted: what no longer fits is parked.
-- Under the outcome: **opportunities** (customer needs, pain points, desires), then **sub-opportunities**, then **solutions**, then **assumptions** to test.
+- The tree has one or more **active outcomes** at the top. A focused squad has one; a squad that owns several product areas may have one per area. The squad sets them; the agent never creates or changes them.
+- A squad may also start with **no outcome yet** (`outcomes: []` in the configuration). The tree is then built from the customers' needs and ranked on evidence alone: nothing is parked for lack of a link to an outcome, and the drift check is off. When the squad sets an outcome, it runs `ost-change-outcome`.
+- An optional **north star** sits above the outcomes as context: the long-term direction they serve.
+- When the squad changes course (an outcome added, replaced or retired, or a new north star), follow `ost-change-outcome`. Past outcomes are kept with their dates, and opportunities are never deleted: what no longer fits is parked.
+- Under each outcome: **opportunities** (customer needs, pain points, desires), then **sub-opportunities**, then **solutions**, then **assumptions** to test.
 - Maximum depth for opportunities: 3 levels under the outcome. Deeper than that, propose a merge or a reframe.
 - A sub-opportunity must be a more specific case of its parent, not a different topic.
 
@@ -24,7 +25,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Phrase every opportunity from the customer's point of view, in their words where possible: "I lose time reformatting my exports", not "Improve export formatting".
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
 - An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
-- A `parked` opportunity is out of scope for the active outcome. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
+- A `parked` opportunity moves none of the active outcomes. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
 - An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
 
 ## Shipped features
@@ -59,13 +60,18 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - No evidence without a source. Each piece carries: the verbatim (exact words), the source type (call, ticket, …), the ID of the source item, a link to the original, the account, the date.
 - Keep the customer contact (name, email) when the source gives it: it is how the squad reaches the customers who raised a need, for solution discovery. The agent never contacts them itself: it only drafts messages that a person sends.
 - Never ingest the same source item twice: skip any item whose source ID is already in the evidence database. Right after a source tool is replaced, source IDs change: also compare date, account and verbatim (see `ost-change-sources`).
+- The same need from the same customer often reaches several sources: a call, the note a colleague wrote after it, a chat message relaying it. Before counting a piece of evidence, look on its opportunity for evidence from the same account, dated within the duplicate window (`duplicate_window_days`, 3 by default), that states the same need. If there is one, link the new piece to it (Duplicate of) instead of counting it again, and keep as the original the piece with the customer's own words. Evidence with no account is never treated as a duplicate.
 - Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field.
 - First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice): a later move by a person then shows as a correction.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
+- Each source has a weight in the ranking (`rank_weight` in the configuration, 1 by default). A weight of 0 keeps the source's evidence attached and visible, but out of the ranking: for example a support queue the squad wants to see but not to rank on.
+- A source whose items carry no customer words (tickets known only by their category and tags, usage alerts) is a **signal source** (`use: signals`). It never creates evidence or opportunities. Its categories are mapped to opportunities with the user; each run counts its items per category and writes the volume on the mapped opportunities, next to the evidence. Signals size an opportunity like quantitative data.
 - Read quantitative data only through the account key and the queries saved in the configuration. Never write to the data source.
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
+- Give each account a type: customer, prospect, internal or unknown. With the accounts query, an account with revenue is a customer, an account without revenue is a prospect, and an account the key cannot match is unknown. Without the query, every named account other than the own company is a customer. When the account field names the user's own company (`own_company` in the configuration) or one of its people, look for the real customer in the text: colleagues often log feedback under their own company. If the text names a customer, use it; if it is a colleague's own opinion with no customer, mark it `internal`.
+- Customer and unknown accounts count in Accounts and in the ranking; the recap lists the unknown ones so the user can match them. Prospect evidence is attached and shown apart ("asked by 3 prospects"); internal evidence is attached but never counted as an account.
 - Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.
 - Report revenue at the level of an opportunity (the total ARR of the accounts concerned), never per customer in the recap.
 - Team chat channels (for example a Slack or Teams channel where colleagues share customer feedback) are evidence too, with these rules:
@@ -81,7 +87,23 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
   - When the file has no ID column, build a stable ID from the file name and a fingerprint of the row's content. A later version of the same file then adds only its new rows.
   - Skip empty rows, exact duplicates and answers with no content ("n/a", "nothing to add"). Count them apart.
   - The source type says what the file holds (survey, import). With no link to the original, leave the source link empty: the source ID names the file and row.
+- Insight platforms (tools that already turn conversations into customer insights, for example a product feedback tool's notes or a research repository's highlights) are evidence too:
+  - Read the insights, not the conversations behind them. Use the insight's ID as the source ID and its link as the source link.
+  - Use the customer's words when the insight gives them. When it gives only a summary written by the tool or a colleague, keep it as the verbatim, say so in the rationale, and set the confidence no higher than medium.
+  - Use the platform's search to find insights, never to count them: a search for one need also returns its neighbours, and a platform may index the same sentence several times. Count only the insights read and attached one by one.
+  - When the platform already covers some conversations (for example the calls of the call recorder), read those conversations from one place only, as set in the configuration (`covers`); the duplicate check catches the rest.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
+
+## Kinds of evidence
+
+Classify each piece of evidence when you extract it:
+- **need**: the customer wants to do something the product does not let them do well;
+- **bug**: the product does not work as it should (an error, a crash, a wrong result);
+- **question**: the customer does not know how to do something the product already does.
+
+- All three are evidence of a need and attach the same way: a bug blocks a need, and a question points to a need the product meets but customers do not find.
+- Show the split by kind on each opportunity. When bugs make up most of an opportunity's evidence, say so in the weekly synthesis: it may call for fixes, through the squad's bug process, more than for discovery.
+- The configuration can weigh each kind in the ranking (`kind_weights`, 1 each by default).
 
 ## Changes and autonomy
 

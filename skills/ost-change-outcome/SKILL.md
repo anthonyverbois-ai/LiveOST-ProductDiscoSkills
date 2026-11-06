@@ -1,6 +1,6 @@
 ---
 name: ost-change-outcome
-description: Re-anchors the tree when the squad changes course - a new outcome, or a new north star the outcome serves. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and reviews it with the squad. Nothing is deleted.
+description: Re-anchors the tree when the squad changes course - an outcome added, replaced or retired, a first outcome for a squad that had none, or a new north star. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and reviews it with the squad. Nothing is deleted.
 disable-model-invocation: true
 argument-hint: "[optional: squad name] [optional: the new outcome or north star]"
 ---
@@ -17,14 +17,14 @@ The agent never changes the outcome or the north star on its own. It runs this s
 
 ## Step 1 – Capture the new direction
 
-1. Ask what changes: the outcome, the north star, or both. Ask why, and from which date it applies.
+1. Ask what changes: an outcome added, replaced or retired (a squad may have several, or none yet), the north star, or both. Ask why, and from which date it applies.
 2. Check the new outcome is a measurable result, not an output (same check as in `ost-setup`). If only the north star changes, check with the user that the current outcome still serves it; if not, capture a new outcome too.
 3. Restate the change in one sentence ("From <date>, the squad moves from <old> to <new> because <reason>") and get the user's confirmation.
 
 ## Step 2 – Snapshot the current tree
 
 Record the current state before changing anything:
-- mark the old outcome `past`, with its end date and the reason for the change;
+- mark the replaced or retired outcome `past`, with its end date and the reason for the change;
 - create the new outcome as `active`, with its start date;
 - save a snapshot entry in the run log: the old outcome and the list of opportunities with their evidence counts and ranks.
 
@@ -32,10 +32,10 @@ Nothing is deleted. Evidence belongs to customers, not to an outcome: every piec
 
 ## Step 3 – Re-evaluate every opportunity
 
-Go through the opportunities under the old outcome and propose one decision for each, with a one-sentence reason. Use the outcome test of `build-tree` (step 3) against the new outcome:
+Go through the opportunities under the changed outcome (all of them when the squad had no outcome yet) and propose one decision for each; the opportunities of the other active outcomes do not change. Give each decision a one-sentence reason. Use the outcome test of `build-tree` (step 3) against the new outcome, or against the remaining active outcomes when one is retired:
 - **keep**: still relevant to the new outcome, as is;
 - **reframe**: relevant if reworded or moved to another branch;
-- **park**: out of scope for the new outcome. Parked opportunities keep their evidence and keep receiving new evidence, but are not ranked. They can come back later.
+- **park**: moves none of the active outcomes. Parked opportunities keep their evidence and keep receiving new evidence, but are not ranked. They can come back later.
 
 Solutions and assumptions under a parked opportunity move to `paused`.
 

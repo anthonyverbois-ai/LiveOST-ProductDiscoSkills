@@ -6,11 +6,13 @@
 # One configuration per squad. A PM who follows several squads runs the onboarding once per squad.
 
 squad: "Squad A"   # labels this squad's Notion page, recap section and live view
+own_company: "Your company"   # feedback logged under this name or its email domains is resolved to the customer it names, or marked internal
 
 north_star: "Customers make better decisions with their data"   # optional
-outcome: "Reduce the time it takes a customer to build their first report"
-# To change course later, run /live-product-discovery:ost-change-outcome
-# instead of editing these two lines: it keeps the history and reviews the tree.
+outcomes:                   # one or more (one per product area for a squad that owns several); [] while the squad has none yet
+  - "Reduce the time it takes a customer to build their first report"
+# To change course later (add, replace or retire an outcome), run /live-product-discovery:ost-change-outcome
+# instead of editing these lines: it keeps the history and reviews the tree.
 
 scope:
   owns:                     # product areas and features, named as in the product
@@ -34,11 +36,23 @@ sources:
     tool: "support tool name (e.g. Zendesk, Intercom)"
     via: connector
     filter: "tickets tagged with the squad's product area"
+    rank_weight: 1          # weight in the ranking; 0 keeps the evidence attached and visible but out of the ranking
   team_channels:
     tool: "team chat (e.g. Slack, Microsoft Teams)"
     via: connector
     channels: ["#customer-feedback"]   # only these channels are read; never other channels or private messages
     filter: "none at the source: these channels cover the whole product, the scope check filters each message"
+  insights:
+    tool: "insight platform (e.g. a product feedback tool or a research repository)"
+    via: connector
+    use: evidence           # insights are already extracted: read them, never the conversations behind them
+    covers: ["calls"]       # conversations this platform already reads: they are read here only, not from the call recorder too
+  ticket_signals:
+    tool: "support tool or data warehouse holding ticket categories without their text"
+    via: connector
+    use: signals            # no customer words: counts per category size the mapped opportunities, never create evidence
+    mapping:                # agreed with the user once the first tree exists: category -> opportunity
+      "Export > Formatting": "I lose time reformatting my exports"
   quantitative:
     tool: "data warehouse or analytics agent (e.g. MotherDuck, nao, Amplitude)"
     via: connector
@@ -84,6 +98,13 @@ schedule:
   runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
+
+duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
+
+kind_weights:               # weight of each kind of evidence in the ranking (see "Kinds of evidence" in ost-rules)
+  need: 1
+  bug: 1
+  question: 1
 
 freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"

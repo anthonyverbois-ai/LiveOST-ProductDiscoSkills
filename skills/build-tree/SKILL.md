@@ -28,10 +28,10 @@ When a customer asks for a precise feature, look for the need behind the request
 
 ## 3. Test the link to the outcome
 
-For each top-level opportunity, answer in one sentence: if this need were fully met, would the outcome move?
+For each top-level opportunity and each active outcome, answer in one sentence: if this need were fully met, would this outcome move? Link the opportunity to the outcome it moves most. With no outcome yet, skip this step: every opportunity in scope stays in the tree.
 
 - **Clear link**: it stays in the tree.
-- **No link**, though within the squad's scope: propose it as `parked`, with the sentence. It keeps its evidence and comes back if the outcome changes.
+- **No link** to any active outcome, though within the squad's scope: propose it as `parked`, with the sentence. It keeps its evidence and comes back if the outcome changes.
 - **Unsure**: keep it, and flag it for the user to decide.
 
 Sub-opportunities follow their parent. Check them only when they drift from the parent's topic.
@@ -44,7 +44,7 @@ Then look for planned and in-progress backlog items that address it, following t
 
 ## 5. Size
 
-For each opportunity, compute: the evidence count, the distinct accounts, the date of the latest evidence, and the evidence after any shipped feature. Compute them as described in "Reading the databases", and write them on the opportunity.
+For each opportunity, compute: the evidence count (duplicates excluded), the distinct customer accounts and prospects, the date of the latest evidence, the evidence after any shipped feature, and the split by kind (needs, bugs, questions). Compute them as described in "Reading the databases", and write them on the opportunity.
 
 When quantitative data is available, run the saved queries (see `ost-rules`) and add how many accounts or users face the situation, how often, and the total ARR of the accounts concerned. Quantitative data sizes an opportunity; it never creates one.
 

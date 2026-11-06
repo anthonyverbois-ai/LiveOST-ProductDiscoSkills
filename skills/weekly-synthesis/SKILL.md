@@ -27,7 +27,7 @@ Read the backlog items created or changed since the last synthesis, following th
 
 Check freshness, following the "Shipped features" and "Freshness" rules in `ost-rules`: opportunities past the waiting period after a release, the adoption of recently shipped features when usage data exists, and dormant opportunities to ask about.
 
-Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence and is written to the Changes database. List the assumptions worth testing next for solutions in progress.
+Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence and is written to the Changes database. List the assumptions worth testing next for solutions in progress. Name the opportunities where bugs make up most of the evidence, following "Kinds of evidence" in `ost-rules`.
 
 ## 3. Learn
 
@@ -38,12 +38,12 @@ Apply the structural changes that meet the conditions in "Changes and autonomy" 
 
 ## 4. Watch for drift
 
-Flag a possible drift when the evidence no longer matches the active outcome, for example:
+Flag a possible drift when the evidence no longer matches the active outcomes, for example:
 - a growing share of new evidence fits no active opportunity, or lands on parked ones;
 - a parked opportunity gathers more new evidence than most active ones;
 - a growing share of evidence is marked out of scope, which may mean the squad's scope has changed.
 
-Report the signal with its evidence and suggest discussing it with the squad. Never change the outcome or the north star: if the user confirms a change of course, they run `ost-change-outcome`.
+With no outcome yet, skip this check. Report the signal with its evidence and suggest discussing it with the squad. Never change the outcome or the north star: if the user confirms a change of course, they run `ost-change-outcome`.
 
 ## 5. Measure
 

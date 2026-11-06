@@ -7,7 +7,7 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 - **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions.
   - Opportunities are numbered by priority among their siblings: 1, 2, 3 for branches, 1.1, 1.2 for the sub-opportunities of branch 1. Never show the global rank on the tree: it reads like an outline number.
   - Each opportunity shows its evidence and accounts counts in bold, never larger than its title, then the date of its last evidence. "New today" and "+N today" are the only tags on a card.
-- **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree.
+- **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree. With several outcomes, the tree shows one section per outcome; with none yet, it starts with its opportunities.
   - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all. A solution linked to the backlog shows its backlog status.
   - Candidates sit below the tree, unnumbered, under "Waiting for a decision". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
 - **Filter by feature**: when the tree covers several features of the squad, a filter shows one feature at a time. Opportunities keep their priority number when filtered.
