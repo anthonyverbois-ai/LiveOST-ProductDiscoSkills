@@ -35,7 +35,7 @@ Apply the structural changes that meet the conditions in "Changes and autonomy" 
 
 1. Read the corrections logged this week: evidence moved by a human, proposals rejected, changes undone. Evidence edited this week whose Opportunity differs from its Agent choice, or whose Status differs from its Agent status, was moved by a person: log it as a correction first.
 2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y"). Write it to the Rules database as `proposed`, linked to its corrections.
-3. Replay each draft rule on past attachments. Keep it only if it fixes past errors without creating new ones.
+3. Replay each draft rule on its test cases (the corrections it comes from) and on a sample of about 30 past attachments of the opportunities it names, never on the whole evidence base. Keep it only if it fixes the corrected cases without changing the sampled ones that were right.
 4. Small rules that pass the replay become `active`; deeper changes stay `proposed` and are listed for the user to approve. Write the replay result on each rule.
 
 ## 4. Watch for drift
