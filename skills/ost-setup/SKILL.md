@@ -30,7 +30,7 @@ The user must always know what is done, what is happening and what comes next.
 A PM can follow several squads. Each squad gets its own tree: its own configuration (outcome, scope, source filters), its own Notion page and databases, its own learned rules and its own live view. Corrections made for one squad never change another squad's tree.
 
 - **Name the squad first.** Use the name given as argument, or ask for it. The name labels the configuration, the Notion page, the recap section and the live view.
-- **Look for squads already set up** before step 1. If there are some, list them and ask whether to add a new squad or redo one of them. Never overwrite another squad's configuration.
+- **Look for squads already set up** before step 1: search Notion for pages titled `LiveOST configuration`, one per squad. If there are some, list them and ask whether to add a new squad or redo one of them. Never overwrite another squad's configuration.
 - **Reuse what is shared.** Connectors already connected for another squad do not need connecting again: test them, then set this squad's own filters. The schedule is shared too (step 9).
 
 ## Step 1 – Frame
@@ -64,17 +64,17 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
    - Count the useful rows, and apart the empty rows, exact duplicates and answers with no content.
    - Record the mapping in the configuration (`imports`) and the file as a one-off source in the Sources database, following "File imports" in `ost-rules`.
-9. Save the scope, the sources, the account key and the queries in the configuration (see `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`).
+9. Gather the scope, the sources, the account key and the queries into the squad's configuration, laid out as in `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`. It is written to Notion at step 3, in the configuration page.
 
 ## Step 3 – Tree workspace
 
-The tree lives in eight Notion databases described in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources.
+The tree lives in a configuration page and nine Notion databases described in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections, sources and rules.
 
 1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Each squad has its own page and databases: never reuse another squad's databases. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
 2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`): do not ask the user about their plan.
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
-5. **Confirm, then create**: recap the location, the eight databases and who will have access, and create them only after the user confirms. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist, and a rollup needs its relation.
+5. **Confirm, then create**: recap the location, the configuration page, the nine databases and who will have access, and create them only after the user confirms. Write the configuration gathered at step 2 to the configuration page, then read it back. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist, and a rollup needs its relation.
 6. **Set up the views**: at the top of the tree's page, a table of the Sources database (source, tool, status, last successful read, detail), filled with the results of the step 2 tests; then, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
 7. **Ask for the one manual step**: the nested display of sub-opportunities cannot be turned on through the connector. Ask the user to open the tree view's menu, turn on Sub-items and choose the Parent property, then check with them that sub-opportunities now appear under their parent.
 

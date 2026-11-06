@@ -51,7 +51,7 @@ A new direction can mean a new segment or product area. Ask whether the squad's 
 
 Show the new tree and what the agent is unsure of, as in the quick review of `ost-setup`, step 7. Record every correction in the corrections database.
 
-Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them. Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
+Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them (status `retired` in the Rules database). Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
 
 ## Step 7 – Restart
 

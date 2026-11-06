@@ -30,7 +30,7 @@ Design principles:
 - **Proactive when sure, transparent always.** Evidence is attached automatically, and the agent makes structural changes on its own when the evidence is clear; it proposes the rest. Everything it does is listed in the recap and can be undone. Only a human changes the outcome, parks, splits or archives.
 - **No evidence without a source.** Every piece of evidence carries a verbatim, a source, an account, a date and a link.
 - **Tool-agnostic.** You declare your own sources (Gong, Modjo, Zendesk, Intercom, Amplitude, …) in a config file.
-- **Notion is the source of truth** for the tree's data.
+- **Notion is the source of truth** for the tree's data, its configuration and the rules it learned.
 
 ## Roadmap
 

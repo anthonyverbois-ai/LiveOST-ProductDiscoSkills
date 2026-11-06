@@ -32,9 +32,9 @@ Apply the structural changes that meet the conditions in "Changes and autonomy" 
 ## 3. Learn
 
 1. Read the corrections logged this week: evidence moved by a human, proposals rejected, changes undone.
-2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y").
+2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y"). Write it to the Rules database as `proposed`, linked to its corrections.
 3. Replay each draft rule on past attachments. Keep it only if it fixes past errors without creating new ones.
-4. Small rules that pass the replay are applied directly; deeper changes are listed for the user to approve.
+4. Small rules that pass the replay become `active`; deeper changes stay `proposed` and are listed for the user to approve. Write the replay result on each rule.
 
 ## 4. Watch for drift
 

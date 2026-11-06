@@ -1,6 +1,15 @@
 # Notion data model
 
-The tree lives in eight related Notion databases, created during onboarding.
+Each squad's tree lives in one Notion page, created during onboarding: a configuration page and nine related databases. Everything a run needs is there, never in local files: a scheduled run may not see the user's computer.
+
+## Configuration page
+
+Each squad has one configuration page, a child of the tree's page, titled `LiveOST configuration – <squad>`.
+
+- It holds the squad's configuration, laid out as in `sources.example.yaml`, in one YAML code block, and nothing else.
+- Every run reads it first. A skill that changes the configuration (onboarding, change of course, change of sources) rewrites the whole block, then reads it back to check it.
+- A Notion search on `LiveOST configuration` lists every squad set up.
+- Never write credentials there: connectors handle authentication.
 
 ## Creation order
 
@@ -14,6 +23,7 @@ A relation needs its target database to exist, and a rollup needs its relation. 
 6. Run log; then add the two-way relation from Evidence to Run log.
 7. Corrections.
 8. Sources.
+9. Rules, with its two-way relation to Corrections (paired with Rule).
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
 
@@ -127,4 +137,17 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | Agent proposal | Text | |
 | Human decision | Text | |
 | Reason | Text | If given |
-| Rule drafted | Text | Filled by the weekly synthesis |
+| Rule | Relation (Rules) | The rule drafted from it, if any; the other side of Rules › Learned from |
+
+## Rules
+What the agent learned from the squad's corrections. Runs apply only the `active` rules.
+
+| Property | Type | Notes |
+| --- | --- | --- |
+| Rule | Title | One sentence, for example "Remarks about exports belong under X, not Y" |
+| Kind | Select | attachment, scope, structure, ranking |
+| Status | Select | proposed, active, retired |
+| Since | Date | When it became active |
+| Learned from | Relation (Corrections), two-way | The corrections it comes from; they are its test cases |
+| Replay | Text | Result of the replay on past attachments: errors fixed, new errors |
+| Outcome | Relation (Outcomes) | Set when the rule only makes sense for one outcome |

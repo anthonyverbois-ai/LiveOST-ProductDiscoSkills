@@ -12,7 +12,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 ## Before starting
 
-1. Load the scope, the sources configuration, the current tree and the learned rules.
+1. Load the squad's configuration page (scope and sources), the current tree and the `active` rules of the Rules database.
 2. List the items in scope from metadata only (ID, date, title), oldest first.
 3. For team channels, an item is a message with its whole thread. Drop every item whose source ID is already in the evidence database: it was ingested before. This makes a restart safe. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 4. If the run log holds an unfinished backfill of the same scope, resume from its checkpoint instead of starting over, and tell the user.
