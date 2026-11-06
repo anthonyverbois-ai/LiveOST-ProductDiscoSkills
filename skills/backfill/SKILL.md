@@ -8,11 +8,13 @@ user-invocable: false
 
 Use this whenever more items must be processed than fit comfortably in one pass: the onboarding's trial batch (step 5) and full history (step 8), or the history of a source added during a change of course. Follow `ost-rules` throughout. A full history can hold thousands of items: never try to read them all at once.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 ## Before starting
 
-1. Load the scope, the sources configuration, the current tree and the learned rules.
+1. Load the squad's configuration page (scope and sources), the current tree and the `active` rules of the Rules database.
 2. List the items in scope from metadata only (ID, date, title), oldest first.
-3. For team channels, an item is a message with its whole thread. Drop every item whose source ID is already in the evidence database: it was ingested before. This makes a restart safe. Read Notion as described in "Reading the databases" in `templates/notion-data-model.md`.
+3. For team channels, an item is a message with its whole thread. Drop every item whose source ID is already in the evidence database: it was ingested before. This makes a restart safe. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 4. If the run log holds an unfinished backfill of the same scope, resume from its checkpoint instead of starting over, and tell the user.
 
 ## Batches
@@ -36,6 +38,7 @@ When all batches are done:
 1. Turn the candidate list into opportunities following `build-tree`, comparing it with the existing tree: candidates that describe the same need are merged, and a candidate that duplicates an opportunity is folded into it.
 2. Check the opportunities that grew against shipped features too, following the "Shipped features" rules in `ost-rules`.
 3. Only then create or propose the new opportunities, following "Changes and autonomy" in `ost-rules`, each with its evidence count, accounts and link to the outcome.
+4. Recompute the stored counts of every opportunity once, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## Review by sample
 

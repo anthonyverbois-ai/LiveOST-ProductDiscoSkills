@@ -9,6 +9,8 @@ argument-hint: "[optional: squad name] [optional: the new outcome or north star]
 
 Run this as a conversation with the user when the squad changes its outcome or its north star. Follow `ost-rules` throughout. Speak the user's language. Keep the user oriented the same way as in `ost-setup`: show the 7 steps at the start, and open and close each step with its position and a progress line.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 When several squads are set up, work on one squad only: the one named as argument, or ask which one. The other squads' trees do not change.
 
 The agent never changes the outcome or the north star on its own. It runs this skill only when the user invokes it, or after the user confirms a drift signal raised by `weekly-synthesis`.
@@ -49,7 +51,7 @@ A new direction can mean a new segment or product area. Ask whether the squad's 
 
 Show the new tree and what the agent is unsure of, as in the quick review of `ost-setup`, step 7. Record every correction in the corrections database.
 
-Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them. Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
+Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them (status `retired` in the Rules database). Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
 
 ## Step 7 – Restart
 

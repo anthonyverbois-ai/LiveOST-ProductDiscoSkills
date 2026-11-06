@@ -9,6 +9,8 @@ argument-hint: "[optional: squad name]"
 
 Run this as a conversation with the user, one step at a time. Confirm each step before moving to the next. Follow `ost-rules` throughout. Speak the user's language.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 The onboarding works in two batches. A **trial batch** on the last month checks that everything works and gives a first tree fast. The **full history** is then processed with any rules learned from the user's corrections. Keep the user's effort low: the agent is proactive from the first day (see "Changes and autonomy" in `ost-rules`) and asks only about what it is unsure of.
 
 ## Keep the user oriented
@@ -28,7 +30,7 @@ The user must always know what is done, what is happening and what comes next.
 A PM can follow several squads. Each squad gets its own tree: its own configuration (outcome, scope, source filters), its own Notion page and databases, its own learned rules and its own live view. Corrections made for one squad never change another squad's tree.
 
 - **Name the squad first.** Use the name given as argument, or ask for it. The name labels the configuration, the Notion page, the recap section and the live view.
-- **Look for squads already set up** before step 1. If there are some, list them and ask whether to add a new squad or redo one of them. Never overwrite another squad's configuration.
+- **Look for squads already set up** before step 1: search Notion for pages titled `LiveOST configuration`, one per squad. If there are some, list them and ask whether to add a new squad or redo one of them. Never overwrite another squad's configuration.
 - **Reuse what is shared.** Connectors already connected for another squad do not need connecting again: test them, then set this squad's own filters. The schedule is shared too (step 9).
 
 ## Step 1 – Frame
@@ -62,17 +64,17 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
    - Count the useful rows, and apart the empty rows, exact duplicates and answers with no content.
    - Record the mapping in the configuration (`imports`) and the file as a one-off source in the Sources database, following "File imports" in `ost-rules`.
-9. Save the scope, the sources, the account key and the queries in the configuration (see `templates/sources.example.yaml`).
+9. Gather the scope, the sources, the account key and the queries into the squad's configuration, laid out as in `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`. It is written to Notion at step 3, in the configuration page.
 
 ## Step 3 – Tree workspace
 
-The tree lives in eight Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources.
+The tree lives in a configuration page and ten Notion databases described in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections, sources, rules and changes.
 
 1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Each squad has its own page and databases: never reuse another squad's databases. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
-2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `templates/notion-data-model.md`): do not ask the user about their plan.
+2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`): do not ask the user about their plan.
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
-5. **Confirm, then create**: recap the location, the eight databases and who will have access, and create them only after the user confirms. Follow the creation order in `templates/notion-data-model.md`: a relation needs its target database to exist, and a rollup needs its relation.
+5. **Confirm, then create**: recap the location, the configuration page, the ten databases and who will have access, and create them only after the user confirms. Write the configuration gathered at step 2 to the configuration page, then read it back. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist.
 6. **Set up the views**: at the top of the tree's page, a table of the Sources database (source, tool, status, last successful read, detail), filled with the results of the step 2 tests; then, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
 7. **Ask for the one manual step**: the nested display of sub-opportunities cannot be turned on through the connector. Ask the user to open the tree view's menu, turn on Sub-items and choose the Parent property, then check with them that sub-opportunities now appear under their parent.
 
@@ -121,6 +123,10 @@ The user may decline, for example when the product changed so much that older fe
 ## Step 9 – Activation
 
 1. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times. If they already exist for another squad, add this squad to them instead of creating new ones: one daily run and one weekly synthesis cover all the squads, so the user gets one notification a day.
-2. Explain how the agent works from now on: it acts on its own when it is sure, lists what it did in the recap with a way to undo it, and proposes the rest. Offer `autonomy: propose-only` to a squad that prefers to decide everything.
+   - **Where they run.** Prefer a cloud scheduled task (`/schedule` in Claude Code): it runs when the computer is off and has the user's connectors, but it starts from a fresh copy of the repositories attached to it and sees no local file. Attach this plugin's repository to it. Use a desktop scheduled task (Claude Desktop) only when a source is a local export folder: it sees local folders, but runs only while the app is open and the computer awake. Never use a loop tied to the current session: it stops when the session closes.
+   - **What the task says.** Its prompt names the skill and the squads, for example: "Run the `daily-run` skill of the live-product-discovery plugin for these squads: <link to each configuration page>. If the plugin is not installed here, read `skills/daily-run/SKILL.md` from the attached repository: the plugin root is the repository root." Adding a squad means adding its link to both tasks.
+   - **How to create them.** Use the scheduling command of the environment when there is one. Otherwise give the user the exact prompt, schedule and repository to enter, and check with them that both tasks exist.
+   - **Local material.** Files imported during the onboarding are already processed. A cloud run cannot read an export folder: say so, and offer a desktop scheduled task, or new files imported by hand with `ost-change-sources`.
+2. Explain how the agent works from now on: it acts on its own when it is sure, lists what it did in the recap, where `/live-product-discovery:ost-undo` reverses any of it, and proposes the rest. Offer `autonomy: propose-only` to a squad that prefers to decide everything.
 3. Confirm the freshness settings: 8 weeks without evidence after a release before proposing `addressed`, 24 weeks without evidence before asking whether an opportunity is still current. The user can change them.
-4. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, that `/live-product-discovery:ost-change-sources <squad name>` adds, replaces or removes a source, and that running this onboarding again adds another squad.
+4. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, that `/live-product-discovery:ost-change-sources <squad name>` adds, replaces or removes a source, that `/live-product-discovery:ost-undo` reverses a change made by the agent, and that running this onboarding again adds another squad.

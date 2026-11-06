@@ -9,6 +9,8 @@ argument-hint: "[optional: squad name] [optional: the source to change]"
 
 Run this as a conversation with the user when a squad adds, replaces or removes a source. The tree, the outcome and the learned rules do not change. Follow `ost-rules` throughout. Speak the user's language. Keep the user oriented the same way as in `ost-setup`: show the 5 steps at the start, and open and close each step with its position and a progress line.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 When several squads are set up, work on one squad only: the one named as argument, or ask which one. If the same tool feeds other squads, say so and offer to apply the change to them afterwards, one squad at a time.
 
 ## Step 1 – Take stock
@@ -41,7 +43,7 @@ For a source of **evidence** (calls, tickets, team channels):
 
 1. Keep all evidence already collected. Tell the user that its links will stop working if the old tool is cancelled.
 2. In the Sources database, mark the old row `replaced` (or `removed`), with the date and, for a replacement, the new tool in its detail. Add a row for the new tool with its test result.
-3. Update the configuration (see `templates/sources.example.yaml`).
+3. Update the squad's configuration page (see `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`), then read it back.
 4. Write the change in the run log. The next daily recap opens with it.
 
 ## Step 5 – Confirm

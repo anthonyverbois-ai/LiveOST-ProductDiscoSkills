@@ -1,5 +1,7 @@
 # Sources configuration for live-product-discovery.
 # Created during onboarding (/live-product-discovery:ost-setup). Values below are examples.
+# Stored in Notion, as one YAML code block in the squad's configuration page ("LiveOST configuration – <squad>"),
+# so that scheduled runs can read it. Never keep it only in a local file.
 # Never put credentials here: connectors handle authentication.
 # One configuration per squad. A PM who follows several squads runs the onboarding once per squad.
 
@@ -72,13 +74,14 @@ imports:                    # files of customer feedback, mapped with the user d
       id: null              # no ID column: a stable ID is built from the file name and the row's content
       link: null
 
-export_folder: null         # folder read when a source uses via: export-folder
+export_folder: null         # folder read when a source uses via: export-folder; a cloud scheduled task cannot see it
 
 tree:
   workspace: notion
   location: "the page chosen during onboarding"
 
 schedule:
+  runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
 

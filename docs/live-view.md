@@ -14,10 +14,10 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
 - **Evidence**: clicking the counts of an opportunity shows its verbatims, each with a link to the original call or ticket.
-- **Changes made by the agent**: what the agent changed on its own since the last run carries a discreet marker, with its reason on hover; it can be undone from the run log.
+- **Changes made by the agent**: what the agent changed on its own since the last run carries a discreet marker, with its reason on hover; it can be undone with `ost-undo`.
 - **Candidates, decided on the card**: a candidate under "Waiting for a decision" shows where the agent would place it and why it did not add it on its own. Four actions on the card: accept (it takes its place and number in the tree), merge with an existing opportunity (its evidence moves there), set aside, reject. Each decision is written to Notion and logged as a correction; the last one can be undone from the page. The same decision shows in Pending decisions.
-- **Pending decisions**: approve or reject structural proposals from the page. The decision is written to Notion and logged as a correction when it differs from the agent's proposal.
-- **Timeline**: see the tree as it was on a past date, rebuilt from the run log.
+- **Pending decisions**: approve or reject structural proposals from the page. They are the rows of the Changes database with the status `proposed`; the decision updates the row and is logged as a correction when it differs from the agent's proposal.
+- **Timeline**: see the tree as it was on a past date, rebuilt from the Changes database.
 
 ## Secondary information
 
@@ -25,16 +25,16 @@ Shown discreetly, at the bottom or in the margin of the page:
 
 - **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
 - **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), with the tool, the last successful read and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Replaced and removed sources are not shown. Read from the Sources database.
-- **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to the run log entry. Built from the `Changes` of the run log and from the corrections database.
+- **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to its run. Built from the Changes database.
 - **Plugin version**: the version that produced the last run, with a link to the plugin's `CHANGELOG.md` on GitHub.
 
 ## Data it reads
 
 The view loads the tree and its counts only. An opportunity's verbatims load when it is opened, so the page stays fast with thousands of pieces of evidence.
 
-Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections and sources. The page writes only decisions on pending proposals.
+Everything comes from the Notion databases described in `templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections, sources and changes. The page writes only decisions on pending proposals: the Changes row and, when needed, a correction.
 
-The page reads Notion with the viewer's own connector, so it follows "Reading the databases" in the data model: one database per query, and counts computed from relations and evidence rows (or a grouped count when the plan allows it), never from rollups. It works on every Notion plan.
+The page reads Notion with the viewer's own connector, so it follows "Reading the databases" in the data model: one database per query, and the counts stored on each opportunity, never rollups. It works on every Notion plan.
 
 ## Constraints
 

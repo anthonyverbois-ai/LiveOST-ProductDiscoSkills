@@ -7,11 +7,13 @@ description: The weekly synthesis of live-product-discovery. Re-ranks opportunit
 
 You run unattended. Follow `ost-rules`. The output feeds a 30-minute review with the squad.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 When several squads are set up, run the synthesis for each squad in turn, from its own tree and its own corrections: a rule learned for one squad never applies to another. Send the summaries together, one section per squad.
 
 Record the health of the sources this synthesis reads (documentation, release notes, backlog, quantitative data) in the Sources database, as `daily-run` does.
 
-Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base. Read Notion and compute the counts as described in "Reading the databases" in `templates/notion-data-model.md`.
+Work from this week's evidence and the counts stored on each opportunity; never re-read the whole evidence base. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## 1. Rank
 
@@ -25,14 +27,14 @@ Read the backlog items created or changed since the last synthesis, following th
 
 Check freshness, following the "Shipped features" and "Freshness" rules in `ost-rules`: opportunities past the waiting period after a release, the adoption of recently shipped features when usage data exists, and dormant opportunities to ask about.
 
-Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence. List the assumptions worth testing next for solutions in progress.
+Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence and is written to the Changes database. List the assumptions worth testing next for solutions in progress.
 
 ## 3. Learn
 
-1. Read the corrections logged this week: evidence moved by a human, proposals rejected, changes undone.
-2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y").
+1. Read the corrections logged this week: evidence moved by a human, proposals rejected, changes undone. Evidence edited this week whose Opportunity or Status no longer matches its Agent choice was moved by a person: log it as a correction first.
+2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y"). Write it to the Rules database as `proposed`, linked to its corrections.
 3. Replay each draft rule on past attachments. Keep it only if it fixes past errors without creating new ones.
-4. Small rules that pass the replay are applied directly; deeper changes are listed for the user to approve.
+4. Small rules that pass the replay become `active`; deeper changes stay `proposed` and are listed for the user to approve. Write the replay result on each rule.
 
 ## 4. Watch for drift
 

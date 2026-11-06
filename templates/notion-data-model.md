@@ -1,19 +1,30 @@
 # Notion data model
 
-The tree lives in eight related Notion databases, created during onboarding.
+Each squad's tree lives in one Notion page, created during onboarding: a configuration page and ten related databases. Everything a run needs is there, never in local files: a scheduled run may not see the user's computer.
+
+## Configuration page
+
+Each squad has one configuration page, a child of the tree's page, titled `LiveOST configuration – <squad>`.
+
+- It holds the squad's configuration, laid out as in `sources.example.yaml`, in one YAML code block, and nothing else.
+- Every run reads it first. A skill that changes the configuration (onboarding, change of course, change of sources) rewrites the whole block, then reads it back to check it.
+- A Notion search on `LiveOST configuration` lists every squad set up.
+- Never write credentials there: connectors handle authentication.
 
 ## Creation order
 
-A relation needs its target database to exist, and a rollup needs its relation. Create, in this order:
+A relation needs its target database to exist. Create, in this order:
 
 1. Outcomes.
 2. Opportunities, with its relation to Outcomes; then add Parent as a two-way relation to itself (paired with Sub-opportunities).
-3. Evidence, with its two-way relation to Opportunities; then add the Opportunities rollups (Evidence count, Accounts, Last evidence). They are for people reading the tree in Notion: the plugin computes these numbers itself (see "Reading the databases").
+3. Evidence, with its two-way relation to Opportunities.
 4. Solutions, with its two-way relation to Opportunities.
 5. Assumptions, with its two-way relation to Solutions.
 6. Run log; then add the two-way relation from Evidence to Run log.
 7. Corrections.
 8. Sources.
+9. Rules, with its two-way relation to Corrections (paired with Rule).
+10. Changes, with its relations to Opportunities and Evidence, and its two-way relation to Run log (paired with Changes).
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
 
@@ -23,11 +34,12 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 
 - **One database per query.** Never join several databases in one query: the Notion connector allows it only on Business and Enterprise plans.
 - **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
-- **Never rely on rollup values.** The connector returns a reference instead of the value, on every plan. Keep the rollups for people who read the tree in Notion, but compute the numbers yourself:
-  - Evidence count: the number of pages in the opportunity's Evidence relation.
-  - Accounts: the distinct Account values among the evidence attached to the opportunity.
+- **Counts are stored, never rolled up.** The connector returns a reference instead of a rollup's value, on every plan. So the plugin writes Evidence count, Accounts and Last evidence on each opportunity itself, and everyone (runs, live view, people in Notion) reads them as plain properties:
+  - Evidence count: the evidence attached to the opportunity.
+  - Accounts: the distinct Account values among that evidence.
   - Last evidence: the latest Date among that evidence.
-- **Grouped counts when allowed.** A query that groups and counts within one database (for example the Evidence database grouped by opportunity) gives all three numbers in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, fall back to row reads.
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
+- **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
 ## Outcomes
@@ -51,9 +63,9 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
-| Evidence count | Rollup | Count of Evidence |
-| Accounts | Rollup | Count of unique values of Evidence › Account: a number, used in the ranking |
-| Last evidence | Rollup | Most recent evidence date |
+| Evidence count | Number | Written by the plugin: evidence attached |
+| Accounts | Number | Written by the plugin: distinct accounts among that evidence; used in the ranking |
+| Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
@@ -67,6 +79,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
+| Agent choice | Text | Where the agent put it: the opportunity's name, `unattached` or `out of scope`. When it no longer matches Opportunity or Status, a person moved it |
 | Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |
@@ -104,7 +117,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Ingested | Number | Items read |
 | Attached | Number | Evidence attached |
 | Pending | Number | Unattached evidence and proposals |
-| Changes | Text | Before and after of each change, and who made it (agent or squad); feeds the tree changelog |
+| Changes | Relation (Changes) | The changes made or proposed during the run; the other side of Changes › Run |
 | Anomalies | Text | Failed sources, unreadable items |
 
 ## Sources
@@ -127,4 +140,33 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | Agent proposal | Text | |
 | Human decision | Text | |
 | Reason | Text | If given |
-| Rule drafted | Text | Filled by the weekly synthesis |
+| Rule | Relation (Rules) | The rule drafted from it, if any; the other side of Rules › Learned from |
+
+## Rules
+What the agent learned from the squad's corrections. Runs apply only the `active` rules.
+
+| Property | Type | Notes |
+| --- | --- | --- |
+| Rule | Title | One sentence, for example "Remarks about exports belong under X, not Y" |
+| Kind | Select | attachment, scope, structure, ranking |
+| Status | Select | proposed, active, retired |
+| Since | Date | When it became active |
+| Learned from | Relation (Corrections), two-way | The corrections it comes from; they are its test cases |
+| Replay | Text | Result of the replay on past attachments: errors fixed, new errors |
+| Outcome | Relation (Outcomes) | Set when the rule only makes sense for one outcome |
+
+## Changes
+Every structural change to the tree, made by the agent or proposed to the squad. It feeds the recap, the pending decisions and the tree changelog of the live view, and it is what `ost-undo` reads. A re-rank is one row per synthesis, with the order before and after.
+
+| Property | Type | Notes |
+| --- | --- | --- |
+| Change | Title | One line, for example "Merged 'A' into 'B'" |
+| Type | Select | create, merge, rename, move, re-rank, link shipped feature, link backlog item, mark shipped, mark addressed, park, split, archive |
+| Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
+| Opportunities | Relation (Opportunities) | The opportunities it touches |
+| Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |
+| Before | Text | Enough to restore the previous state: names, parent, status, rank |
+| After | Text | The new state |
+| Reason | Text | One sentence, citing the evidence |
+| Run | Relation (Run log), two-way | The run that made or proposed it |
+| Decided on | Date | When the squad accepted, edited, rejected or undid it |
