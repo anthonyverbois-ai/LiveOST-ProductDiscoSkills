@@ -33,7 +33,7 @@ OST – <date>: <n> calls and <n> tickets analysed
 • To decide: new opportunity "<name>" (<n> evidence, <n> accounts)
 • To sort: <n> unattached verbatims
 • Out of scope: <n> verbatims about other squads' areas (<n> for <other squad set up here>)
-• Sources: <status of each source>
+• Sources: <status of each source>; when a source has failed for 3 working days in a row, add: "to replace or reconnect it, run /live-product-discovery:ost-change-sources"
 ```
 
 On a day with nothing new: "Nothing new, tree unchanged."

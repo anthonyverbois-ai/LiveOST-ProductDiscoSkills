@@ -113,7 +113,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | --- | --- | --- |
 | Source | Title | The kind of input: calls, tickets, team channels, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
-| Status | Select | ok (green), partial (yellow), failed (red), not connected (gray) |
+| Status | Select | ok (green), partial (yellow), failed (red), not connected (gray), replaced or removed (default, kept for history) |
 | Last successful read | Date (with time) | |
 | Last check | Date (with time) | The last time a run tried to read it |
 | Items read | Number | At the last check |
