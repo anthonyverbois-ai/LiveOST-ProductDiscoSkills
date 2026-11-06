@@ -67,6 +67,7 @@ skills/
   weekly-synthesis/    ranking, structural changes, learning loop
 agents/
   evidence-extractor   extraction and classification of a batch, on a fast model
+evals/                 test cases on fictional data, run with `claude plugin eval .`
 templates/             Notion data model and sources config example
 docs/                  specifications of upcoming versions (live view)
 ```

@@ -5,6 +5,7 @@ All notable changes to this plugin are listed here.
 ## Unreleased
 
 ### Added
+- Evaluation suite: `evals/` holds five cases on fictional data (attaching and classifying evidence, duplicates across sources, instructions hidden in a ticket, the ranking formula, solutions in disguise), run with `claude plugin eval .`. Each case checks that the rules were loaded and grades the answer against them. The contribution guide and the pull request checklist ask for it when a skill changes.
 - Extraction on a fast model: new `evidence-extractor` agent (model haiku) that extracts and classifies one batch against a compact summary of the tree and returns structured rows; the backfill and the daily run hand it their batches and keep consolidation and synthesis in the main session, and extract themselves when the agent is not available.
 - Catch-all check: an opportunity holds one need. Each week, the synthesis reads a sample of the evidence of the opportunities that grew most; when it falls into several distinct needs, it proposes a split with the groups and their evidence.
 - Insight platforms as a source: tools that already turn conversations into customer insights (a product feedback tool, a research repository) are read as evidence, with the insight's ID and link. A summary written by the tool or a colleague is kept but flagged and capped at medium confidence; the platform's search finds insights but never counts them; and conversations the platform already covers are read from one place only.
