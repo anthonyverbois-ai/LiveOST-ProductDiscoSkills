@@ -9,14 +9,14 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
   - Each opportunity shows its evidence and accounts counts in bold, never larger than its title, then the date of its last evidence. "New today" and "+N today" are the only tags on a card.
 - **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree. With several outcomes, the tree shows one section per outcome; with none yet, it starts with its opportunities.
   - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all. A solution linked to the backlog shows its backlog status.
-  - Candidates sit below the tree, unnumbered, under "Waiting for a decision". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
+  - Proposed creations sit below the tree, unnumbered, under "Waiting for a decision"; candidates (below the evidence threshold) under "Too early to rank". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
 - **Filter by feature**: when the tree covers several features of the squad, a filter shows one feature at a time. Opportunities keep their priority number when filtered.
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
 - **Evidence**: clicking the counts of an opportunity shows its verbatims, each with a link to the original call or ticket.
 - **Changes made by the agent**: what the agent changed on its own since the last run carries a discreet marker, with its reason on hover; it can be undone with `ost-undo`.
 - **Candidates, decided on the card**: a candidate under "Waiting for a decision" shows where the agent would place it and why it did not add it on its own. Four actions on the card: accept (it takes its place and number in the tree), merge with an existing opportunity (its evidence moves there), set aside, reject. Each decision is written to Notion and logged as a correction; the last one can be undone from the page. The same decision shows in Pending decisions.
-- **Pending decisions**: approve or reject structural proposals from the page. They are the rows of the Changes database with the status `proposed`; the decision updates the row and is logged as a correction when it differs from the agent's proposal.
+- **Pending decisions**: approve or reject structural proposals from the page. They are the rows of the Changes database with the status `proposed`; the decision updates the row and is logged as a correction when it differs from the agent's proposal. The next run carries the decision out: until then the row shows "accepted, applied at the next run".
 - **Timeline**: see the tree as it was on a past date, rebuilt from the Changes database.
 
 ## Secondary information

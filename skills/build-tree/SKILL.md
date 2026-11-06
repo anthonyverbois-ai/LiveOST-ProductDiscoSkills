@@ -21,7 +21,7 @@ When a customer asks for a precise feature, look for the need behind the request
 ## 2. Group, from the specific up
 
 1. Put together the needs that describe the same situation and the same obstacle, even when worded differently. Test: the same solution would remove both. When in doubt, keep them apart: merging later is easier than splitting.
-2. Name each group as an opportunity, following `ost-rules`: the customer's point of view, their words, never a solution.
+2. Name each group as an opportunity, following `ost-rules`: the customer's point of view, their words, never a solution. Set its Product area from the areas the squad owns (the live view filters by it).
 3. Then look for broader needs. When three or more groups are cases of the same broader need, create that need as the parent and make the groups its sub-opportunities. A parent is a need a customer would recognize, never the name of a product area.
 4. Stop at three levels under the outcome.
 5. If the tree already exists, compare each group with it first. A group that duplicates an opportunity is folded into it. A group that is a more specific case of an opportunity becomes its sub-opportunity.
@@ -44,7 +44,7 @@ Then look for planned and in-progress backlog items that address it, following t
 
 ## 5. Size
 
-For each opportunity, compute: the evidence count (duplicates excluded), the distinct customer accounts and prospects, the date of the latest evidence, the evidence after any shipped feature, and the split by kind (needs, bugs, questions). Compute them as described in "Reading the databases", and write them on the opportunity.
+For each opportunity, compute: the evidence count (duplicates excluded), the distinct customer accounts and prospects, the date of the latest evidence, the evidence after any shipped feature, and the split by kind (needs, bugs, questions). Compute them as described in "Reading the databases", write them on the opportunity, and write its Ledger (see "Ranking" in `ost-rules`).
 
 When quantitative data is available, run the saved queries (see `ost-rules`) and add how many accounts or users face the situation, how often, and the total ARR of the accounts concerned. Quantitative data sizes an opportunity; it never creates one.
 
@@ -52,10 +52,10 @@ When quantitative data is available, run the saved queries (see `ost-rules`) and
 
 Rank the opportunities following "Ranking" in `ost-rules`. The tree then has an order from the first day; the weekly synthesis keeps it up to date.
 
-Below 2 pieces of evidence from 2 different accounts, an opportunity stays `candidate` and is not ranked.
+Below 2 pieces of evidence from 2 different accounts, an opportunity stays `candidate` and is not ranked; a creation awaiting a decision is `proposed`.
 
 ## 7. Write, then show
 
 Then present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
 
-Write the opportunities to Notion, with one row of the Changes database per opportunity created (type `create`, its evidence and its reason). In the onboarding and after a change of course, write the whole tree whatever the autonomy setting, then show it: the quick review replaces approval. After the review, set each creation's row to `accepted`, or to `edited` or `rejected` when the squad changed or removed it: this is how the agent starts earning creations. In a backfill consolidation, follow "Changes and autonomy" in `ost-rules`: creations that meet the conditions are applied, the others proposed as `candidate`.
+Write the opportunities to Notion, with one row of the Changes database per opportunity created (type `create`, its evidence and its reason). In the onboarding and after a change of course, write the whole tree whatever the autonomy setting, then show it: the quick review replaces approval. Write those rows as `applied by the agent`, plus one row of type `create` for the whole first tree ("First tree: <n> opportunities"), decided at the quick review: `accepted` when the squad changed at most one opportunity, `edited` otherwise. That single decision is how the agent starts earning creations; a skimmed review does not earn them on its own. In a backfill consolidation, follow "Changes and autonomy" in `ost-rules`: creations that meet the conditions are applied, the others written as `proposed` until the squad decides.

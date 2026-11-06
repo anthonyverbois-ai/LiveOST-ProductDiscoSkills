@@ -39,7 +39,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
   - Kinds: the number of needs, bugs and questions among that evidence.
-- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
+  - Ledger: per account, the inputs of its best piece of evidence (see "Ranking" in `ost-rules`).
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are different: they are refreshed for every ranked opportunity at each daily run, from the Ledger property alone.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
@@ -60,18 +61,20 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
-| Status | Select | candidate, active, parked, addressed, merged, archived |
-| Product area | Select | From the product documentation |
+| Status | Select | proposed, candidate, active, parked, addressed, merged, archived |
+| Product area | Select | One of the areas the squad owns (scope of the configuration); set by `build-tree` |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
 | Evidence count | Number | Written by the plugin: evidence attached, duplicates excluded |
-| Accounts | Number | Written by the plugin: distinct customer accounts among that evidence; used in the ranking |
+| Accounts | Number | Written by the plugin: distinct customer and unknown accounts among that evidence; used in the ranking |
 | Prospects | Number | Written by the plugin: distinct prospect accounts among that evidence, shown apart |
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
+| Freshness asked on | Date | Set by the weekly synthesis when it asks whether a dormant opportunity is still current; cleared when evidence arrives |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
-| Score | Number | Written by the plugin: the ranking score (see "Ranking" in `ost-rules`) |
-| Rank | Number | Order among its siblings, from the score; set when the tree is built (`build-tree`), then by the weekly synthesis |
+| Ledger | Text | Written by the plugin at every attachment, move or undo: one line per customer or unknown account with the inputs of its best piece of evidence (source, kind, date, before or after release), for example `Contoso · call · need · 2026-10-20 · after`. The score is computed from it without reading the evidence |
+| Score | Number | Written by the plugin from the Ledger (see "Ranking" in `ost-rules`); refreshed by the daily run |
+| Rank | Number | Order among its siblings, from the score; written when the tree is built (`build-tree`), then by the weekly synthesis only |
 
 ## Evidence
 | Property | Type | Notes |
@@ -129,6 +132,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Pending | Number | Unattached evidence and proposals |
 | Changes | Relation (Changes) | The changes made or proposed during the run; the other side of Changes › Run |
 | Anomalies | Text | Failed sources, unreadable items |
+| Status | Select | running, finished, interrupted |
+| Checkpoint | Text | For a backfill: the last item processed per source, so the next run resumes there |
 
 ## Sources
 One row per source, kept up to date by every run, so anyone can see at a glance that the tree is fed.
@@ -171,7 +176,7 @@ Every structural change to the tree, made by the agent or proposed to the squad.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Change | Title | One line, for example "Merged 'A' into 'B'" |
-| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, park, split, archive |
+| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, reactivate, park, split, archive |
 | Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
 | Opportunities | Relation (Opportunities) | The opportunities it touches |
 | Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |
@@ -180,3 +185,4 @@ Every structural change to the tree, made by the agent or proposed to the squad.
 | Reason | Text | One sentence, citing the evidence |
 | Run | Relation (Run log), two-way | The run that made or proposed it |
 | Decided on | Date | When the squad accepted, edited, rejected or undid it |
+| Applied on | Date | When a run carried out an accepted or edited decision; empty until then |
