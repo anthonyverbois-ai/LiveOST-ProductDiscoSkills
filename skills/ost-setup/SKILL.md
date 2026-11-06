@@ -9,7 +9,7 @@ argument-hint: "[optional: squad name]"
 
 Run this as a conversation with the user, one step at a time. Confirm each step before moving to the next. Follow `ost-rules` throughout. Speak the user's language.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 The onboarding works in two batches. A **trial batch** on the last month checks that everything works and gives a first tree fast. The **full history** is then processed with any rules learned from the user's corrections. Keep the user's effort low: the agent asks only about what it is unsure of, and earns the right to act on its own as the user's decisions show it gets things right (see "Changes and autonomy" in `ost-rules`).
 
@@ -19,7 +19,7 @@ The user must always know what is done, what is happening and what comes next.
 
 - **At the start**, show the whole path: the 9 steps, one line each, and a rough duration for the onboarding. Say that processing starts only after their explicit go, at step 4 for the trial batch and at step 8 for the full history.
 - **At the start of each step**, open with its title and position ("Step 4 of 9 – Trial batch: go"), then one sentence on what the step does and what you need from the user.
-- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – 8 databases created in the chosen page"), then a progress line:
+- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – configuration page and 10 databases created in the chosen page"), then a progress line:
   `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Trial batch: go · Then: 5 Trial batch, 6 First tree, 7 Quick review, 8 Full history, 9 Activation`
 - **During long steps** (the full history above all), report progress at regular intervals: items processed out of the total, sources finished, time remaining.
 - **When something changes the path** (a step skipped, an existing tree imported, the full history declined), say so and update the progress line.
@@ -35,7 +35,7 @@ A PM can follow several squads. Each squad gets its own tree: its own configurat
 
 ## Step 1 – Frame
 
-If the squad has no name yet, ask for it (see "Several squads"). Then ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features:
+If the squad has no name yet, ask for it (see "Several squads"). Ask for the company's own name and email domains (`own_company`): feedback a colleague logs under them is resolved to the customer it names, or marked internal. Then ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features:
 - **what the squad owns**: the product areas and features, named as they appear in the product and its documentation;
 - **what is explicitly out of scope**: neighboring areas owned by other squads, where ambiguity usually sits;
 - **the customer segments and personas** that matter;
@@ -55,13 +55,12 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
 2. Check which matching connectors are already available in this session.
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
-5. If no connector exists for a tool, offer the fallback: the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
+5. If no connector exists for a tool, offer the fallbacks: documentation and release notes on a public website are read directly from their pages (`via: url`: ask for the sitemap or the index page, and test one page); for anything else, the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
 6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them. Then ask, for each source, whether it counts in the ranking (`rank_weight`: 1 by default, 0 to keep it visible but out of the ranking). A source whose items carry no customer words (only a category and tags) is set up as a signal source (see `ost-rules`).
 7. Set up the quantitative source (a data warehouse, an analytics tool or an analytics agent), read only:
    - Explore what it holds: the tables or metrics available. Ask the user where things are rather than guessing.
    - With the user, write and test three queries: **accounts** (ARR, segment and plan per account), **usage** (usage of the squad's features per account, over time) and **outcome** (the outcome's metric over time). Show a sample of each result and let the user confirm it.
    - Agree on the **account key**: how an account named in a call or a ticket is found in the data (CRM account ID, company domain, exact name). Test it on a few recent accounts and report the ones that do not match.
-   - Ask for the company's own name and email domains (`own_company`): feedback logged under them is resolved to the customer it names, or marked internal.
    - If a query cannot be written (the data does not exist), say so and continue without it: the plugin works without quantitative data.
 8. Ask for any extra material: interview notes, research reports, an existing tree, and files of customer feedback (CSV or Excel exports, survey answers, NPS comments). For each feedback file:
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
@@ -129,6 +128,7 @@ The user may decline, for example when the product changed so much that older fe
 1. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times. If they already exist for another squad, add this squad to them instead of creating new ones: one daily run and one weekly synthesis cover all the squads, so the user gets one notification a day.
    - **Where they run.** Prefer a cloud scheduled task (`/schedule` in Claude Code): it runs when the computer is off and has the user's connectors, but it starts from a fresh copy of the repositories attached to it and sees no local file. Attach this plugin's repository to it. Use a desktop scheduled task (Claude Desktop) only when a source is a local export folder: it sees local folders, but runs only while the app is open and the computer awake. Never use a loop tied to the current session: it stops when the session closes.
    - **What the task says.** Its prompt names the skill and the squads, for example: "Run the `daily-run` skill of the live-product-discovery plugin for these squads: <link to each configuration page>. If the plugin is not installed here, read `skills/daily-run/SKILL.md` from the attached repository: the plugin root is the repository root." Adding a squad means adding its link to both tasks.
+   - **Test the task once by hand** before relying on it: run it now, then check that it found the configuration page, read each source and wrote a run log entry.
    - **How to create them.** Use the scheduling command of the environment when there is one. Otherwise give the user the exact prompt, schedule and repository to enter, and check with them that both tasks exist.
    - **Local material.** Files imported during the onboarding are already processed. A cloud run cannot read an export folder: say so, and offer a desktop scheduled task, or new files imported by hand with `ost-change-sources`.
 2. Explain how the agent works from now on: it proposes each type of structural change until the squad's decisions show it gets that type right, then acts on its own when it is sure, and lists what it did in the recap, where `/live-product-discovery:ost-undo` reverses any of it. Say which types the quick review has already earned. Offer `autonomy: proactive` to a squad that wants the agent to act from the first day, and `autonomy: propose-only` to one that prefers to decide everything.

@@ -9,7 +9,7 @@ argument-hint: "[optional: squad name] [optional: the change to undo, or \"last\
 
 Run this as a conversation with the user. Follow `ost-rules`. Speak the user's language.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 When several squads are set up, work on one squad only: the one named as argument, or ask which one.
 
@@ -28,13 +28,14 @@ Later changes may build on this one: evidence attached since to a merged opportu
 Restore the Before state of the change, by type:
 - **create**: ask the user whether to keep the opportunity as a `candidate` or to archive it. Its evidence goes back to `unattached` when it is archived.
 - **merge**: the merged opportunity is `active` again, with its name and parent; the evidence it brought (Evidence moved) goes back to it. Evidence attached since the merge stays where it is, unless the user moves it.
-- **rename**: the previous name. **move**: the previous parent.
+- **rename** and **reframe**: the previous name and parent. **move**: the previous parent.
+- **add solution**: remove the solution, or set it `dropped` when it already has assumptions.
 - **link shipped feature, link backlog item, mark shipped**: remove the link or the status, and restore the solution's previous status.
 - **mark addressed**: the opportunity is `active` again.
 
 A re-rank is not undone: the ranking follows a written formula and the next run would redo it. To change the order, change a weight in the configuration, or correct the evidence behind it.
 
-Then recompute the stored counts of the opportunities touched, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
+Set Agent choice on every piece of evidence you move, so the undo is never read as a correction later. Then recompute the stored counts of the opportunities touched, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## 4. Record
 

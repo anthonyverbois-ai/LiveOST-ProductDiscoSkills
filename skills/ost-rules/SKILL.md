@@ -8,7 +8,7 @@ user-invocable: false
 
 Every other skill in this plugin follows these rules. When a rule and a user request conflict, explain the conflict and let the user decide.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 ## Structure
 
@@ -65,7 +65,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field, and the need behind it, in one line, in the Need field.
 - First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
-- Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice): a later move by a person then shows as a correction.
+- Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice, a relation to the opportunity, and Agent status). Whenever the agent itself moves evidence (a merge, a move, an undo), it updates Agent choice too, so that only a move made by a person shows as a correction.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
 - Each source has a weight in the ranking (`rank_weight` in the configuration, 1 by default). A weight of 0 keeps the source's evidence attached and visible, but out of the ranking: for example a support queue the squad wants to see but not to rank on.
 - A source whose items carry no customer words (tickets known only by their category and tags, usage alerts) is a **signal source** (`use: signals`). It never creates evidence or opportunities. Its categories are mapped to opportunities with the user; each run counts its items per category and writes the volume on the mapped opportunities, next to the evidence. Signals size an opportunity like quantitative data.
@@ -115,7 +115,7 @@ Rank opportunities among their siblings the same way at every run, so a rank mov
    - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
    - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
 2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
-3. **Stability**: two siblings whose scores differ by less than 5% keep their previous order.
+3. **Stability**: two siblings whose scores differ by less than 5% of the higher score keep their previous order.
 
 Write the score on the opportunity. Candidates, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
 
@@ -124,14 +124,14 @@ Write the score on the opportunity. Candidates, parked and addressed opportuniti
 The agent earns its autonomy, one type of change at a time: it proposes until the squad's decisions show it gets that type right, then acts on its own whenever it is sure.
 
 - **Always on its own**: attach evidence, update counts, scores and ranks (the ranking follows the written formula above), flag a trend.
-- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when the squad has accepted, without edits, at least 9 of the last 10 proposals of that type (`autonomy_threshold` in the configuration), counted from the Changes database. Opportunities created at onboarding count: those the squad keeps after the quick review are accepted creations. Once a type is automatic, act alone only when all of these hold:
+- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when, among the last 5 decisions of the squad on that type (`autonomy_threshold` in the configuration), at least 4 are `accepted` without edits; `edited` and `rejected` count against. Decisions are counted from the Changes database. The creations of the first tree count: after the quick review, each opportunity the squad keeps is an `accepted` creation. Once a type is automatic, act alone only when all of these hold:
   - the evidence is clear. A new opportunity: at least 3 pieces from 3 different accounts express the same need, with an obvious parent and no close opportunity. A merge: the two opportunities say the same thing. A shipped feature or a backlog item: the source describes it explicitly. `addressed`: the waiting period has passed with no evidence and, when usage data exists, the feature is used.
   - no learned rule and no past decision of the squad goes against it.
 
   When one condition fails, propose instead.
-- A type goes back to proposals when the squad undoes it twice in 4 weeks. Say in the recap when a type becomes automatic or goes back, with the reason ("From now on, the agent merges duplicates on its own: 10 of the last 10 merges were accepted").
+- A type goes back to proposals when the squad undoes it twice in 4 weeks. Say in the recap when a type becomes automatic or goes back, with the reason ("From now on, the agent merges duplicates on its own: 5 of the last 5 merges were accepted").
 - **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
-- Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
+- Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. A merge sets the absorbed opportunity to `merged` and moves its evidence to the surviving one; an archive sets `archived`. Both keep the page, so the change can be undone. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
 - `autonomy` in the configuration: `earned` (the default, above), `proactive` (every type is automatic from the first day, under the same conditions) or `propose-only` (every change beyond attaching evidence and updating counts is a proposal).
 
 ## Data handling

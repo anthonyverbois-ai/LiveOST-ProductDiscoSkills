@@ -8,7 +8,7 @@ user-invocable: false
 
 Use this whenever evidence must become opportunities: the onboarding's first tree, the candidates found during a change of course, and the consolidation at the end of a backfill. `ost-rules` says what a well-formed opportunity is; this skill says how to get there.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 Work from evidence already extracted and checked for scope. Do not re-read the sources here. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
@@ -58,4 +58,4 @@ Below 2 pieces of evidence from 2 different accounts, an opportunity stays `cand
 
 Then present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
 
-Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval, and what the squad keeps counts as accepted creations.
+Write the opportunities to Notion, with one row of the Changes database per opportunity created (type `create`, its evidence and its reason). In the onboarding and after a change of course, write the whole tree whatever the autonomy setting, then show it: the quick review replaces approval. After the review, set each creation's row to `accepted`, or to `edited` or `rejected` when the squad changed or removed it: this is how the agent starts earning creations. In a backfill consolidation, follow "Changes and autonomy" in `ost-rules`: creations that meet the conditions are applied, the others proposed as `candidate`.

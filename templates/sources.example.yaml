@@ -65,11 +65,13 @@ sources:
       outcome: "the outcome's metric over time"
   documentation:
     tool: "help center or product docs"
-    via: connector
+    via: url                # connector | url (public pages read directly: give the sitemap or the index page) | export-folder
+    url: "https://help.example.com/sitemap.xml"
     use: reference-only     # not customer evidence
   release_notes:
     tool: "release notes or product changelog"
-    via: connector
+    via: url
+    url: "https://help.example.com/release-notes"
     use: shipped-features   # which features shipped, and when
   backlog:
     tool: "issue tracker (e.g. Jira, Linear)"
@@ -110,16 +112,16 @@ kind_weights:               # weight of each kind of evidence in the ranking (se
 ranking:                    # see "Ranking" in ost-rules
   age_weights: {last_90_days: 1, up_to_a_year: 0.5, older: 0.25}
   before_release_weight: 0.5
-  stability: 0.05           # siblings closer than 5% keep their order
+  stability: 0.05           # siblings whose scores differ by less than 5% of the higher one keep their order
 
 freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"
   dormant_after_weeks: 24   # no evidence this long before asking whether an opportunity is still current
 
-autonomy: earned            # earned: each type of change is proposed until the squad accepts 9 of the last 10, then made alone when sure
+autonomy: earned            # earned: each type of change is proposed until the squad accepts 4 of its last 5, then made alone when sure
                             # proactive: made alone when sure from the first day | propose-only: every change is a proposal
 autonomy_threshold:
-  accepted: 9
-  of_last: 10
+  accepted: 4
+  of_last: 5
 trial_days: 30              # trial batch processed and reviewed first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"
