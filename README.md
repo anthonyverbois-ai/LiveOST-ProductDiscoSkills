@@ -29,7 +29,7 @@ Design principles:
 
 - **Autonomy earned, transparency always.** Evidence is attached automatically. Structural changes are proposed until your decisions show the agent gets each type right; from then on it makes them on its own when the evidence is clear. Everything it does is listed in the recap and can be undone. Only a human changes the outcome, parks, splits or archives.
 - **No evidence without a source.** Every piece of evidence carries a verbatim, a source, an account, a date and a link.
-- **Tool-agnostic.** You declare your own sources (Gong, Modjo, Zendesk, Intercom, Amplitude, …) in a config file.
+- **Tool-agnostic.** You declare your own sources (Gong, Modjo, Zendesk, Intercom, Amplitude, …) in a configuration page in Notion.
 - **Notion is the source of truth** for the tree's data, its configuration and the rules it learned.
 
 ## Roadmap

@@ -19,7 +19,7 @@ The user must always know what is done, what is happening and what comes next.
 
 - **At the start**, show the whole path: the 9 steps, one line each, and a rough duration for the onboarding. Say that processing starts only after their explicit go, at step 4 for the trial batch and at step 8 for the full history.
 - **At the start of each step**, open with its title and position ("Step 4 of 9 – Trial batch: go"), then one sentence on what the step does and what you need from the user.
-- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – 8 databases created in the chosen page"), then a progress line:
+- **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – configuration page and 10 databases created in the chosen page"), then a progress line:
   `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Trial batch: go · Then: 5 Trial batch, 6 First tree, 7 Quick review, 8 Full history, 9 Activation`
 - **During long steps** (the full history above all), report progress at regular intervals: items processed out of the total, sources finished, time remaining.
 - **When something changes the path** (a step skipped, an existing tree imported, the full history declined), say so and update the progress line.

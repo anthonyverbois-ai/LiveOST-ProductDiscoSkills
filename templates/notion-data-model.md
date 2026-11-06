@@ -90,7 +90,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Agent choice | Relation (Opportunities) | The opportunity the agent attached it to; empty when the agent left it unattached or out of scope. The agent updates it when it moves the evidence itself (merge, move, undo) |
 | Agent status | Select | attached, unattached, out of scope: the status the agent gave it. When Opportunity differs from Agent choice, or Status from Agent status, a person moved the evidence |
 | Duplicate of | Relation (Evidence) | The piece it repeats, from another source: shown with it, never counted again |
-| Status | Select | attached, unattached, proposed, out of scope |
+| Status | Select | attached, unattached, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |
 | Run | Relation (Run log) | Run that created it |
@@ -135,7 +135,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 
 | Property | Type | Notes |
 | --- | --- | --- |
-| Source | Title | The kind of input: calls, tickets, team channels, file imports, quantitative, documentation, release notes, backlog |
+| Source | Title | The kind of input: calls, tickets, team channels, insights, signals, file imports, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
 | Status | Select | ok (green), partial (yellow), failed (red), not connected (gray), replaced or removed (default, kept for history) |
 | Last successful read | Date (with time) | |
@@ -171,7 +171,7 @@ Every structural change to the tree, made by the agent or proposed to the squad.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Change | Title | One line, for example "Merged 'A' into 'B'" |
-| Type | Select | create, merge, rename, move, re-rank, link shipped feature, link backlog item, mark shipped, mark addressed, park, split, archive |
+| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, park, split, archive |
 | Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
 | Opportunities | Relation (Opportunities) | The opportunities it touches |
 | Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |

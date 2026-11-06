@@ -115,7 +115,7 @@ Rank opportunities among their siblings the same way at every run, so a rank mov
    - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
    - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
 2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
-3. **Stability**: two siblings whose scores differ by less than 5% keep their previous order.
+3. **Stability**: two siblings whose scores differ by less than 5% of the higher score keep their previous order.
 
 Write the score on the opportunity. Candidates, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
 
@@ -131,7 +131,7 @@ The agent earns its autonomy, one type of change at a time: it proposes until th
   When one condition fails, propose instead.
 - A type goes back to proposals when the squad undoes it twice in 4 weeks. Say in the recap when a type becomes automatic or goes back, with the reason ("From now on, the agent merges duplicates on its own: 5 of the last 5 merges were accepted").
 - **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
-- Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
+- Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. A merge sets the absorbed opportunity to `merged` and moves its evidence to the surviving one; an archive sets `archived`. Both keep the page, so the change can be undone. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
 - `autonomy` in the configuration: `earned` (the default, above), `proactive` (every type is automatic from the first day, under the same conditions) or `propose-only` (every change beyond attaching evidence and updating counts is a proposal).
 
 ## Data handling

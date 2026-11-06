@@ -28,7 +28,8 @@ Later changes may build on this one: evidence attached since to a merged opportu
 Restore the Before state of the change, by type:
 - **create**: ask the user whether to keep the opportunity as a `candidate` or to archive it. Its evidence goes back to `unattached` when it is archived.
 - **merge**: the merged opportunity is `active` again, with its name and parent; the evidence it brought (Evidence moved) goes back to it. Evidence attached since the merge stays where it is, unless the user moves it.
-- **rename**: the previous name. **move**: the previous parent.
+- **rename** and **reframe**: the previous name and parent. **move**: the previous parent.
+- **add solution**: remove the solution, or set it `dropped` when it already has assumptions.
 - **link shipped feature, link backlog item, mark shipped**: remove the link or the status, and restore the solution's previous status.
 - **mark addressed**: the opportunity is `active` again.
 
