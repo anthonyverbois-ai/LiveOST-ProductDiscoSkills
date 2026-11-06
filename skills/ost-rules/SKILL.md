@@ -13,7 +13,8 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 ## Structure
 
 - The tree has one or more **active outcomes** at the top. A focused squad has one; a squad that owns several product areas may have one per area. The squad sets them; the agent never creates or changes them.
-- A squad may also start with **no outcome yet** (`outcomes: []` in the configuration). The tree is then built from the customers' needs and ranked on evidence alone: nothing is parked for lack of a link to an outcome, and the drift check is off. When the squad sets an outcome, it runs `ost-change-outcome`.
+- The Outcomes database is the source of truth for the active outcomes; the configuration mirrors it, and `ost-change-outcome` keeps both in step.
+- A squad may also start with **no outcome yet** (`outcomes: []` in the configuration, no `active` row in Outcomes). The tree is then built from the customers' needs and ranked on evidence alone: nothing is parked for lack of a link to an outcome, and the drift check is off. When the squad sets an outcome, it runs `ost-change-outcome`.
 - An optional **north star** sits above the outcomes as context: the long-term direction they serve.
 - When the squad changes course (an outcome added, replaced or retired, or a new north star), follow `ost-change-outcome`. Past outcomes are kept with their dates, and opportunities are never deleted: what no longer fits is parked.
 - Under each outcome: **opportunities** (customer needs, pain points, desires), then **sub-opportunities**, then **solutions**, then **assumptions** to test.

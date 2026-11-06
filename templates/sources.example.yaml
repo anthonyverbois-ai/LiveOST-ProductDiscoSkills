@@ -51,8 +51,8 @@ sources:
     tool: "support tool or data warehouse holding ticket categories without their text"
     via: connector
     use: signals            # no customer words: counts per category size the mapped opportunities, never create evidence
-    mapping:                # agreed with the user once the first tree exists: category -> opportunity
-      "Export > Formatting": "I lose time reformatting my exports"
+    mapping:                # confirmed with the user at the quick review: category -> the opportunity's Notion page (a rename does not break it)
+      "Export > Formatting": "https://www.notion.so/<opportunity page>"
   quantitative:
     tool: "data warehouse or analytics agent (e.g. MotherDuck, nao, Amplitude)"
     via: connector

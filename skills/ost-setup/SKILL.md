@@ -65,7 +65,7 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
 8. Ask for any extra material: interview notes, research reports, an existing tree, and files of customer feedback (CSV or Excel exports, survey answers, NPS comments). For each feedback file:
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
    - Count the useful rows, and apart the empty rows, exact duplicates and answers with no content.
-   - Record the mapping in the configuration (`imports`) and the file as a one-off source in the Sources database, following "File imports" in `ost-rules`.
+   - Record the mapping in the configuration (`imports`), following "File imports" in `ost-rules`. The file gets its row in the Sources database at step 3.
 9. Gather the scope, the sources, the account key and the queries into the squad's configuration, laid out as in `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`. It is written to Notion at step 3, in the configuration page.
 
 ## Step 3 – Tree workspace
@@ -77,7 +77,7 @@ The tree lives in a configuration page and ten Notion databases described in `${
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
 5. **Confirm, then create**: recap the location, the configuration page, the ten databases and who will have access, and create them only after the user confirms. Write the configuration gathered at step 2 to the configuration page, then read it back. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist.
-6. **Set up the views**: at the top of the tree's page, a table of the Sources database (source, tool, status, last successful read, detail), filled with the results of the step 2 tests; then, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
+6. **Set up the views**: at the top of the tree's page, a table of the Sources database (source, tool, status, last successful read, detail), filled with the results of the step 2 tests and one row per feedback file imported; then, a tree view of the opportunities (a table sorted by rank, showing name, status, rank, evidence count, accounts, last evidence and solutions, with Parent hidden), and a board of the solutions grouped by status.
 7. **Ask for the one manual step**: the nested display of sub-opportunities cannot be turned on through the connector. Ask the user to open the tree view's menu, turn on Sub-items and choose the Parent property, then check with them that sub-opportunities now appear under their parent.
 
 ## Step 4 – Trial batch: go
@@ -92,7 +92,7 @@ Never start processing without the user's explicit go. If the user wants to chan
 
 ## Step 5 – Trial batch
 
-Read the last month and the extra material, and extract candidate evidence. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process, following `backfill` and `ost-rules`. If a source fails midway, finish the others and report what is missing.
+Read the last month and the extra material, and extract candidate evidence. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process the items following "Before starting" and "Batches" of `backfill` only, and hold the candidates apart: the consolidation and the review are steps 6 and 7 of this onboarding, under the first-tree rule of `build-tree` (the whole tree is written, whatever the autonomy setting). If a source fails midway, finish the others and report what is missing.
 
 ## Step 6 – First tree
 
@@ -104,7 +104,7 @@ Read the last month and the extra material, and extract candidate evidence. For 
 The tree is already written. Do not walk the user through every branch. Show:
 - a short summary: the opportunities in order, with their evidence and accounts;
 - only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing.
-- when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm.
+- when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm. Write the confirmed mapping to the configuration page (`mapping`, keyed by the opportunity's Notion page, so a rename does not break it), then read it back.
 
 The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Corrections become rules and test cases.
 
