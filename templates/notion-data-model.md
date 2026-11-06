@@ -76,7 +76,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 ## Evidence
 | Property | Type | Notes |
 | --- | --- | --- |
-| Verbatim | Title | Exact customer words |
+| Need | Title | The need behind it, in one short line in the customer's words (see `build-tree`, step 1) |
+| Verbatim | Text | Exact customer words, never cut mid-thought |
 | Source type | Select | call, ticket, message, insight, survey, import, interview, other |
 | Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |

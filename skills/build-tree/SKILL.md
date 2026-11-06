@@ -14,7 +14,7 @@ Work from evidence already extracted and checked for scope. Do not re-read the s
 
 ## 1. Write the need behind each piece of evidence
 
-For each piece of evidence, write the need behind it in one short sentence, in the customer's words: what they are trying to do, and what gets in the way. This is a working label. The verbatim stays untouched.
+For each piece of evidence, write the need behind it in one short sentence, in the customer's words: what they are trying to do, and what gets in the way. Write it in the Need property, the title of the evidence. The verbatim stays untouched.
 
 When a customer asks for a precise feature, look for the need behind the request. "I want a PDF button" becomes "I need to send the report to people who don't use the tool".
 
