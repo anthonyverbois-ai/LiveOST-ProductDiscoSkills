@@ -17,7 +17,7 @@ Show the squad's sources from the Sources database: tool, status, last successfu
 
 ## Step 2 – Connect and test the new tool
 
-Skip this step when a source is only removed.
+Skip this step when a source is only removed. A file of customer feedback has no connector: map its columns with the user as in onboarding step 2. A new version of a file already imported adds only its new rows.
 
 1. Detect whether a connector for the new tool is already connected. If not, ask the user to connect it: the user authenticates, never the agent.
 2. Run a test read and show a sample, as in onboarding step 2.

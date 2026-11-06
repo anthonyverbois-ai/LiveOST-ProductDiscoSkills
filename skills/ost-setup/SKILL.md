@@ -58,7 +58,10 @@ Check the outcome is a measurable result, not an output. "Reduce the time to bui
    - With the user, write and test three queries: **accounts** (ARR, segment and plan per account), **usage** (usage of the squad's features per account, over time) and **outcome** (the outcome's metric over time). Show a sample of each result and let the user confirm it.
    - Agree on the **account key**: how an account named in a call or a ticket is found in the data (CRM account ID, company domain, exact name). Test it on a few recent accounts and report the ones that do not match.
    - If a query cannot be written (the data does not exist), say so and continue without it: the plugin works without quantitative data.
-8. Ask for any extra material: interview notes, research reports, an existing tree.
+8. Ask for any extra material: interview notes, research reports, an existing tree, and files of customer feedback (CSV or Excel exports, survey answers, NPS comments). For each feedback file:
+   - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
+   - Count the useful rows, and apart the empty rows, exact duplicates and answers with no content.
+   - Record the mapping in the configuration (`imports`) and the file as a one-off source in the Sources database, following "File imports" in `ost-rules`.
 9. Save the scope, the sources, the account key and the queries in the configuration (see `templates/sources.example.yaml`).
 
 ## Step 3 – Tree workspace
@@ -79,13 +82,13 @@ Count what the last month holds **without reading the content**: list items thro
 
 > Before I start, here is what I will process for the last month: 34 calls (call recorder), 120 tickets (support tool), 18 documentation pages. Go?
 
-Add a line only when something looks wrong: a source returning nothing, partial access (for example only the user's own calls are visible), or extra material that cannot be read. Give more detail (sample items, filters, what is left out, duration) only if the user asks.
+Count the useful rows of each feedback file the same way, from the date column for the last month. Add a line only when something looks wrong: a source returning nothing, partial access (for example only the user's own calls are visible), or extra material that cannot be read. For a large volume, add the expected duration (about 100 items per batch). Give more detail (sample items, filters, what is left out, duration) only if the user asks.
 
 Never start processing without the user's explicit go. If the user wants to change something, go back to the relevant source, then ask again.
 
 ## Step 5 – Trial batch
 
-Read the last month and the extra material, and extract candidate evidence, following `backfill` and `ost-rules`. If a source fails midway, finish the others and report what is missing.
+Read the last month and the extra material, and extract candidate evidence. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process, following `backfill` and `ost-rules`. If a source fails midway, finish the others and report what is missing.
 
 ## Step 6 – First tree
 
