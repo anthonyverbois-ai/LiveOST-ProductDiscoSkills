@@ -6,6 +6,7 @@
 # One configuration per squad. A PM who follows several squads runs the onboarding once per squad.
 
 squad: "Squad A"   # labels this squad's Notion page, recap section and live view
+own_company: "Your company"   # feedback logged under this name or its email domains is resolved to the customer it names, or marked internal
 
 north_star: "Customers make better decisions with their data"   # optional
 outcomes:                   # one or more (one per product area for a squad that owns several); [] while the squad has none yet
@@ -92,6 +93,8 @@ schedule:
   runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
+
+duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
 
 kind_weights:               # weight of each kind of evidence in the ranking (see "Kinds of evidence" in ost-rules)
   need: 1

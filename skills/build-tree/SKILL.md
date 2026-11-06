@@ -44,7 +44,7 @@ Then look for planned and in-progress backlog items that address it, following t
 
 ## 5. Size
 
-For each opportunity, compute: the evidence count, the distinct accounts, the date of the latest evidence, the evidence after any shipped feature, and the split by kind (needs, bugs, questions). Compute them as described in "Reading the databases", and write them on the opportunity.
+For each opportunity, compute: the evidence count (duplicates excluded), the distinct customer accounts and prospects, the date of the latest evidence, the evidence after any shipped feature, and the split by kind (needs, bugs, questions). Compute them as described in "Reading the databases", and write them on the opportunity.
 
 When quantitative data is available, run the saved queries (see `ost-rules`) and add how many accounts or users face the situation, how often, and the total ARR of the accounts concerned. Quantitative data sizes an opportunity; it never creates one.
 

@@ -61,6 +61,7 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
    - Explore what it holds: the tables or metrics available. Ask the user where things are rather than guessing.
    - With the user, write and test three queries: **accounts** (ARR, segment and plan per account), **usage** (usage of the squad's features per account, over time) and **outcome** (the outcome's metric over time). Show a sample of each result and let the user confirm it.
    - Agree on the **account key**: how an account named in a call or a ticket is found in the data (CRM account ID, company domain, exact name). Test it on a few recent accounts and report the ones that do not match.
+   - Ask for the company's own name and email domains (`own_company`): feedback logged under them is resolved to the customer it names, or marked internal.
    - If a query cannot be written (the data does not exist), say so and continue without it: the plugin works without quantitative data.
 8. Ask for any extra material: interview notes, research reports, an existing tree, and files of customer feedback (CSV or Excel exports, survey answers, NPS comments). For each feedback file:
    - Show its columns and a few rows. Agree with the user which column holds the verbatim, the date, the account, the customer contact, an ID, a link, and what kind of feedback it is. Keep the contact columns the user wants to keep.
