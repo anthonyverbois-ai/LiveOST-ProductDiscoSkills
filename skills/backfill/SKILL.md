@@ -1,6 +1,6 @@
 ---
 name: backfill
-description: How live-product-discovery processes a large volume of past calls, tickets and documents (the onboarding's trial batch and full history, or a new source's history) in batches, with resume, deduplication, consolidation and sampled review. Used by ost-setup and ost-change-outcome.
+description: How live-product-discovery processes a large volume of past items (the onboarding's trial batch and full history, a new source's history, or a daily run after a long interruption) in batches, with resume, deduplication, consolidation and sampled review. Used by ost-setup, ost-change-outcome, ost-change-sources and daily-run.
 user-invocable: false
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: daily-run
-description: The daily run of live-product-discovery. Reads new calls and tickets since the last run, attaches evidence to the tree, writes a log entry and returns a short recap. Meant to be triggered by a scheduled task.
+description: The daily run of live-product-discovery. Applies the squad's decisions, reads the new items of every source since the last run, attaches evidence to the tree, writes a log entry and returns a short recap. Meant to be triggered by a scheduled task.
 ---
 
 # Daily run
