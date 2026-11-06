@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {createContext, useContext, useMemo, useState} from 'react';
 import {Badge} from '@astryxdesign/core/Badge';
 import {Banner} from '@astryxdesign/core/Banner';
 import {Button} from '@astryxdesign/core/Button';
@@ -8,6 +8,7 @@ import {Icon} from '@astryxdesign/core/Icon';
 import {Layout, LayoutContent} from '@astryxdesign/core/Layout';
 import {MetadataList, MetadataListItem} from '@astryxdesign/core/MetadataList';
 import {SegmentedControl, SegmentedControlItem} from '@astryxdesign/core/SegmentedControl';
+import {Selector} from '@astryxdesign/core/Selector';
 import {StatusDot} from '@astryxdesign/core/StatusDot';
 import {Tab, TabList} from '@astryxdesign/core/TabList';
 import {Timestamp} from '@astryxdesign/core/Timestamp';
@@ -30,29 +31,63 @@ const STATUS = {
   addressed: 'Addressed by a shipped feature',
 };
 
-const byId = Object.fromEntries(opportunities.map((o) => [o.id, o]));
 const byPriority = (a, b) => (a.rank ?? 99) - (b.rank ?? 99);
-const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).sort(byPriority);
 const solutionsOf = (oppId) => solutions.filter((s) => s.opp === oppId);
-
 // The tree holds the opportunities the squad works with. Candidates and set-aside ones sit below it.
 const inTree = (o) => o.status === 'active' || o.status === 'addressed';
-const roots = opportunities.filter((o) => !o.parent && inTree(o)).sort(byPriority);
-const candidates = opportunities.filter((o) => o.status === 'candidate');
-const setAside = opportunities.filter((o) => o.status === 'parked');
 
-// Features (product areas) of the squad, in the order of their highest-priority branch.
-const features = [...new Set([...roots, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
-const hasFeatures = features.length > 1;
-
-// Outline numbers follow priority among siblings: 1, 2, 3 for branches; 1.1, 1.2 under branch 1.
-const numberOf = {};
-roots.forEach((root, i) => {
-  numberOf[root.id] = `${i + 1}`;
-  childrenOf(root).forEach((child, j) => {
-    numberOf[child.id] = `${i + 1}.${j + 1}`;
+// Decisions taken on candidate cards change the tree. In the live view they are written to Notion
+// and logged as corrections; in the demo they only change what is shown.
+function applyDecisions(opps, decisions) {
+  let list = opps.map((o) => ({...o}));
+  const find = (id) => list.find((o) => o.id === id);
+  Object.entries(decisions).forEach(([id, d]) => {
+    const c = find(id);
+    if (!c) return;
+    if (d.action === 'accept') {
+      c.status = 'active';
+      c.parent = c.proposedParent ?? undefined;
+      const parent = c.parent ? find(c.parent) : null;
+      if (parent) parent.children = [...(parent.children ?? []), c.id];
+    } else if (d.action === 'merge') {
+      c.status = 'merged';
+      const target = find(d.target);
+      if (target) {
+        target.evidence += c.evidence;
+        target.accounts += c.accounts;
+      }
+    } else if (d.action === 'park') {
+      c.status = 'parked';
+    } else if (d.action === 'reject') {
+      c.status = 'archived';
+    }
   });
-});
+  return list;
+}
+
+function buildTree(opps) {
+  const byId = Object.fromEntries(opps.map((o) => [o.id, o]));
+  const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).filter(Boolean).sort(byPriority);
+  const roots = opps.filter((o) => !o.parent && inTree(o)).sort(byPriority);
+  const candidates = opps.filter((o) => o.status === 'candidate');
+  const setAside = opps.filter((o) => o.status === 'parked');
+  // Features (product areas) of the squad, in the order of their highest-priority branch.
+  const features = [...new Set([...roots, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
+  // Outline numbers follow priority among siblings: 1, 2, 3 for branches; 1.1, 1.2 under branch 1.
+  const numberOf = {};
+  roots.forEach((root, i) => {
+    numberOf[root.id] = `${i + 1}`;
+    childrenOf(root).forEach((child, j) => {
+      numberOf[child.id] = `${i + 1}.${j + 1}`;
+    });
+  });
+  return {byId, childrenOf, roots, candidates, setAside, features, hasFeatures: features.length > 1, numberOf};
+}
+
+const TreeContext = createContext(null);
+const useTree = () => useContext(TreeContext);
+
+const DECISION_TEXT = {accept: 'Accepted', merge: 'Merged', park: 'Set aside', reject: 'Rejected'};
 
 function formatDay(iso) {
   const [y, m, d] = iso.split('-').map(Number);
@@ -146,7 +181,38 @@ function SolutionTree({sols, isOpen, onToggle}) {
   );
 }
 
+function CandidateActions({opp}) {
+  const {byId, roots, childrenOf, numberOf, decide} = useTree();
+  const [merging, setMerging] = useState(false);
+  const parent = opp.proposedParent ? byId[opp.proposedParent] : null;
+  const targets = roots.flatMap((r) => [r, ...childrenOf(r)]);
+  return (
+    <div className="cand">
+      <p className="cand-where">
+        {parent ? `Proposed under ${numberOf[parent.id]}. ${parent.name}` : 'Proposed as a new branch'}
+        {opp.hesitation ? <span className="cand-why"> {opp.hesitation}</span> : null}
+      </p>
+      {merging ? (
+        <Selector
+          label="Merge into"
+          size="sm"
+          placeholder="Choose an opportunity"
+          options={targets.map((t) => ({value: t.id, label: `${numberOf[t.id]}. ${t.name}`}))}
+          onChange={(value) => decide(opp.id, {action: 'merge', target: value})}
+        />
+      ) : null}
+      <div className="actions">
+        <Button label="Accept" variant="primary" size="sm" onClick={() => decide(opp.id, {action: 'accept'})} />
+        <Button label="Merge with…" variant="secondary" size="sm" onClick={() => setMerging((m) => !m)} />
+        <Button label="Set aside" variant="ghost" size="sm" onClick={() => decide(opp.id, {action: 'park'})} />
+        <Button label="Reject" variant="ghost" size="sm" onClick={() => decide(opp.id, {action: 'reject'})} />
+      </div>
+    </div>
+  );
+}
+
 function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
+  const {numberOf} = useTree();
   const sols = solutionsOf(opp.id);
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
@@ -172,7 +238,13 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
         </button>
         <span className="opp-last">
           {showFeature && !isChild && opp.area ? `${opp.area} · ` : ''}Last evidence {formatDay(opp.lastEvidence)}
+          {opp.byAgent ? (
+            <span className="by-agent" title={opp.byAgent}>
+              {' '}· {opp.byAgentLabel ?? 'Changed by the agent'}
+            </span>
+          ) : null}
         </span>
+        {opp.status === 'candidate' ? <CandidateActions opp={opp} /> : null}
       </div>
       {sols.length > 0 ? (
         <SolutionTree sols={sols} isOpen={openSols.has(opp.id)} onToggle={() => toggleSols(opp.id)} />
@@ -181,7 +253,29 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
   );
 }
 
+function DecisionNotice() {
+  const {lastDecision, byId, numberOf, undo} = useTree();
+  if (!lastDecision) return null;
+  const {id, action, target} = lastDecision;
+  const opp = byId[id];
+  const where =
+    action === 'accept'
+      ? ` It is now ${numberOf[id]} in the tree.`
+      : action === 'merge'
+        ? ` Its evidence now counts for ${numberOf[target]}. ${byId[target]?.name}.`
+        : '';
+  return (
+    <Banner
+      status="info"
+      title={`${DECISION_TEXT[action]}: “${opp.name}”.${where}`}
+      description="Demo only. In the live view, the decision is written to Notion and logged as a correction the agent learns from."
+      endContent={<Button label="Undo" variant="ghost" size="sm" onClick={() => undo(id)} />}
+    />
+  );
+}
+
 function TreeMap({onOpen}) {
+  const {roots, candidates, setAside, features, hasFeatures, childrenOf} = useTree();
   const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
   const [openSols, setOpenSols] = useState(() => new Set());
   const allOpen = withSolutions.every((id) => openSols.has(id));
@@ -217,6 +311,7 @@ function TreeMap({onOpen}) {
           onClick={() => setOpenSols(allOpen ? new Set() : new Set(withSolutions))}
         />
       </div>
+      <DecisionNotice />
       {hasFeatures ? (
         <div className="feature-filter">
           <SegmentedControl label="Feature" value={feature} onChange={setFeature} size="sm" layout="hug">
@@ -243,7 +338,8 @@ function TreeMap({onOpen}) {
         <section className="aside" aria-labelledby="candidates-title">
           <h2 id="candidates-title" className="aside-title">Waiting for a decision</h2>
           <p className="aside-note">
-            New needs proposed by the agent. Accept one in Pending decisions and it gets a place and a number in the tree.
+            New needs the agent was not sure enough to add on its own. Accept one and it takes its place and number in the
+            tree; merge it into an opportunity that says the same thing; set it aside; or reject it.
           </p>
           <div className="aside-row">
             {shownCandidates.map((o) => (
@@ -272,6 +368,7 @@ function TreeMap({onOpen}) {
 }
 
 function TreeAsList() {
+  const {roots, candidates, setAside, hasFeatures, childrenOf, numberOf} = useTree();
   const solutionGroup = (opp) => {
     const sols = solutionsOf(opp.id);
     if (sols.length === 0) return [];
@@ -328,10 +425,14 @@ function TreeAsList() {
 }
 
 function Pending({decisions, onDecide, onOpen}) {
+  const {cardDecisions, decide} = useTree();
+  // A proposal about a candidate shares its decision with the candidate's card in the tree.
+  const approve = (p) => (p.opp ? decide(p.opp, {action: 'accept'}) : onDecide(p.id, 'Approved'));
+  const reject = (p) => (p.opp ? decide(p.opp, {action: 'reject'}) : onDecide(p.id, 'Rejected'));
   return (
     <div className="pending">
       {pendingSeed.map((p) => {
-        const decision = decisions[p.id];
+        const decision = p.opp && cardDecisions[p.opp] ? DECISION_TEXT[cardDecisions[p.opp].action] : decisions[p.id];
         return (
           <section className="panel" key={p.id} aria-labelledby={`${p.id}-title`}>
             <Text type="label">{p.kind}</Text>
@@ -344,8 +445,8 @@ function Pending({decisions, onDecide, onOpen}) {
               </p>
             ) : (
               <div className="actions">
-                <Button label="Approve" variant="primary" onClick={() => onDecide(p.id, 'Approved')} />
-                <Button label="Reject" variant="secondary" onClick={() => onDecide(p.id, 'Rejected')} />
+                <Button label="Approve" variant="primary" onClick={() => approve(p)} />
+                <Button label="Reject" variant="secondary" onClick={() => reject(p)} />
                 {p.opp ? <Button label="See the evidence" variant="ghost" onClick={() => onOpen(p.opp)} /> : null}
               </div>
             )}
@@ -371,6 +472,7 @@ function Changelog() {
 }
 
 function OppDrawer({isOpen, oppId, onClose}) {
+  const {byId, numberOf} = useTree();
   const opp = oppId ? byId[oppId] : null;
   const items = useMemo(() => evidence.filter((e) => e.opp === oppId), [oppId]);
   const sols = solutionsOf(oppId);
@@ -462,7 +564,18 @@ export function App() {
   const [openId, setOpenId] = useState(null);
   const [lastOpened, setLastOpened] = useState(null);
   const [decisions, setDecisions] = useState({});
-  const pendingLeft = pendingSeed.filter((p) => !decisions[p.id]).length;
+  const [cardDecisions, setCardDecisions] = useState({});
+  const [lastDecision, setLastDecision] = useState(null);
+  const tree = useMemo(() => buildTree(applyDecisions(opportunities, cardDecisions)), [cardDecisions]);
+  const decide = (id, d) => {
+    setCardDecisions((x) => ({...x, [id]: d}));
+    setLastDecision({id, ...d});
+  };
+  const undo = (id) => {
+    setCardDecisions(({[id]: _, ...rest}) => rest);
+    setLastDecision(null);
+  };
+  const pendingLeft = pendingSeed.filter((p) => !(p.opp ? cardDecisions[p.opp] : decisions[p.id])).length;
 
   const open = (id) => {
     setOpenId(id);
@@ -470,6 +583,7 @@ export function App() {
   };
 
   return (
+    <TreeContext.Provider value={{...tree, cardDecisions, decide, undo, lastDecision}}>
     <div className="page">
       <header className="head">
         <h1 className="page-title">Opportunity Solution Tree · {meta.squad}</h1>
@@ -517,5 +631,6 @@ export function App() {
 
       <OppDrawer isOpen={Boolean(openId)} oppId={lastOpened} onClose={() => setOpenId(null)} />
     </div>
+    </TreeContext.Provider>
   );
 }
