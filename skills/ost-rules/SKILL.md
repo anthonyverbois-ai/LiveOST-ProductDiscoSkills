@@ -65,6 +65,8 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice): a later move by a person then shows as a correction.
 - Quantitative data sizes an opportunity (accounts affected, frequency, revenue at stake). It never creates one on its own.
+- Each source has a weight in the ranking (`rank_weight` in the configuration, 1 by default). A weight of 0 keeps the source's evidence attached and visible, but out of the ranking: for example a support queue the squad wants to see but not to rank on.
+- A source whose items carry no customer words (tickets known only by their category and tags, usage alerts) is a **signal source** (`use: signals`). It never creates evidence or opportunities. Its categories are mapped to opportunities with the user; each run counts its items per category and writes the volume on the mapped opportunities, next to the evidence. Signals size an opportunity like quantitative data.
 - Read quantitative data only through the account key and the queries saved in the configuration. Never write to the data source.
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
 - Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.

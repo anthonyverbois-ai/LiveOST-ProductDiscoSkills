@@ -56,7 +56,7 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
 5. If no connector exists for a tool, offer the fallback: the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
-6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them.
+6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them. Then ask, for each source, whether it counts in the ranking (`rank_weight`: 1 by default, 0 to keep it visible but out of the ranking). A source whose items carry no customer words (only a category and tags) is set up as a signal source (see `ost-rules`).
 7. Set up the quantitative source (a data warehouse, an analytics tool or an analytics agent), read only:
    - Explore what it holds: the tables or metrics available. Ask the user where things are rather than guessing.
    - With the user, write and test three queries: **accounts** (ARR, segment and plan per account), **usage** (usage of the squad's features per account, over time) and **outcome** (the outcome's metric over time). Show a sample of each result and let the user confirm it.
@@ -104,6 +104,7 @@ Read the last month and the extra material, and extract candidate evidence. For 
 The tree is already written. Do not walk the user through every branch. Show:
 - a short summary: the opportunities in order, with their evidence and accounts;
 - only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing.
+- when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm.
 
 The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Corrections become rules and test cases.
 

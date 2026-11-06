@@ -35,11 +35,18 @@ sources:
     tool: "support tool name (e.g. Zendesk, Intercom)"
     via: connector
     filter: "tickets tagged with the squad's product area"
+    rank_weight: 1          # weight in the ranking; 0 keeps the evidence attached and visible but out of the ranking
   team_channels:
     tool: "team chat (e.g. Slack, Microsoft Teams)"
     via: connector
     channels: ["#customer-feedback"]   # only these channels are read; never other channels or private messages
     filter: "none at the source: these channels cover the whole product, the scope check filters each message"
+  ticket_signals:
+    tool: "support tool or data warehouse holding ticket categories without their text"
+    via: connector
+    use: signals            # no customer words: counts per category size the mapped opportunities, never create evidence
+    mapping:                # agreed with the user once the first tree exists: category -> opportunity
+      "Export > Formatting": "I lose time reformatting my exports"
   quantitative:
     tool: "data warehouse or analytics agent (e.g. MotherDuck, nao, Amplitude)"
     via: connector
