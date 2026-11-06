@@ -7,7 +7,7 @@ description: The daily run of live-product-discovery. Reads new calls and ticket
 
 You run unattended. Nobody will answer questions during the run: make reasonable decisions, log them, and finish. Follow `ost-rules`.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 When several squads are set up, run the steps below for each squad in turn, each with its own configuration, tree, learned rules and autonomy setting. A failure on one squad does not stop the others. End with a single recap covering all the squads.
 

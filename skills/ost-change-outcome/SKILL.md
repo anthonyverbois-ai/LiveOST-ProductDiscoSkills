@@ -9,7 +9,7 @@ argument-hint: "[optional: squad name] [optional: the new outcome or north star]
 
 Run this as a conversation with the user when the squad changes its outcome or its north star. Follow `ost-rules` throughout. Speak the user's language. Keep the user oriented the same way as in `ost-setup`: show the 7 steps at the start, and open and close each step with its position and a progress line.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 When several squads are set up, work on one squad only: the one named as argument, or ask which one. The other squads' trees do not change.
 

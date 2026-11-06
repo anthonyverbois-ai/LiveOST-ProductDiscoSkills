@@ -5,6 +5,7 @@ All notable changes to this plugin are listed here.
 ## Unreleased
 
 ### Added
+- Documentation and release notes can be read from a public website (`via: url`, with the sitemap or the index page) when no connector exists. The onboarding asks to run the scheduled task once by hand before relying on it, and every skill says that `${CLAUDE_PLUGIN_ROOT}` means the repository root when the plugin is read from its repository rather than installed.
 - Evaluation suite: `evals/` holds five cases on fictional data (attaching and classifying evidence, duplicates across sources, instructions hidden in a ticket, the ranking formula, solutions in disguise), run with `claude plugin eval .`. Each case checks that the rules were loaded and grades the answer against them. The contribution guide and the pull request checklist ask for it when a skill changes.
 - Extraction on a fast model: new `evidence-extractor` agent (model haiku) that extracts and classifies one batch against a compact summary of the tree and returns structured rows; the backfill and the daily run hand it their batches and keep consolidation and synthesis in the main session, and extract themselves when the agent is not available.
 - Catch-all check: an opportunity holds one need. Each week, the synthesis reads a sample of the evidence of the opportunities that grew most; when it falls into several distinct needs, it proposes a split with the groups and their evidence.

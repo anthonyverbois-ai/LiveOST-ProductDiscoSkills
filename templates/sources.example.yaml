@@ -65,11 +65,13 @@ sources:
       outcome: "the outcome's metric over time"
   documentation:
     tool: "help center or product docs"
-    via: connector
+    via: url                # connector | url (public pages read directly: give the sitemap or the index page) | export-folder
+    url: "https://help.example.com/sitemap.xml"
     use: reference-only     # not customer evidence
   release_notes:
     tool: "release notes or product changelog"
-    via: connector
+    via: url
+    url: "https://help.example.com/release-notes"
     use: shipped-features   # which features shipped, and when
   backlog:
     tool: "issue tracker (e.g. Jira, Linear)"

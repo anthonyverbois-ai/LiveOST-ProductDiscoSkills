@@ -7,7 +7,7 @@ description: The weekly synthesis of live-product-discovery. Re-ranks opportunit
 
 You run unattended. Follow `ost-rules`. The output feeds a 30-minute review with the squad.
 
-Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
 When several squads are set up, run the synthesis for each squad in turn, from its own tree and its own corrections: a rule learned for one squad never applies to another. Send the summaries together, one section per squad.
 
