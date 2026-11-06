@@ -43,6 +43,10 @@ sources:
     via: connector
     channels: ["#customer-feedback"]   # only these channels are read; never other channels or private messages
     filter: "none at the source: these channels cover the whole product, the scope check filters each message"
+  interviews:
+    tool: "where the squad writes up its customer interviews (e.g. a Notion database)"
+    via: connector
+    use: evidence           # one interview note is one item, read like a call; a cloud run can read a Notion database, not a local folder
   insights:
     tool: "insight platform (e.g. a product feedback tool or a research repository)"
     via: connector

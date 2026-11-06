@@ -144,7 +144,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 
 | Property | Type | Notes |
 | --- | --- | --- |
-| Source | Title | The kind of input: calls, tickets, team channels, insights, signals, file imports, quantitative, documentation, release notes, backlog |
+| Source | Title | The kind of input: calls, tickets, team channels, interviews, insights, signals, file imports, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
 | Status | Select | ok (green), partial (yellow), failed (red), not connected (gray), replaced or removed (default, kept for history) |
 | Last successful read | Date (with time) | |
