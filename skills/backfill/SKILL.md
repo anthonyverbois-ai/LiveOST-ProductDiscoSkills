@@ -26,10 +26,10 @@ Process the items in batches of about 100, oldest first. A row of a feedback fil
 3. **Classify** each piece of evidence: out of scope, attached to an existing opportunity, or a new candidate. Give it its kind (need, bug, question) and its account type, and link duplicates from other sources, following `ost-rules`. Give each attachment a confidence (high, medium, low) with its one-sentence rationale.
 4. **Hold new candidates apart**: add them to the candidate list with their evidence, without creating opportunities in the tree yet.
 5. **Write** the batch to the evidence database in grouped writes (many rows per call), never one call per row.
-6. **Checkpoint**: update the run log entry with the last item processed per source and the running counts.
+6. **Checkpoint**: update the run log entry (Status `running`, Checkpoint with the last item processed per source, running counts).
 7. **Report progress** at regular intervals: items processed out of the total, sources finished, time remaining.
 
-If the session is about to end before the backfill is done, stop after a completed batch, write the checkpoint, and tell the user how the next run will resume.
+If the session is about to end before the backfill is done, stop after a completed batch, write the checkpoint with Status `interrupted`, and tell the user how the next run will resume. Set Status `finished` when the consolidation is done.
 
 ## Consolidation
 
@@ -42,7 +42,7 @@ When all batches are done:
 
 ## Review by sample
 
-The user cannot review thousands of attachments. Show them:
+The user cannot review thousands of attachments. Show them (in a conversation) or list in the recap under "To decide" (in an unattended run):
 - the attachments with low confidence;
 - a random sample of the others (about 30), to measure quality;
 - the consolidated candidates and the opportunities whose evidence grew most.

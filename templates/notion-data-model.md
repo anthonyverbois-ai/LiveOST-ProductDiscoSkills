@@ -132,6 +132,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Pending | Number | Unattached evidence and proposals |
 | Changes | Relation (Changes) | The changes made or proposed during the run; the other side of Changes › Run |
 | Anomalies | Text | Failed sources, unreadable items |
+| Status | Select | running, finished, interrupted |
+| Checkpoint | Text | For a backfill: the last item processed per source, so the next run resumes there |
 
 ## Sources
 One row per source, kept up to date by every run, so anyone can see at a glance that the tree is fed.
