@@ -41,7 +41,7 @@ Set Agent choice on every piece of evidence you move, so the undo is never read 
 ## 4. Record
 
 - Set the change's status to `undone`, with today's date in Decided on.
-- Add a correction: what the agent did, what the user decided, and why if they say. The weekly synthesis learns from it, and repeated undos of one type of change stop the agent from making it on its own (see "Changes and autonomy" in `ost-rules`).
+- Add a correction: what the agent did, what the user decided, and why if they say. The weekly synthesis learns from it, and repeated undos of one type of change stop the agent from making it on its own (see "Changes and autonomy" in `ost-rules`). When the change was made by the agent on its own, offer to send that type back to proposals now (`autonomy_per_type: <type>: propose` in the configuration), without waiting for a second undo.
 - Never redo what was undone without the squad's decision.
 
 ## 5. Confirm

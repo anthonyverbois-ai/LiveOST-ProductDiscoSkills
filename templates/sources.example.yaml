@@ -128,5 +128,6 @@ autonomy: earned            # earned: each type of change is proposed until the 
 autonomy_threshold:
   accepted: 4
   of_last: 5
+autonomy_per_type: {}       # overrides for one type, e.g. {merge: propose} or {rename: auto}; ost-undo offers to set it
 trial_days: 30              # trial batch processed and reviewed first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"
