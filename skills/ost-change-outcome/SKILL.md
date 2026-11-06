@@ -1,6 +1,6 @@
 ---
 name: ost-change-outcome
-description: Re-anchors the tree when the squad changes course - a new outcome, or a new north star the outcome serves. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and recalibrates with the squad. Nothing is deleted.
+description: Re-anchors the tree when the squad changes course - a new outcome, or a new north star the outcome serves. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and reviews it with the squad. Nothing is deleted.
 disable-model-invocation: true
 argument-hint: "[optional: squad name] [optional: the new outcome or north star]"
 ---
@@ -45,16 +45,15 @@ Search the evidence already collected, including unattached evidence and evidenc
 
 A new direction can mean a new segment or product area. Ask whether the squad's scope (owned areas, out-of-scope areas, segments) and the sources and filters in the configuration still fit. Update them with the user, and test any new source as in `ost-setup`, step 2. If a new source brings in past items to read, give the user the volume and ask for their go first, as in `ost-setup`, step 4, then process it following `backfill`.
 
-## Step 6 – Recalibrate with the squad
+## Step 6 – Review with the squad
 
-Walk the user through the proposed tree, one branch at a time, as in `ost-setup`, step 7. Record every correction in the corrections database.
+Show the new tree and what the agent is unsure of, as in the quick review of `ost-setup`, step 7. Record every correction in the corrections database.
 
 Then review the learned rules: keep rules about how customers express needs; flag rules that only made sense for the old outcome and ask the user whether to retire them. Mark evaluation items tied to parked opportunities as out of scope for the new outcome.
 
 ## Step 7 – Restart
 
-1. Write the recalibrated tree.
-2. Run the next week in observation mode, unless the user declines.
-3. End with a summary: old and new direction, number of opportunities kept, reframed, parked and added, source changes, and what the next daily recap will show.
+1. Write the reviewed tree.
+2. End with a summary: old and new direction, number of opportunities kept, reframed, parked and added, source changes, and what the next daily recap will show.
 
 The next daily recap opens with one line on the change of course.

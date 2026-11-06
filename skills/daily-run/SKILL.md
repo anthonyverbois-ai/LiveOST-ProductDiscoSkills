@@ -7,7 +7,7 @@ description: The daily run of live-product-discovery. Reads new calls and ticket
 
 You run unattended. Nobody will answer questions during the run: make reasonable decisions, log them, and finish. Follow `ost-rules`.
 
-When several squads are set up, run the steps below for each squad in turn, each with its own configuration, tree, learned rules and mode (observation or normal). A failure on one squad does not stop the others. End with a single recap covering all the squads.
+When several squads are set up, run the steps below for each squad in turn, each with its own configuration, tree, learned rules and autonomy setting. A failure on one squad does not stop the others. End with a single recap covering all the squads.
 
 ## Steps
 
@@ -17,10 +17,10 @@ When several squads are set up, run the steps below for each squad in turn, each
 3. **Extract**: from each item, extract the customer needs and pain points, with exact verbatims.
 4. **Attach**: check each piece of evidence is within the squad's scope (mark it `out of scope` otherwise), then attach it to the most specific matching opportunity, with a one-sentence rationale. Parked and addressed opportunities can receive evidence too: new evidence that the need persists makes an addressed opportunity active again, and the recap says so. Evidence that criticizes a shipped feature itself is a new need: propose it as a new opportunity instead, following "Shipped features" in `ost-rules`. When the opportunity has a shipped solution, say in the rationale that the evidence follows the release. If nothing fits, mark it `unattached`.
 5. **Update**: refresh evidence counts, accounts and last-evidence dates, computed as described in "Reading the databases" in `templates/notion-data-model.md`, never read from the rollups. Flag opportunities whose evidence grew notably. Refresh the backlog status of the solutions linked to the backlog; when a linked item is delivered, propose marking the solution `shipped`, with its date.
-6. **Propose**: if several unattached pieces point to the same new need, propose a new opportunity. Never create it yourself.
-7. **Log**: write one run log entry with what was ingested, what was attached (before and after), proposals awaiting a decision, and anomalies. Also record the finish time, the status of each source (OK, partial or failed) and the plugin version: they feed the "last refresh" and the tree changelog of the live view. Write the run log entry even when nothing changed, so the last refresh stays accurate.
+6. **Act or propose**: if several unattached pieces point to the same new need, create the opportunity when the conditions in "Changes and autonomy" (`ost-rules`) hold; otherwise propose it. The same applies to every other structural change.
+7. **Log**: write one run log entry with what was ingested, what was attached (before and after), the changes made on its own (before and after, with the reason), proposals awaiting a decision, and anomalies. Also record the finish time, the status of each source (OK, partial or failed) and the plugin version: they feed the "last refresh" and the tree changelog of the live view. Write the run log entry even when nothing changed, so the last refresh stays accurate.
 
-In observation mode, do steps 1 to 4 and 6 to 7, but write attachments to the log as proposals instead of changing the tree.
+With `autonomy: propose-only`, every change beyond attaching evidence and updating counts is a proposal.
 
 ## Recap
 
@@ -30,6 +30,7 @@ End with a short recap, readable in ten seconds. It becomes the notification. Fo
 OST – <date>: <n> calls and <n> tickets analysed
 • <n> pieces of evidence attached (<n> to existing opportunities, <n> pending)
 • Trending: "<opportunity>" (+<n> evidence, now #<rank>)
+• Done by the agent: <n> changes (for example: created "<name>", merged "<a>" into "<b>"), each with its reason in the log, where it can be undone
 • To decide: new opportunity "<name>" (<n> evidence, <n> accounts)
 • To sort: <n> unattached verbatims
 • Out of scope: <n> verbatims about other squads' areas (<n> for <other squad set up here>)

@@ -31,11 +31,11 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - When one does, record it as a solution with status `shipped`, linked to the documentation page or release note, with its release date. Never guess a release date: if the sources do not give one, write "date unknown".
 - Split the opportunity's evidence into before and after the release. Never delete evidence from before the release: it is history, and it weighs less in the ranking.
 - Evidence after the release means the need persists despite the feature (incomplete, unknown to customers, or not adopted). Keep the opportunity active and say so in the recap.
-- No evidence after the release during the waiting period set in the configuration (`addressed_after_weeks`, 8 weeks by default): propose marking the opportunity `addressed`. A human decides.
+- No evidence after the release during the waiting period set in the configuration (`addressed_after_weeks`, 8 weeks by default): mark the opportunity `addressed`, or propose it, following "Changes and autonomy".
 - Use usage data when it exists. If the feature is little used, do not propose `addressed` yet: report "shipped but little used". If it is widely used, say so in the proposal.
 - A feature may cover only part of a need. Link it to the most specific opportunity it addresses; the parent stays active. Say in the match sentence what the feature covers and what it does not.
 - Evidence after the release that criticizes the feature itself (slow, broken, hard to find) is a new need, not the old one coming back. Propose it as a new opportunity, usually a sub-opportunity of the original. Only evidence that the original need persists (the feature is unknown, or does not cover the case) keeps or makes the opportunity active.
-- The squad's own solutions ship too. When a solution of the tree appears as delivered in the release notes or the backlog, propose marking it `shipped`, with its date, and apply these rules to its opportunity.
+- The squad's own solutions ship too. When a solution of the tree appears as delivered in the release notes or the backlog, mark it `shipped`, with its date (following "Changes and autonomy"), and apply these rules to its opportunity.
 - A match between a feature and an opportunity is a proposal, not a fact: state why they match, in one sentence.
 
 ## Freshness
@@ -47,7 +47,7 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 
 - The squad's backlog, in its issue tracker, tells what the squad delivered and what it plans. Like the documentation, it is not customer evidence.
 - Delivered items (done, with a completion or release date) are shipped features: apply the "Shipped features" rules to them.
-- Planned and in-progress items are solutions in the making. When one addresses an opportunity, propose linking it as a solution, with its backlog link and one sentence on why it matches. A human decides.
+- Planned and in-progress items are solutions in the making. When one addresses an opportunity, link it as a solution, with its backlog link and one sentence on why it matches, or propose it, following "Changes and autonomy".
 - Keep two statuses apart: the solution's discovery status (idea, to test, testing, validated, …) is decided by the squad; its backlog status is copied from the tracker.
 - Raise two gaps as questions, never as judgments: backlog items that match no opportunity (work with no known customer need), and top opportunities with no solution in the backlog.
 - Never change the backlog: read it only. Never create, edit or comment on an item.
@@ -77,10 +77,18 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 
 ## Changes and autonomy
 
-- The agent may, on its own: attach evidence, update counts and dates, flag an opportunity as trending.
-- The agent proposes, and a human decides: creating, renaming, merging, splitting, moving, parking, marking as addressed or archiving an opportunity; linking a shipped feature to an opportunity; changing priorities; any change to solutions or assumptions.
-- Only a human changes the outcome or the north star. The agent may only flag a possible drift.
-- Every change the agent applies is logged with a before and after, so it can be undone.
+The agent is proactive from the first day: it acts on its own whenever it is sure, and proposes only when it is not.
+
+- **Always on its own**: attach evidence, update counts and dates, flag a trend.
+- **On its own when sure, proposed otherwise**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, re-rank, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Act alone only when all of these hold:
+  - the evidence is clear. A new opportunity: at least 3 pieces from 3 different accounts express the same need, with an obvious parent and no close opportunity. A merge: the two opportunities say the same thing. A shipped feature or a backlog item: the source describes it explicitly. `addressed`: the waiting period has passed with no evidence and, when usage data exists, the feature is used.
+  - no learned rule and no past decision of the squad goes against it;
+  - the squad has not undone this type of change twice in the last 4 weeks.
+
+  When one condition fails, propose instead.
+- **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
+- Every change the agent makes on its own is logged with a before and after and a one-sentence reason, listed in the recap under "Done by the agent", and can be undone from the run log. An undo is recorded as a correction.
+- A squad that prefers to decide everything sets `autonomy: propose-only` in the configuration: then every change beyond attaching evidence and updating counts is a proposal.
 
 ## Data handling
 

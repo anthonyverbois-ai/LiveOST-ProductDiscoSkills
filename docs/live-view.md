@@ -14,6 +14,7 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
 - **Evidence**: clicking the counts of an opportunity shows its verbatims, each with a link to the original call or ticket.
+- **Changes made by the agent**: what the agent changed on its own since the last run carries a discreet marker, with its reason on hover; it can be undone from the run log.
 - **Pending decisions**: approve or reject structural proposals from the page. The decision is written to Notion and logged as a correction when it differs from the agent's proposal.
 - **Timeline**: see the tree as it was on a past date, rebuilt from the run log.
 

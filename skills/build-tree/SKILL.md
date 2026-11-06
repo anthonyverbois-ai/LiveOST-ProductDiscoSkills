@@ -52,8 +52,8 @@ Rank the opportunities with the criteria of `weekly-synthesis`: volume and recen
 
 Below 2 pieces of evidence from 2 different accounts, an opportunity stays `candidate` and is not ranked.
 
-## 7. Show before writing
+## 7. Write, then show
 
-Present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
+Then present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
 
-Creating opportunities is a proposal (see `ost-rules`). Write them to Notion only after the user's review.
+Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval.

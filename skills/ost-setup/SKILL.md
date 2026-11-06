@@ -1,6 +1,6 @@
 ---
 name: ost-setup
-description: Onboarding for live-product-discovery, one squad at a time. Sets the outcome, connects the sources, builds and calibrates a first tree on a one-month trial batch, then extends it to the full history after the user's go, and schedules the daily and weekly runs. Run it again to add another squad.
+description: Onboarding for live-product-discovery, one squad at a time. Sets the outcome, connects the sources, builds a first tree on a one-month trial batch, reviewed quickly with the user, then extends it to the full history after the user's go, and schedules the daily and weekly runs. Run it again to add another squad.
 disable-model-invocation: true
 argument-hint: "[optional: squad name]"
 ---
@@ -9,7 +9,7 @@ argument-hint: "[optional: squad name]"
 
 Run this as a conversation with the user, one step at a time. Confirm each step before moving to the next. Follow `ost-rules` throughout. Speak the user's language.
 
-The onboarding works in two batches. A **trial batch** on the last month checks that everything works and calibrates the agent with the user's corrections. The **full history** is then processed with the rules learned during calibration, so the large volume is handled well from the first pass.
+The onboarding works in two batches. A **trial batch** on the last month checks that everything works and gives a first tree fast. The **full history** is then processed with any rules learned from the user's corrections. Keep the user's effort low: the agent is proactive from the first day (see "Changes and autonomy" in `ost-rules`) and asks only about what it is unsure of.
 
 ## Keep the user oriented
 
@@ -18,7 +18,7 @@ The user must always know what is done, what is happening and what comes next.
 - **At the start**, show the whole path: the 9 steps, one line each, and a rough duration for the onboarding. Say that processing starts only after their explicit go, at step 4 for the trial batch and at step 8 for the full history.
 - **At the start of each step**, open with its title and position ("Step 4 of 9 – Trial batch: go"), then one sentence on what the step does and what you need from the user.
 - **At the end of each step**, give a one-line recap of what was done (for example "Step 3 of 9 done – 8 databases created in the chosen page"), then a progress line:
-  `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Trial batch: go · Then: 5 Trial batch, 6 First tree, 7 Calibration, 8 Full history, 9 Activation`
+  `Done: 1 Frame, 2 Sources, 3 Tree workspace · Next: 4 Trial batch: go · Then: 5 Trial batch, 6 First tree, 7 Quick review, 8 Full history, 9 Activation`
 - **During long steps** (the full history above all), report progress at regular intervals: items processed out of the total, sources finished, time remaining.
 - **When something changes the path** (a step skipped, an existing tree imported, the full history declined), say so and update the progress line.
 - **When the user comes back after a pause**, or asks where they are, restate the progress line and what is waiting on them.
@@ -92,13 +92,13 @@ Read the last month and the extra material, and extract candidate evidence, foll
 1. Build the first set of opportunities under the outcome, following `build-tree`: the needs behind the evidence, grouping from the specific up, the link to the outcome, the check against shipped features, sizing and a first ranking.
 2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they do not move the outcome.
 
-## Step 7 – Calibration
+## Step 7 – Quick review
 
-This is the most important step. Walk the user through the tree, one branch at a time:
-- for each opportunity: keep, rename, merge, split or reject;
-- for a sample of evidence: right opportunity or not.
+The tree is already written. Do not walk the user through every branch. Show:
+- a short summary: the opportunities in order, with their evidence and accounts;
+- only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing.
 
-Record every correction in the corrections database with: what the agent proposed, what the user decided, and why if they say. These corrections become the agent's first rules and its first evaluation set. Write the calibrated tree to the workspace.
+The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Corrections become rules and test cases.
 
 ## Step 8 – Full history
 
@@ -110,14 +110,14 @@ This is the normal next step: propose it by default.
    > The tree looks right? The full history adds 410 calls and 2,300 tickets, back to March 2023. It will take a few hours, in batches I can resume if interrupted. Go?
 
    The user can also choose a later start date instead of all time.
-3. On go, process the full history with the rules learned in step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
-4. Merge the result into the calibrated tree, then run the review by sample described in `backfill`: low-confidence attachments, a random sample, the consolidated candidates and the opportunities that grew most. Record the user's corrections as in step 7.
+3. On go, process the full history with any rules learned from the user's corrections, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
+4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.
 
 ## Step 9 – Activation
 
 1. Create two scheduled tasks: a daily run (`daily-run`) on working days and a weekly synthesis (`weekly-synthesis`). Ask the user for the times. If they already exist for another squad, add this squad to them instead of creating new ones: one daily run and one weekly synthesis cover all the squads, so the user gets one notification a day.
-2. Start this squad in **observation mode** for two weeks (other squads keep their own mode): the daily run writes its proposals to the log but does not change the tree. Tell the user how to switch to normal mode.
+2. Explain how the agent works from now on: it acts on its own when it is sure, lists what it did in the recap with a way to undo it, and proposes the rest. Offer `autonomy: propose-only` to a squad that prefers to decide everything.
 3. Confirm the freshness settings: 8 weeks without evidence after a release before proposing `addressed`, 24 weeks without evidence before asking whether an opportunity is still current. The user can change them.
 4. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, that `/live-product-discovery:ost-change-sources <squad name>` adds, replaces or removes a source, and that running this onboarding again adds another squad.
