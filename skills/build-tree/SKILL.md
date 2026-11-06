@@ -50,7 +50,7 @@ When quantitative data is available, run the saved queries (see `ost-rules`) and
 
 ## 6. Rank
 
-Rank the opportunities with the criteria of `weekly-synthesis`: volume and recency of evidence, distinct accounts, weighted by quantitative data. Evidence from before a shipped feature weighs less. The tree then has an order from the first day; the weekly synthesis keeps it up to date.
+Rank the opportunities following "Ranking" in `ost-rules`. The tree then has an order from the first day; the weekly synthesis keeps it up to date.
 
 Below 2 pieces of evidence from 2 different accounts, an opportunity stays `candidate` and is not ranked.
 

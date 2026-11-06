@@ -17,7 +17,7 @@ Work from this week's evidence and the counts stored on each opportunity; never 
 
 ## 1. Rank
 
-Rank opportunities by volume and recency of evidence and number of distinct accounts, weighted by the quantitative data available (accounts affected, frequency, revenue at stake). Show what moved since last week and why.
+Rank opportunities following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
 
 ## 2. Act or propose
 

@@ -73,7 +73,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
 - Give each account a type: customer, prospect, internal or unknown. With the accounts query, an account with revenue is a customer, an account without revenue is a prospect, and an account the key cannot match is unknown. Without the query, every named account other than the own company is a customer. When the account field names the user's own company (`own_company` in the configuration) or one of its people, look for the real customer in the text: colleagues often log feedback under their own company. If the text names a customer, use it; if it is a colleague's own opinion with no customer, mark it `internal`.
 - Customer and unknown accounts count in Accounts and in the ranking; the recap lists the unknown ones so the user can match them. Prospect evidence is attached and shown apart ("asked by 3 prospects"); internal evidence is attached but never counted as an account.
-- Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.
+- Revenue breaks ties in the ranking and never ranks on its own (see "Ranking"): show it next to the evidence count and the number of accounts.
 - Report revenue at the level of an opportunity (the total ARR of the accounts concerned), never per customer in the recap.
 - Team chat channels (for example a Slack or Teams channel where colleagues share customer feedback) are evidence too, with these rules:
   - Read only the channels named in the configuration. Never read other channels or private messages, and never post.
@@ -105,6 +105,19 @@ Classify each piece of evidence when you extract it:
 - All three are evidence of a need and attach the same way: a bug blocks a need, and a question points to a need the product meets but customers do not find.
 - Show the split by kind on each opportunity. When bugs make up most of an opportunity's evidence, say so in the weekly synthesis: it may call for fixes, through the squad's bug process, more than for discovery.
 - The configuration can weigh each kind in the ranking (`kind_weights`, 1 each by default).
+
+## Ranking
+
+Rank opportunities among their siblings the same way at every run, so a rank moves only when its inputs move.
+
+1. **Score**: the sum, over the distinct customer accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight.
+   - Age weight: 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond.
+   - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
+   - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
+2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
+3. **Stability**: two siblings whose scores differ by less than 5% keep their previous order.
+
+Write the score on the opportunity. Candidates, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
 
 ## Changes and autonomy
 
