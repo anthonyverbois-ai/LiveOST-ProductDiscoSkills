@@ -34,7 +34,7 @@ Restore the Before state of the change, by type:
 
 A re-rank is not undone: the ranking follows a written formula and the next run would redo it. To change the order, change a weight in the configuration, or correct the evidence behind it.
 
-Then recompute the stored counts of the opportunities touched, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
+Set Agent choice on every piece of evidence you move, so the undo is never read as a correction later. Then recompute the stored counts of the opportunities touched, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## 4. Record
 

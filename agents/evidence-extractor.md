@@ -23,7 +23,7 @@ For each customer need in each item, return one row:
 | Kind | need, bug or question |
 | Account | The customer account; when the item is logged under the own company, the customer named in the text, or empty |
 | Account type | customer, prospect, internal or unknown |
-| Decision | the opportunity's name, `unattached`, `new candidate` or `out of scope` |
+| Decision | the opportunity's name, `unattached`, `new candidate` or `out of scope` (the calling skill writes it as Agent choice and Agent status) |
 | Confidence | high, medium or low |
 | Rationale | One sentence: why this decision; say when the feedback was relayed by a colleague or is a summary |
 

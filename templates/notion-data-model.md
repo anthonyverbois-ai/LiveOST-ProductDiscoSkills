@@ -87,7 +87,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
-| Agent choice | Text | Where the agent put it: the opportunity's name, `unattached` or `out of scope`. When it no longer matches Opportunity or Status, a person moved it |
+| Agent choice | Relation (Opportunities) | The opportunity the agent attached it to; empty when the agent left it unattached or out of scope. The agent updates it when it moves the evidence itself (merge, move, undo) |
+| Agent status | Select | attached, unattached, out of scope: the status the agent gave it. When Opportunity differs from Agent choice, or Status from Agent status, a person moved the evidence |
 | Duplicate of | Relation (Evidence) | The piece it repeats, from another source: shown with it, never counted again |
 | Status | Select | attached, unattached, proposed, out of scope |
 | Rationale | Text | One sentence: why this opportunity |
