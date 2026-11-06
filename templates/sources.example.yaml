@@ -104,6 +104,10 @@ schedule:
   notify: decisions-only    # decisions-only: notify when something waits for the user | every-run
 
 duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
+signals_window_days: 90     # window of the volumes written from signal sources
+unattached_window_weeks: 8  # unattached evidence older than this is no longer grouped into new proposals
+batch_tokens: 40000         # text per extraction batch (one or two call transcripts, or fifty tickets)
+paused: false               # true while a change of course is being reviewed: the runs skip the squad
 
 kind_weights:               # weight of each kind of evidence in the ranking (see "Kinds of evidence" in ost-rules)
   need: 1

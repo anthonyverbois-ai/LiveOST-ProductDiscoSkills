@@ -86,7 +86,7 @@ Count what the trial period holds (`trial_days`, the last 30 days by default) **
 
 > Before I start, here is what I will process for the last month: 34 calls (call recorder), 120 tickets (support tool), 18 documentation pages. Go?
 
-Count the useful rows of each feedback file the same way, from the date column for the last month. Add a line only when something looks wrong: a source returning nothing, partial access (for example only the user's own calls are visible), or extra material that cannot be read. For a large volume, add the expected duration (about 100 items per batch). Give more detail (sample items, filters, what is left out, duration) only if the user asks.
+Count the useful rows of each feedback file the same way, from the date column for the last month. Add a line only when something looks wrong: a source returning nothing, partial access (for example only the user's own calls are visible), or extra material that cannot be read. For a large volume, add the expected duration (batches of about 40,000 tokens of text: one or two call transcripts, or fifty tickets). Give more detail (sample items, filters, what is left out, duration) only if the user asks.
 
 Never start processing without the user's explicit go. If the user wants to change something, go back to the relevant source, then ask again.
 
