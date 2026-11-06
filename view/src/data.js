@@ -27,6 +27,7 @@ export const meta = {
     lines: [
       '12 pieces of evidence attached (9 to existing opportunities, 3 pending)',
       'Trending: “I lose time reformatting my exports” (+4 evidence, moved up from 3 to 2)',
+      'Done by the agent: created “I rebuild the same layout every month” under 1 (undo from the log)',
       'To decide: new opportunity “I’m not sure my numbers are up to date”',
       'Out of scope: 2 verbatims about other squads’ areas',
     ],
@@ -70,6 +71,8 @@ export const opportunities = [
     accounts: 6,
     lastEvidence: '2026-11-05',
     isNewToday: true,
+    byAgent: 'Created by the agent today: 4 pieces of evidence from 4 accounts express the same need, under an obvious parent. Undo it from the run log.',
+    byAgentLabel: 'Created by the agent'
   },
   {
     id: 'exports',
@@ -99,6 +102,8 @@ export const opportunities = [
   },
   {
     id: 'freshness',
+    proposedParent: null,
+    hesitation: 'Only 2 accounts so far: below the bar to add it on its own.',
     notion: 'https://www.notion.so/40f5d4385f6f81cd8e7ec19e4fe2d89a',
     name: 'I’m not sure my numbers are up to date',
     status: 'candidate',

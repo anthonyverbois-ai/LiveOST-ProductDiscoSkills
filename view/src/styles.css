@@ -175,6 +175,11 @@ body {
 .feature-filter { max-width: 100%; overflow-x: auto; padding-bottom: 2px; }
 .feature-filter > * { width: max-content; min-width: max-content; }
 
+.cand { display: flex; flex-direction: column; gap: var(--spacing-2); padding-top: var(--spacing-2); border-top: 1px solid var(--color-border); }
+.cand-where { margin: 0; font-size: var(--font-size-sm); }
+.cand-why { color: var(--color-text-secondary); }
+.by-agent { cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; }
+
 .outline { display: flex; flex-direction: column; gap: var(--spacing-3); max-width: 860px; }
 
 /* Pending decisions */
