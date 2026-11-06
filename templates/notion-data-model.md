@@ -71,6 +71,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Freshness asked on | Date | Set by the weekly synthesis when it asks whether a dormant opportunity is still current; cleared when evidence arrives |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
+| Summary | Text | Written by the plugin at creation, merge and reframe: a one-line definition and two representative verbatims. It is the compact tree summary every run and the extractor read, so the evidence base is never re-read to describe the tree |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
 | Ledger | Text | Written by the plugin at every attachment, move, merge or undo, and rebuilt when a shipped solution is linked: one line per customer or unknown account and per distinct static weight, with the latest date carrying it, for example `Contoso · calls · need · 2026-10-20`. Age and release weights are applied at score time, so the score is computed from it without reading the evidence (see "Ranking" in `ost-rules`) |
 | Score | Number | Written by the plugin from the Ledger (see "Ranking" in `ost-rules`): by the daily run for the opportunities it touched, by the weekly synthesis for all |
@@ -124,7 +125,10 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Run | Title | Date and type (daily, weekly, onboarding, change of course) |
+| Started at | Date (with time) | Written when the run starts, with Status `running` |
 | Finished at | Date (with time) | Shown as "last refresh" in the live view |
+| Duration | Number | Minutes from start to finish |
+| Recap | Text | The recap of the run, as sent (the live view shows the latest) |
 | Sources status | Text | Per source: OK, partial or failed at this run |
 | Plugin version | Text | Version of the plugin that ran |
 | Ingested | Number | Items read |

@@ -10,7 +10,7 @@ You extract customer evidence for the live-product-discovery plugin. Read `${CLA
 You receive, from the calling skill:
 - the squad's scope (owned areas, out-of-scope areas, segments) and its own company name;
 - the `active` rules learned from the squad's corrections;
-- a compact summary of the tree: each opportunity's name, a one-line definition and two or three representative verbatims;
+- a compact summary of the tree: each opportunity's name and its Summary property (a one-line definition and two representative verbatims);
 - a batch of items, each with its source type, source ID, date, account, link and text.
 
 For each customer need in each item, return one row:

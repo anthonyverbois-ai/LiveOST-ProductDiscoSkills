@@ -21,7 +21,7 @@ When a customer asks for a precise feature, look for the need behind the request
 ## 2. Group, from the specific up
 
 1. Put together the needs that describe the same situation and the same obstacle, even when worded differently. Test: the same solution would remove both. When in doubt, keep them apart: merging later is easier than splitting.
-2. Name each group as an opportunity, following `ost-rules`: the customer's point of view, their words, never a solution. Set its Product area from the areas the squad owns (the live view filters by it).
+2. Name each group as an opportunity, following `ost-rules`: the customer's point of view, their words, never a solution. Set its Product area from the areas the squad owns (the live view filters by it), and write its Summary: a one-line definition and two representative verbatims.
 3. Then look for broader needs. When three or more groups are cases of the same broader need, create that need as the parent and make the groups its sub-opportunities. A parent is a need a customer would recognize, never the name of a product area.
 4. Stop at three levels under the outcome.
 5. If the tree already exists, compare each group with it first. A group that duplicates an opportunity is folded into it. A group that is a more specific case of an opportunity becomes its sub-opportunity.
