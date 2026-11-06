@@ -24,6 +24,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 - Phrase every opportunity from the customer's point of view, in their words where possible: "I lose time reformatting my exports", not "Improve export formatting".
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
+- An opportunity holds one need. One that gathers evidence much faster than its siblings, with generic rationales, is often several needs under one name: propose a split.
 - An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
 - A `parked` opportunity moves none of the active outcomes. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
 - An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
