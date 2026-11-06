@@ -21,6 +21,8 @@ Rank opportunities following "Ranking" in `ost-rules`. Show what moved since las
 
 ## 2. Act or propose
 
+First apply the decisions the squad made since the last run, as in `daily-run` step 6.
+
 Read the release notes published since the last synthesis and check them against active opportunities, following the "Shipped features" rules in `ost-rules`.
 
 Read the backlog items created or changed since the last synthesis, following the "Backlog" rules in `ost-rules`: link items to opportunities or propose the links, and ask about the two gaps (backlog items with no opportunity, top opportunities with no solution in the backlog).
@@ -56,6 +58,10 @@ Report the trend of:
 - the share of proposals accepted without edits, and the share of the agent's own changes undone;
 - the number of changes undone this week;
 - the types of change the agent now makes on its own, and those that went back to proposals.
+
+## 6. Log
+
+Write one run log entry (type weekly) as in `daily-run` step 8: finish time, sources status, plugin version, counts, anomalies, and link every Changes row written by this synthesis to it. Write it even when nothing changed.
 
 ## Output
 

@@ -17,7 +17,7 @@ When several squads are set up, work on one squad only: the one named as argumen
 
 - Read the squad's Changes database. With "last" or no argument, show the latest changes with the status `applied by the agent`, newest first (date, one line, reason), and let the user pick one or several.
 - With a description ("the merge about exports yesterday"), find the matching rows and confirm the right one with the user.
-- Changes `applied by the agent` or `accepted` can be undone. A change still `proposed` was never applied: reject it instead (status `rejected`, and a correction).
+- Changes `applied by the agent`, or `accepted` and `edited` with an Applied on date, can be undone. A change still `proposed`, or decided but not yet applied (Applied on empty), was never carried out: reject it instead (status `rejected`, and a correction).
 
 ## 2. Check what else it affects
 
@@ -31,7 +31,8 @@ Restore the Before state of the change, by type:
 - **rename** and **reframe**: the previous name and parent. **move**: the previous parent.
 - **add solution**: remove the solution, or set it `dropped` when it already has assumptions.
 - **link shipped feature, link backlog item, mark shipped**: remove the link or the status, and restore the solution's previous status.
-- **mark addressed**: the opportunity is `active` again.
+- **mark addressed**: the opportunity is `active` again. **reactivate**: back to `addressed`.
+- **park**, **archive**: the previous status. **split**: merge the parts back into the original; the evidence returns to it.
 
 A re-rank is not undone: the ranking follows a written formula and the next run would redo it. To change the order, change a weight in the configuration, or correct the evidence behind it.
 
