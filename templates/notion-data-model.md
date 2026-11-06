@@ -176,7 +176,7 @@ Every structural change to the tree, made by the agent or proposed to the squad.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Change | Title | One line, for example "Merged 'A' into 'B'" |
-| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, reactivate, park, split, archive |
+| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, reactivate, activate, park, split, archive |
 | Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
 | Opportunities | Relation (Opportunities) | The opportunities it touches |
 | Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |

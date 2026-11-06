@@ -31,7 +31,7 @@ Restore the Before state of the change, by type:
 - **rename** and **reframe**: the previous name and parent. **move**: the previous parent.
 - **add solution**: remove the solution, or set it `dropped` when it already has assumptions.
 - **link shipped feature, link backlog item, mark shipped**: remove the link or the status, and restore the solution's previous status.
-- **mark addressed**: the opportunity is `active` again. **reactivate**: back to `addressed`.
+- **mark addressed**: the opportunity is `active` again. **reactivate**: back to `addressed`. **activate**: back to `candidate`.
 - **park**, **archive**: the previous status. **split**: merge the parts back into the original; the evidence returns to it.
 
 A re-rank is not undone: the ranking follows a written formula and the next run would redo it. To change the order, change a weight in the configuration, or correct the evidence behind it.
