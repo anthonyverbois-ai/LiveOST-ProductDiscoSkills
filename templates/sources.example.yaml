@@ -32,6 +32,7 @@ sources:
     tool: "call recorder name (e.g. Gong, Modjo)"
     via: connector          # connector | export-folder
     filter: "calls with customers of the squad's segments"
+    keep_contacts: false    # true copies the customer contact (name, email) into the Evidence database; false by default for every source
   tickets:
     tool: "support tool name (e.g. Zendesk, Intercom)"
     via: connector
