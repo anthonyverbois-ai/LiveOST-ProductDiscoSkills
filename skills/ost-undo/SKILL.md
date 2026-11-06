@@ -1,6 +1,6 @@
 ---
 name: ost-undo
-description: Reverses a change the agent made to the tree on its own (a creation, a merge, a rename, a move, a re-rank, a feature or backlog link, a status), moves the evidence back and records the undo as a correction the agent learns from.
+description: Reverses a change the agent made to the tree on its own (a creation, a merge, a rename, a move, a feature or backlog link, a status), moves the evidence back and records the undo as a correction the agent learns from.
 disable-model-invocation: true
 argument-hint: "[optional: squad name] [optional: the change to undo, or \"last\"]"
 ---
@@ -28,9 +28,11 @@ Later changes may build on this one: evidence attached since to a merged opportu
 Restore the Before state of the change, by type:
 - **create**: ask the user whether to keep the opportunity as a `candidate` or to archive it. Its evidence goes back to `unattached` when it is archived.
 - **merge**: the merged opportunity is `active` again, with its name and parent; the evidence it brought (Evidence moved) goes back to it. Evidence attached since the merge stays where it is, unless the user moves it.
-- **rename**: the previous name. **move**: the previous parent. **re-rank**: the previous order of the siblings.
+- **rename**: the previous name. **move**: the previous parent.
 - **link shipped feature, link backlog item, mark shipped**: remove the link or the status, and restore the solution's previous status.
 - **mark addressed**: the opportunity is `active` again.
+
+A re-rank is not undone: the ranking follows a written formula and the next run would redo it. To change the order, change a weight in the configuration, or correct the evidence behind it.
 
 Then recompute the stored counts of the opportunities touched, as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 

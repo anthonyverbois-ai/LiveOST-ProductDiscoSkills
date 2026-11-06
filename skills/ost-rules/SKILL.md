@@ -110,7 +110,7 @@ Classify each piece of evidence when you extract it:
 
 Rank opportunities among their siblings the same way at every run, so a rank moves only when its inputs move.
 
-1. **Score**: the sum, over the distinct customer accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight.
+1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight.
    - Age weight: 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond.
    - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
    - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
@@ -123,8 +123,8 @@ Write the score on the opportunity. Candidates, parked and addressed opportuniti
 
 The agent earns its autonomy, one type of change at a time: it proposes until the squad's decisions show it gets that type right, then acts on its own whenever it is sure.
 
-- **Always on its own**: attach evidence, update counts and dates, flag a trend.
-- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, re-rank, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when the squad has accepted, without edits, at least 9 of the last 10 proposals of that type (`autonomy_threshold` in the configuration), counted from the Changes database. Opportunities created at onboarding count: those the squad keeps after the quick review are accepted creations. Once a type is automatic, act alone only when all of these hold:
+- **Always on its own**: attach evidence, update counts, scores and ranks (the ranking follows the written formula above), flag a trend.
+- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when the squad has accepted, without edits, at least 9 of the last 10 proposals of that type (`autonomy_threshold` in the configuration), counted from the Changes database. Opportunities created at onboarding count: those the squad keeps after the quick review are accepted creations. Once a type is automatic, act alone only when all of these hold:
   - the evidence is clear. A new opportunity: at least 3 pieces from 3 different accounts express the same need, with an obvious parent and no close opportunity. A merge: the two opportunities say the same thing. A shipped feature or a backlog item: the source describes it explicitly. `addressed`: the waiting period has passed with no evidence and, when usage data exists, the feature is used.
   - no learned rule and no past decision of the squad goes against it.
 

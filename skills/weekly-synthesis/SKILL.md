@@ -54,7 +54,7 @@ When the outcome query is set up, report the outcome's metric and its trend, and
 Report the trend of:
 - the share of evidence correctly attached, measured on the test cases built from the squad's corrections;
 - the share of proposals accepted without edits, and the share of the agent's own changes undone;
-- the number of changes undone this week.
+- the number of changes undone this week;
 - the types of change the agent now makes on its own, and those that went back to proposals.
 
 ## Output
