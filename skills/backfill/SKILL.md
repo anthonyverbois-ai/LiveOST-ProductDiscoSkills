@@ -35,7 +35,7 @@ When all batches are done:
 
 1. Turn the candidate list into opportunities following `build-tree`, comparing it with the existing tree: candidates that describe the same need are merged, and a candidate that duplicates an opportunity is folded into it.
 2. Check the opportunities that grew against shipped features too, following the "Shipped features" rules in `ost-rules`.
-3. Only then propose the new opportunities, each with its evidence count, accounts and link to the outcome.
+3. Only then create or propose the new opportunities, following "Changes and autonomy" in `ost-rules`, each with its evidence count, accounts and link to the outcome.
 
 ## Review by sample
 
