@@ -69,7 +69,8 @@ Every other skill in this plugin follows these rules. When a rule and a user req
   - Read only the channels named in the configuration. Never read other channels or private messages, and never post.
   - Read each message with its whole thread: the need is often stated, completed or contradicted in the replies.
   - Take the evidence from the message or reply that states the need, and keep its permalink as the source link, so the Notion card opens that exact message. Use the message or reply ID as the source ID.
-  - Most messages are reported by a colleague ("a customer told me…"). Mark them so in the rationale and lower the confidence by one level, unless the message quotes the customer word for word.
+  - Most messages are feedback relayed by a colleague ("a customer told me…"). Always capture it: relayed feedback is evidence like any other and counts toward its opportunity. Say in the rationale that it was relayed. Its confidence reflects how sure the attachment is, as for any evidence, not the fact that it was relayed.
+  - When the message names no account, still capture it, with the account left empty: it counts as evidence but not as an account.
   - Keep the customer need, the account and the link. Do not store the name of the colleague who posted.
   - These channels cover the whole product and get no filter at the source: the scope check above does the filtering. Messages with no customer need (announcements, internal chat) are skipped, not stored.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
