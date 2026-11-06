@@ -65,6 +65,8 @@ skills/
   backfill/            processing large volumes: batches, resume, deduplication
   daily-run/           daily ingestion, attachment, recap and log
   weekly-synthesis/    ranking, structural changes, learning loop
+agents/
+  evidence-extractor   extraction and classification of a batch, on a fast model
 templates/             Notion data model and sources config example
 docs/                  specifications of upcoming versions (live view)
 ```

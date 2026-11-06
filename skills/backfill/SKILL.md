@@ -51,5 +51,5 @@ Record every correction in the corrections database. If the random sample shows 
 
 ## Cost and speed
 
-- Prefer a fast, low-cost model for extraction and classification where the environment allows it, and a stronger one for consolidation and synthesis.
+- Extract and classify each batch with the plugin's `live-product-discovery:evidence-extractor` agent, which runs on a fast, low-cost model, and keep consolidation and synthesis in the main session. When the agent is not available (for example in a scheduled run where the plugin is not installed), extract and classify yourself.
 - Writes to the tree's workspace are rate-limited: group them, and expect a full history of several thousand items to take hours rather than minutes. Give the user that estimate before the go.
