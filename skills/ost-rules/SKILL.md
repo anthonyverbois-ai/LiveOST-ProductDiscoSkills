@@ -65,6 +65,13 @@ Every other skill in this plugin follows these rules. When a rule and a user req
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
 - Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.
 - Report revenue at the level of an opportunity (the total ARR of the accounts concerned), never per customer in the recap.
+- Team chat channels (for example a Slack or Teams channel where colleagues share customer feedback) are evidence too, with these rules:
+  - Read only the channels named in the configuration. Never read other channels or private messages, and never post.
+  - Read each message with its whole thread: the need is often stated, completed or contradicted in the replies.
+  - Take the evidence from the message or reply that states the need, and keep its permalink as the source link, so the Notion card opens that exact message. Use the message or reply ID as the source ID.
+  - Most messages are reported by a colleague ("a customer told me…"). Mark them so in the rationale and lower the confidence by one level, unless the message quotes the customer word for word.
+  - Keep the customer need, the account and the link. Do not store the name of the colleague who posted.
+  - These channels cover the whole product and get no filter at the source: the scope check above does the filtering. Messages with no customer need (announcements, internal chat) are skipped, not stored.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Changes and autonomy

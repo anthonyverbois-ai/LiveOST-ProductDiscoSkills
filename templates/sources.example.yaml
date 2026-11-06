@@ -32,6 +32,11 @@ sources:
     tool: "support tool name (e.g. Zendesk, Intercom)"
     via: connector
     filter: "tickets tagged with the squad's product area"
+  team_channels:
+    tool: "team chat (e.g. Slack, Microsoft Teams)"
+    via: connector
+    channels: ["#customer-feedback"]   # only these channels are read; never other channels or private messages
+    filter: "none at the source: these channels cover the whole product, the scope check filters each message"
   quantitative:
     tool: "data warehouse or analytics agent (e.g. MotherDuck, nao, Amplitude)"
     via: connector
