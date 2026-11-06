@@ -23,7 +23,8 @@ Skip this step when a source is only removed. A file of customer feedback has no
 
 1. Detect whether a connector for the new tool is already connected. If not, ask the user to connect it: the user authenticates, never the agent.
 2. Run a test read and show a sample, as in onboarding step 2.
-3. Set the filters from the squad's scope, as in onboarding step 2.
+3. Set the filters from the squad's scope: list the new tool's tags, categories or trackers and let the user map the scope onto them, as in onboarding step 2. The old tool's tags do not carry over.
+4. Review the `active` rules of kind `scope` or `attachment` that name the old tool or its tags: propose a rewrite for the new tool, or retire them.
 
 ## Step 3 – Switch without breaking anything
 
@@ -33,7 +34,7 @@ For **quantitative data**:
 2. Compare the new results with the last figures from the old tool: total ARR, accounts matched, usage of the squad's features, the outcome's metric. If the old tool can still be read, run both once on the same period.
 3. Show the differences. If they are large enough to change the ranking, say which opportunities would move and why, and switch only after the user's go.
 
-For a source of **evidence** (calls, tickets, team channels):
+For a source of **evidence** (calls, tickets, team channels, insight platforms, interview notes):
 
 1. Start reading the new tool where the old one stopped: from the old source's last successful read, or from the date the user gives.
 2. If the new tool holds history the old one already covered (a migration), do not import it again. Propose a backfill (see `backfill`) only for periods no source covered.
@@ -41,7 +42,7 @@ For a source of **evidence** (calls, tickets, team channels):
 
 ## Step 4 – Keep a trace
 
-1. Keep all evidence already collected. Tell the user that its links will stop working if the old tool is cancelled.
+1. Keep all evidence already collected. Tell the user that its links will stop working if the old tool is cancelled. When the migration kept a mapping from old to new IDs (an export, or the old ID in a field of the new tool), offer to rewrite the source links of the old evidence; otherwise write the old tool's name in each piece's Source type detail so the links can be rebuilt later.
 2. In the Sources database, mark the old row `replaced` (or `removed`), with the date and, for a replacement, the new tool in its detail. Add a row for the new tool with its test result.
 3. Update the squad's configuration page (see `${CLAUDE_PLUGIN_ROOT}/templates/sources.example.yaml`), then read it back.
 4. Write the change in the run log. The next daily recap opens with it.

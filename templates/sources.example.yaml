@@ -32,6 +32,7 @@ sources:
     tool: "call recorder name (e.g. Gong, Modjo)"
     via: connector          # connector | export-folder
     filter: "calls with customers of the squad's segments"
+    keep_contacts: false    # true copies the customer contact (name, email) into the Evidence database; false by default for every source
   tickets:
     tool: "support tool name (e.g. Zendesk, Intercom)"
     via: connector
@@ -42,11 +43,15 @@ sources:
     via: connector
     channels: ["#customer-feedback"]   # only these channels are read; never other channels or private messages
     filter: "none at the source: these channels cover the whole product, the scope check filters each message"
+  interviews:
+    tool: "where the squad writes up its customer interviews (e.g. a Notion database)"
+    via: connector
+    use: evidence           # one interview note is one item, read like a call; a cloud run can read a Notion database, not a local folder
   insights:
     tool: "insight platform (e.g. a product feedback tool or a research repository)"
     via: connector
     use: evidence           # insights are already extracted: read them, never the conversations behind them
-    covers: ["calls"]       # conversations this platform already reads: they are read here only, not from the call recorder too
+    covers: {calls: some}   # some: both are read and an insight linked to its call is a duplicate of it | all: the call recorder is not read on its own
   ticket_signals:
     tool: "support tool or data warehouse holding ticket categories without their text"
     via: connector
@@ -82,6 +87,7 @@ sources:
 imports:                    # files of customer feedback, mapped with the user during onboarding
   - file: "feedback-export.csv"
     kind: survey            # survey | import
+    rank_weight: 1          # weight in the ranking, as for any source
     columns:                # column names in the file; null when the file has none
       verbatim: "Comment"
       date: "Created at"
@@ -100,9 +106,13 @@ schedule:
   runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
-  notify: decisions-only    # decisions-only: notify when something waits for the user | every-run
+  notify: decisions-only    # decisions-only: notify when something waits for the user or the agent changed the tree on its own | every-run
 
 duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
+signals_window_days: 90     # window of the volumes written from signal sources
+unattached_window_weeks: 8  # unattached evidence older than this is no longer grouped into new proposals
+batch_tokens: 40000         # text per extraction batch (one or two call transcripts, or fifty tickets)
+paused: false               # true while a change of course is being reviewed: the runs skip the squad
 
 kind_weights:               # weight of each kind of evidence in the ranking (see "Kinds of evidence" in ost-rules)
   need: 1
@@ -123,5 +133,6 @@ autonomy: earned            # earned: each type of change is proposed until the 
 autonomy_threshold:
   accepted: 4
   of_last: 5
+autonomy_per_type: {}       # overrides for one type, e.g. {merge: propose} or {rename: auto}; ost-undo offers to set it
 trial_days: 30              # trial batch processed and reviewed first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"

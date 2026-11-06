@@ -4,7 +4,7 @@
 
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery. Every day, an agent reads your squad's new customer calls and support tickets, attaches each piece of customer evidence to the right opportunity in your tree, and tells you exactly what changed. Your team stays in charge of the decisions; the agent does the linking.
 
-> Status: **v0.1 in progress.** The structure is in place; the skills are being written and tested on real squads.
+> Status: **v0.1 in progress.** The skills are written and have been through four reviews on paper; the plugin has not yet run on a real squad. Expect rough edges on the first onboarding.
 
 ## Why
 
@@ -37,6 +37,7 @@ Design principles:
 - **v0.1 – The living tree**: onboarding, daily run, recap and log, weekly synthesis.
 - **v0.2 – The live view**: an always-up-to-date visual of the tree, with what changed today, one-click approvals, the last refresh date and the tree's changelog. See [docs/live-view.md](docs/live-view.md).
 - **v0.3 – Solution discovery**: prototypes for solutions under test, compared side by side, and draft outreach to the customers who raised the pain.
+- **Later**: writing back to the product feedback tool (one hierarchy, not two), filling the Assumptions database from the squad's tests, and a cost report per run.
 
 ## Install
 

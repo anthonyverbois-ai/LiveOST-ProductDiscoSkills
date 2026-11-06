@@ -39,8 +39,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
   - Kinds: the number of needs, bugs and questions among that evidence.
-  - Ledger: per account, the inputs of its best piece of evidence (see "Ranking" in `ost-rules`).
-- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are different: they are refreshed for every ranked opportunity at each daily run, from the Ledger property alone.
+  - Ledger: per account and static weight, the latest date (see "Ranking" in `ost-rules`).
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
@@ -71,9 +71,10 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Freshness asked on | Date | Set by the weekly synthesis when it asks whether a dormant opportunity is still current; cleared when evidence arrives |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
+| Summary | Text | Written by the plugin at creation, merge and reframe: a one-line definition and two representative verbatims. It is the compact tree summary every run and the extractor read, so the evidence base is never re-read to describe the tree |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
-| Ledger | Text | Written by the plugin at every attachment, move or undo: one line per customer or unknown account with the inputs of its best piece of evidence (source, kind, date, before or after release), for example `Contoso · call · need · 2026-10-20 · after`. The score is computed from it without reading the evidence |
-| Score | Number | Written by the plugin from the Ledger (see "Ranking" in `ost-rules`); refreshed by the daily run |
+| Ledger | Text | Written by the plugin at every attachment, move, merge or undo, and rebuilt when a shipped solution is linked: one line per customer or unknown account and per distinct static weight, with the latest date carrying it, for example `Contoso · calls · need · 2026-10-20`. Age and release weights are applied at score time, so the score is computed from it without reading the evidence (see "Ranking" in `ost-rules`) |
+| Score | Number | Written by the plugin from the Ledger (see "Ranking" in `ost-rules`): by the daily run for the opportunities it touched, by the weekly synthesis for all |
 | Rank | Number | Order among its siblings, from the score; written when the tree is built (`build-tree`), then by the weekly synthesis only |
 
 ## Evidence
@@ -124,7 +125,10 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Run | Title | Date and type (daily, weekly, onboarding, change of course) |
+| Started at | Date (with time) | Written when the run starts, with Status `running` |
 | Finished at | Date (with time) | Shown as "last refresh" in the live view |
+| Duration | Number | Minutes from start to finish |
+| Recap | Text | The recap of the run, as sent (the live view shows the latest) |
 | Sources status | Text | Per source: OK, partial or failed at this run |
 | Plugin version | Text | Version of the plugin that ran |
 | Ingested | Number | Items read |
@@ -140,7 +144,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 
 | Property | Type | Notes |
 | --- | --- | --- |
-| Source | Title | The kind of input: calls, tickets, team channels, insights, signals, file imports, quantitative, documentation, release notes, backlog |
+| Source | Title | The kind of input: calls, tickets, team channels, interviews, insights, signals, file imports, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
 | Status | Select | ok (green), partial (yellow), failed (red), not connected (gray), replaced or removed (default, kept for history) |
 | Last successful read | Date (with time) | |
@@ -176,7 +180,7 @@ Every structural change to the tree, made by the agent or proposed to the squad.
 | Property | Type | Notes |
 | --- | --- | --- |
 | Change | Title | One line, for example "Merged 'A' into 'B'" |
-| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, reactivate, park, split, archive |
+| Type | Select | create, merge, rename, reframe, move, re-rank, add solution, link shipped feature, link backlog item, mark shipped, mark addressed, reactivate, activate, park, split, archive |
 | Status | Select | proposed, applied by the agent, accepted, edited, rejected, undone |
 | Opportunities | Relation (Opportunities) | The opportunities it touches |
 | Evidence moved | Relation (Evidence) | The evidence it moved, so it can be moved back |

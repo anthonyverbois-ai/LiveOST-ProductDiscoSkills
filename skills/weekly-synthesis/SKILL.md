@@ -15,13 +15,11 @@ Record the health of the sources this synthesis reads (documentation, release no
 
 Work from this week's evidence and the counts stored on each opportunity; never re-read the whole evidence base. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
-## 1. Rank
+## 1. Open the run and apply decisions
 
-Rank opportunities following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
+Create the run log entry (type weekly, Started at, Status `running`), then apply the decisions the squad made since the last run, as in `daily-run` step 2.
 
 ## 2. Act or propose
-
-First apply the decisions the squad made since the last run, as in `daily-run` step 6.
 
 Read the release notes published since the last synthesis and check them against active opportunities, following the "Shipped features" rules in `ost-rules`.
 
@@ -33,14 +31,18 @@ Check the opportunities that grew most this week for catch-alls: read about ten 
 
 Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence and is written to the Changes database. List the assumptions worth testing next for solutions in progress. Name the opportunities where bugs make up most of the evidence, following "Kinds of evidence" in `ost-rules`.
 
-## 3. Learn
+## 3. Rank
+
+Refresh every ranked opportunity's score from its ledger, then rank the siblings following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
+
+## 4. Learn
 
 1. Read the corrections logged this week: evidence moved by a human, proposals rejected, changes undone. Evidence edited this week whose Opportunity differs from its Agent choice, or whose Status differs from its Agent status, was moved by a person: log it as a correction first.
 2. Group them by pattern and draft a rule for each recurring pattern (for example: "Remarks about exports belong under opportunity X, not Y"). Write it to the Rules database as `proposed`, linked to its corrections, with its Outcome set when it only makes sense under one active outcome.
 3. Replay each draft rule on its test cases (the corrections it comes from) and on a sample of about 30 past attachments of the opportunities it names, never on the whole evidence base. Keep it only if it fixes the corrected cases without changing the sampled ones that were right.
-4. Small rules that pass the replay become `active`; deeper changes stay `proposed` and are listed for the user to approve. Write the replay result on each rule.
+4. Rules of kind `attachment` or `scope` (where evidence goes) that pass the replay become `active`; rules of kind `structure` or `ranking` stay `proposed` and are listed for the user to approve. Write the replay result and the Kind on each rule.
 
-## 4. Watch for drift
+## 5. Watch for drift
 
 Flag a possible drift when the evidence no longer matches the active outcomes, for example:
 - a growing share of new evidence fits no active opportunity, or lands on parked ones;
@@ -49,7 +51,7 @@ Flag a possible drift when the evidence no longer matches the active outcomes, f
 
 With no outcome yet, skip this check. Report the signal with its evidence and suggest discussing it with the squad. Never change the outcome or the north star: if the user confirms a change of course, they run `ost-change-outcome`.
 
-## 5. Measure
+## 6. Measure
 
 When the outcome query is set up, report the outcome's metric and its trend, and note which shipped solutions may have moved it.
 
@@ -59,9 +61,9 @@ Report the trend of:
 - the number of changes undone this week;
 - the types of change the agent now makes on its own, and those that went back to proposals.
 
-## 6. Log
+## 7. Close the run
 
-Write one run log entry (type weekly) as in `daily-run` step 8: finish time, sources status, plugin version, counts, anomalies, and link every Changes row written by this synthesis to it. Write it even when nothing changed.
+Complete the run log entry as in `daily-run` step 8: counts, anomalies, sources status, plugin version, Finished at, Duration, Status `finished`, the one-page summary as Recap, and every Changes row written by this synthesis linked to it. Close it even when nothing changed.
 
 ## Output
 

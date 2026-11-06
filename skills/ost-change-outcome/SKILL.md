@@ -1,6 +1,6 @@
 ---
 name: ost-change-outcome
-description: Re-anchors the tree when the squad changes course - an outcome added, replaced or retired, a first outcome for a squad that had none, or a new north star. Archives the current tree, re-evaluates every opportunity against the new direction, parks what no longer fits and reviews it with the squad. Nothing is deleted.
+description: Re-anchors the tree when the squad changes course - an outcome added, replaced or retired, a first outcome for a squad that had none, or a new north star. Snapshots the current tree, pauses the runs, re-evaluates every opportunity against the new direction, parks what no longer fits and reviews it with the squad. Nothing is deleted.
 disable-model-invocation: true
 argument-hint: "[optional: squad name] [optional: the new outcome or north star]"
 ---
@@ -26,13 +26,14 @@ The agent never changes the outcome or the north star on its own. It runs this s
 Record the current state before changing anything:
 - mark the replaced or retired outcome `past`, with its end date and the reason for the change;
 - create the new outcome as `active`, with its start date;
-- save a snapshot entry in the run log: the old outcome and the list of opportunities with their evidence counts and ranks.
+- save a snapshot entry in the run log: the old outcome and the list of opportunities with their evidence counts and ranks;
+- set `paused: true` in the configuration: the daily and weekly runs skip the squad until step 7 clears it, so nothing writes to a half-reviewed tree.
 
 Nothing is deleted. Evidence belongs to customers, not to an outcome: every piece of evidence stays in place.
 
 ## Step 3 – Re-evaluate every opportunity
 
-Go through the opportunities under the changed outcome (all of them when the squad had no outcome yet) and propose one decision for each; the opportunities of the other active outcomes do not change. Give each decision a one-sentence reason. Use the outcome test of `build-tree` (step 3) against the new outcome, or against the remaining active outcomes when one is retired:
+Go through the opportunities under the changed outcome, the parked ones included (some may fit the new direction), and all of them when the squad had no outcome yet. Propose one decision for each, grouped so the user decides branch by branch rather than one by one; the opportunities of the other active outcomes do not change. Give each decision a one-sentence reason. Use the outcome test of `build-tree` (step 3) against the new outcome, or against the remaining active outcomes when one is retired:
 - **keep**: still relevant to the new outcome, as is;
 - **reframe**: relevant if reworded or moved to another branch;
 - **park**: moves none of the active outcomes. Parked opportunities keep their evidence and keep receiving new evidence, but are not ranked. They can come back later.
@@ -55,7 +56,7 @@ Then review the learned rules: keep rules about how customers express needs; fla
 
 ## Step 7 – Restart
 
-1. Write the reviewed tree. Rewrite the configuration block (`outcomes`, `north_star`), then read it back: the Outcomes database is the source of truth for the active outcomes, and the configuration mirrors it.
+1. Write the reviewed tree. Rewrite the configuration block (`outcomes`, `north_star`, `paused: false`), then read it back: the Outcomes database is the source of truth for the active outcomes, and the configuration mirrors it.
 2. End with a summary: old and new direction, number of opportunities kept, reframed, parked and added, source changes, and what the next daily recap will show.
 
 The next daily recap opens with one line on the change of course.
