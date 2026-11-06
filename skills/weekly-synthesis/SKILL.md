@@ -7,11 +7,13 @@ description: The weekly synthesis of live-product-discovery. Re-ranks opportunit
 
 You run unattended. Follow `ost-rules`. The output feeds a 30-minute review with the squad.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 When several squads are set up, run the synthesis for each squad in turn, from its own tree and its own corrections: a rule learned for one squad never applies to another. Send the summaries together, one section per squad.
 
 Record the health of the sources this synthesis reads (documentation, release notes, backlog, quantitative data) in the Sources database, as `daily-run` does.
 
-Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base. Read Notion and compute the counts as described in "Reading the databases" in `templates/notion-data-model.md`.
+Work from this week's evidence and the opportunities' counts and dates; never re-read the whole evidence base. Read Notion and compute the counts as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## 1. Rank
 

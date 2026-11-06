@@ -35,3 +35,6 @@ All notable changes to this plugin are listed here.
 - Reading Notion works on every plan, free included: the plugin and the live view read one database per query, and compute evidence counts, accounts and last-evidence dates themselves instead of reading the rollups, which the Notion connector does not return as values. A grouped count is used when the plan allows it. Rules in "Reading the databases" in `templates/notion-data-model.md`.
 - The repository is now `anthonyverbois-ai/LiveOST-ProductDiscoSkills`: the install command and the plugin manifest links point to the new name. The plugin name and its commands (`/live-product-discovery:…`) are unchanged.
 - The plugin is now presented as LiveOST: README title, contribution guide and display name. Its technical name and commands (`/live-product-discovery:…`) are unchanged, so existing installs keep working.
+
+### Fixed
+- Plugin files are found once the plugin is installed: skills point to the templates and to each other with `${CLAUDE_PLUGIN_ROOT}` and the plugin's skill names (`live-product-discovery:<name>`), instead of paths relative to the user's working folder.

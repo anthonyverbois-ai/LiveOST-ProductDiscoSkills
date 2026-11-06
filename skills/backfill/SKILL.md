@@ -8,11 +8,13 @@ user-invocable: false
 
 Use this whenever more items must be processed than fit comfortably in one pass: the onboarding's trial batch (step 5) and full history (step 8), or the history of a source added during a change of course. Follow `ost-rules` throughout. A full history can hold thousands of items: never try to read them all at once.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 ## Before starting
 
 1. Load the scope, the sources configuration, the current tree and the learned rules.
 2. List the items in scope from metadata only (ID, date, title), oldest first.
-3. For team channels, an item is a message with its whole thread. Drop every item whose source ID is already in the evidence database: it was ingested before. This makes a restart safe. Read Notion as described in "Reading the databases" in `templates/notion-data-model.md`.
+3. For team channels, an item is a message with its whole thread. Drop every item whose source ID is already in the evidence database: it was ingested before. This makes a restart safe. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 4. If the run log holds an unfinished backfill of the same scope, resume from its checkpoint instead of starting over, and tell the user.
 
 ## Batches

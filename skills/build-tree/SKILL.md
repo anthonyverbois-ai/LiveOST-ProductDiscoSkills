@@ -8,7 +8,9 @@ user-invocable: false
 
 Use this whenever evidence must become opportunities: the onboarding's first tree, the candidates found during a change of course, and the consolidation at the end of a backfill. `ost-rules` says what a well-formed opportunity is; this skill says how to get there.
 
-Work from evidence already extracted and checked for scope. Do not re-read the sources here. Read Notion as described in "Reading the databases" in `templates/notion-data-model.md`.
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
+Work from evidence already extracted and checked for scope. Do not re-read the sources here. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
 ## 1. Write the need behind each piece of evidence
 

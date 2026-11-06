@@ -8,6 +8,8 @@ user-invocable: false
 
 Every other skill in this plugin follows these rules. When a rule and a user request conflict, explain the conflict and let the user decide.
 
+Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`.
+
 ## Structure
 
 - The tree has one **active outcome** at the top. The squad sets it; the agent never creates or changes it.
