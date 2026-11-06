@@ -60,9 +60,9 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Verbatim | Title | Exact customer words |
-| Source type | Select | call, ticket, interview, other |
-| Source ID | Text | ID of the call, ticket or document in its source tool; used to never ingest it twice |
-| Source link | URL | Link to the original |
+| Source type | Select | call, ticket, message, interview, other |
+| Source ID | Text | ID of the call, ticket, message or document in its source tool; used to never ingest it twice |
+| Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply |
 | Account | Text | |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
@@ -111,7 +111,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 
 | Property | Type | Notes |
 | --- | --- | --- |
-| Source | Title | The kind of input: calls, tickets, quantitative, documentation, release notes, backlog |
+| Source | Title | The kind of input: calls, tickets, team channels, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
 | Status | Select | ok (green), partial (yellow), failed (red), not connected (gray) |
 | Last successful read | Date (with time) | |
