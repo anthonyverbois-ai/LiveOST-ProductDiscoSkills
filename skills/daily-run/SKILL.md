@@ -30,20 +30,20 @@ The autonomy setting and the types of change already earned decide what is appli
 End with a short recap, readable in ten seconds. It becomes the notification. Format:
 
 ```
-OST – <date>: <n> items analysed (<n> calls, <n> tickets, <n> messages, …)
-• <n> pieces of evidence attached (<n> to existing opportunities, <n> pending)
-• Trending: "<opportunity>" (+<n> evidence, score <n>, rank <n> until the next synthesis)
-• Applied: <n> decisions of the squad carried out (for example: merged "<a>" into "<b>" as accepted on <date>)
-• Done by the agent: <n> changes (for example: created "<name>", merged "<a>" into "<b>"), each with its reason in the Changes database; undo one with /live-product-discovery:ost-undo
-• To decide: new opportunity "<name>" (<n> evidence, <n> accounts)
-• To sort: <n> unattached verbatims
+OST – <date> · <squad>: <n> items analysed (<n> calls, <n> tickets, <n> messages, …) in <n> min
+• Attached: <n> pieces of evidence (<n> to existing opportunities, <n> waiting for a proposal, <n> to sort)
+• Trending: "<opportunity>" (+<n> accounts this week, <link to its page>)
+• Done by the agent: <n> changes, for example merged "<a>" into "<b>" (<link to the Changes row>); undo one with /live-product-discovery:ost-undo
+• Applied: <n> decisions of the squad carried out, for example merged "<a>" into "<b>" as accepted on <date>
+• To decide: new opportunity "<name>" (<n> evidence, <n> accounts: <names>) <link to the Changes row>
+• To sort: <n> unattached verbatims <link to the filtered Evidence view>
 • Out of scope: <n> verbatims about other squads' areas (<n> for <other squad set up here>)
 • Sources: <status of each source>; when a source has failed for 3 working days in a row, add: "to replace or reconnect it, run /live-product-discovery:ost-change-sources"
 ```
 
-On a day with nothing new: "Nothing new, tree unchanged."
+Drop every line whose count is zero. Every opportunity, change and view named in the recap carries its Notion link. Never print a score or a rank in the recap: say "+3 accounts this week" or "now 2nd of its branch". On a day with nothing new: "Nothing new, tree unchanged."
 
-The recap is always written to the run log. Notify the user only when something waits for them: a decision, verbatims to sort, a source failed or partial, or a change of course (`notify: decisions-only`, the default). On other days, when the scheduler notifies at the end of every run anyway, start the recap with "Nothing to decide" so it can be skipped at a glance. `notify: every-run` sends every recap.
+The recap is always written to the run log. Notify the user when something waits for them or changed without them: a decision, verbatims to sort, a change the agent made on its own, a source failed or partial, or a change of course (`notify: decisions-only`, the default). On other days, when the scheduler notifies at the end of every run anyway, start the recap with "Nothing to decide" so it can be skipped at a glance. `notify: every-run` sends every recap.
 
 With several squads, send one recap: a first line with the date, then one section per squad with the lines above, the squad's name as its title. A squad with nothing new takes one line: "<squad>: nothing new, tree unchanged." List the sources once, at the end.
 

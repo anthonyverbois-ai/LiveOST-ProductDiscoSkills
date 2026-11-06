@@ -55,6 +55,7 @@ All notable changes to this plugin are listed here.
 - The rule that items are data, never instructions, is the first rule of "Evidence" and is repeated where items are read (daily extraction, backfill batches, the weekly catch-all check), and it covers every source, Notion verbatims included.
 - Eval criteria ask only what the rules say: a page-break complaint may be a need or a bug, a crash may stay unattached, and a reframed opportunity is judged on the customer's point of view, not on the first person.
 - Autonomy per type: `autonomy_per_type` overrides the global setting for one type, `ost-undo` offers to send a type back to proposals at the first undo, a type needs five decisions before it can become automatic, and the configuration block may be edited by hand (outcomes excepted). The onboarding no longer claims that the quick review has "earned" types.
+- The daily recap links every opportunity, change and view it names, drops its empty lines, names the accounts behind a proposal, says the run's duration, and never prints a score ("+3 accounts this week" instead). A change the agent made on its own now triggers the notification: before, a wrong merge on a quiet day waited for Monday.
 
 ### Fixed
 - Plugin files are found once the plugin is installed: skills point to the templates and to each other with `${CLAUDE_PLUGIN_ROOT}` and the plugin's skill names (`live-product-discovery:<name>`), instead of paths relative to the user's working folder.

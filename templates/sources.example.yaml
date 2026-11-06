@@ -101,7 +101,7 @@ schedule:
   runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
-  notify: decisions-only    # decisions-only: notify when something waits for the user | every-run
+  notify: decisions-only    # decisions-only: notify when something waits for the user or the agent changed the tree on its own | every-run
 
 duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
 signals_window_days: 90     # window of the volumes written from signal sources
