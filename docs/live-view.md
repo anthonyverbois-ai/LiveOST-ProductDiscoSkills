@@ -26,6 +26,11 @@ Shown discreetly, at the bottom or in the margin of the page:
 - **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
 - **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), with the tool, the last successful read and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Replaced and removed sources are not shown. Read from the Sources database.
 - **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to its run. Built from the Changes database.
+- **Agent autonomy**: a small panel that shows what the agent does on its own and what it still proposes, one line per type of structural change, in three groups:
+  - **Done by the agent on its own**: the changes it always makes (attach evidence, update counts and ranks, …) and the types it has earned.
+  - **Still proposed**: for each type, its last 5 decisions as five dots, newest on the right (filled: accepted without edits; hollow: edited, rejected or undone; empty: no decision yet), and one plain sentence on what the threshold asks, for example "3 of the last 5 accepted as they were; it takes 4". A type sent back to proposals says since when, and that only decisions made after that date count.
+  - **Always decided by the squad**: the outcome and north star, park, split, archive.
+  When `autonomy_per_type` sets a type, the line says "set by the squad" instead of the dots. With `autonomy: proactive` or `propose-only`, one sentence states the setting instead. Never show the panel as a countdown, a progress bar or a percentage towards "full automation": some changes stay human by design, the dots can go back after an edit or an undo, and a squad that accepts proposals to unlock a type would distort the signal autonomy relies on. The panel informs; it is not a goal. Computed from the Changes database (the squad's decisions per type) and the configuration: no new data.
 - **Plugin version**: the version that produced the last run, with a link to the plugin's `CHANGELOG.md` on GitHub.
 
 ## Data it reads
@@ -57,6 +62,7 @@ The view is built with [Astryx](https://github.com/meta/astryx), Meta's open-sou
 | Approve or reject a pending proposal | `Button`, `Toast` |
 | Switching between tree, pending decisions and changelog | `TabList` |
 | Last refresh and source health | `Timestamp`, `StatusDot`, `Banner` |
+| Agent autonomy, one line per type | `MetadataList`, `StatusDot` |
 | Tree changelog and run details | `Table`, `MetadataList` |
 | Loading and empty states | `Skeleton`, `EmptyState` |
 
