@@ -110,6 +110,10 @@ freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"
   dormant_after_weeks: 24   # no evidence this long before asking whether an opportunity is still current
 
-autonomy: proactive         # proactive: acts alone when sure, proposes otherwise | propose-only
+autonomy: earned            # earned: each type of change is proposed until the squad accepts 9 of the last 10, then made alone when sure
+                            # proactive: made alone when sure from the first day | propose-only: every change is a proposal
+autonomy_threshold:
+  accepted: 9
+  of_last: 10
 trial_days: 30              # trial batch processed and reviewed first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"

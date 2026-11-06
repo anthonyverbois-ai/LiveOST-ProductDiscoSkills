@@ -107,18 +107,18 @@ Classify each piece of evidence when you extract it:
 
 ## Changes and autonomy
 
-The agent is proactive from the first day: it acts on its own whenever it is sure, and proposes only when it is not.
+The agent earns its autonomy, one type of change at a time: it proposes until the squad's decisions show it gets that type right, then acts on its own whenever it is sure.
 
 - **Always on its own**: attach evidence, update counts and dates, flag a trend.
-- **On its own when sure, proposed otherwise**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, re-rank, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Act alone only when all of these hold:
+- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, re-rank, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when the squad has accepted, without edits, at least 9 of the last 10 proposals of that type (`autonomy_threshold` in the configuration), counted from the Changes database. Opportunities created at onboarding count: those the squad keeps after the quick review are accepted creations. Once a type is automatic, act alone only when all of these hold:
   - the evidence is clear. A new opportunity: at least 3 pieces from 3 different accounts express the same need, with an obvious parent and no close opportunity. A merge: the two opportunities say the same thing. A shipped feature or a backlog item: the source describes it explicitly. `addressed`: the waiting period has passed with no evidence and, when usage data exists, the feature is used.
-  - no learned rule and no past decision of the squad goes against it;
-  - the squad has not undone this type of change twice in the last 4 weeks.
+  - no learned rule and no past decision of the squad goes against it.
 
   When one condition fails, propose instead.
+- A type goes back to proposals when the squad undoes it twice in 4 weeks. Say in the recap when a type becomes automatic or goes back, with the reason ("From now on, the agent merges duplicates on its own: 10 of the last 10 merges were accepted").
 - **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
 - Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
-- A squad that prefers to decide everything sets `autonomy: propose-only` in the configuration: then every change beyond attaching evidence and updating counts is a proposal.
+- `autonomy` in the configuration: `earned` (the default, above), `proactive` (every type is automatic from the first day, under the same conditions) or `propose-only` (every change beyond attaching evidence and updating counts is a proposal).
 
 ## Data handling
 

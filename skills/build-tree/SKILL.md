@@ -58,4 +58,4 @@ Below 2 pieces of evidence from 2 different accounts, an opportunity stays `cand
 
 Then present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
 
-Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval.
+Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval, and what the squad keeps counts as accepted creations.

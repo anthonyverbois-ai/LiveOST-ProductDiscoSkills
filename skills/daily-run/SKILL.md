@@ -22,7 +22,7 @@ When several squads are set up, run the steps below for each squad in turn, each
 6. **Act or propose**: if several unattached pieces point to the same new need, create the opportunity when the conditions in "Changes and autonomy" (`ost-rules`) hold; otherwise propose it. The same applies to every other structural change.
 7. **Log**: write one run log entry with what was ingested, what was attached and the anomalies. Write each change made on its own and each proposal to the Changes database, linked to that entry. Also record the finish time, the status of each source (OK, partial or failed) and the plugin version: they feed the "last refresh" and the tree changelog of the live view. Write the run log entry even when nothing changed, so the last refresh stays accurate.
 
-With `autonomy: propose-only`, every change beyond attaching evidence and updating counts is a proposal.
+The autonomy setting and the types of change already earned decide what is applied and what is proposed (see "Changes and autonomy" in `ost-rules`).
 
 ## Recap
 
