@@ -47,7 +47,7 @@ In Claude Code:
 /plugin install live-product-discovery@live-product-discovery
 ```
 
-Then run `/live-product-discovery:ost-setup` and follow the conversation.
+Then run `/live-product-discovery:ost-setup` and follow the conversation. At the end, it schedules the daily and weekly runs: a cloud scheduled task by default, so they run while your computer is off, or a desktop scheduled task if one of your sources is a local folder.
 
 Following several squads? Run the onboarding once per squad. Each squad gets its own tree, rules and live view, and a single daily recap covers them all.
 

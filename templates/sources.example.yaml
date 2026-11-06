@@ -74,13 +74,14 @@ imports:                    # files of customer feedback, mapped with the user d
       id: null              # no ID column: a stable ID is built from the file name and the row's content
       link: null
 
-export_folder: null         # folder read when a source uses via: export-folder
+export_folder: null         # folder read when a source uses via: export-folder; a cloud scheduled task cannot see it
 
 tree:
   workspace: notion
   location: "the page chosen during onboarding"
 
 schedule:
+  runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
   daily: "working days, early morning"
   weekly: "Monday morning"
 

@@ -39,3 +39,4 @@ All notable changes to this plugin are listed here.
 
 ### Fixed
 - Plugin files are found once the plugin is installed: skills point to the templates and to each other with `${CLAUDE_PLUGIN_ROOT}` and the plugin's skill names (`live-product-discovery:<name>`), instead of paths relative to the user's working folder.
+- The onboarding says where the scheduled runs live: a cloud scheduled task by default (runs with the computer off, sees no local file, so the plugin's repository is attached to it), a desktop scheduled task when a source is a local export folder, never a loop tied to the session. The task's prompt lists the squads' configuration pages. A daily run that cannot see an export folder marks it partial.
