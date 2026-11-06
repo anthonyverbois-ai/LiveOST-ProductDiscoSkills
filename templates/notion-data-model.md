@@ -38,6 +38,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - Evidence count: the evidence attached to the opportunity.
   - Accounts: the distinct Account values among that evidence.
   - Last evidence: the latest Date among that evidence.
+  - Kinds: the number of needs, bugs and questions among that evidence.
 - **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
@@ -66,6 +67,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Evidence count | Number | Written by the plugin: evidence attached |
 | Accounts | Number | Written by the plugin: distinct accounts among that evidence; used in the ranking |
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
+| Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
 | Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
@@ -73,6 +75,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | --- | --- | --- |
 | Verbatim | Title | Exact customer words |
 | Source type | Select | call, ticket, message, survey, import, interview, other |
+| Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |
 | Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply; empty for a file import |
 | Account | Text | |

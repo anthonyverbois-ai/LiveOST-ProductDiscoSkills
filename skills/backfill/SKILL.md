@@ -23,7 +23,7 @@ Process the items in batches of about 100, oldest first. A row of a feedback fil
 
 1. **Context, kept compact**: the scope, the learned rules, and a summary of the tree (each opportunity's name, a one-line definition and two or three representative verbatims). Never load the whole evidence base.
 2. **Extract** the needs and pain points with exact verbatims, and record each item's source ID.
-3. **Classify** each piece of evidence: out of scope, attached to an existing opportunity, or a new candidate. Give each attachment a confidence (high, medium, low) with its one-sentence rationale.
+3. **Classify** each piece of evidence: out of scope, attached to an existing opportunity, or a new candidate. Give it its kind (need, bug, question). Give each attachment a confidence (high, medium, low) with its one-sentence rationale.
 4. **Hold new candidates apart**: add them to the candidate list with their evidence, without creating opportunities in the tree yet.
 5. **Write** the batch to the evidence database in grouped writes (many rows per call), never one call per row.
 6. **Checkpoint**: update the run log entry with the last item processed per source and the running counts.

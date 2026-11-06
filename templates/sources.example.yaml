@@ -86,6 +86,11 @@ schedule:
   daily: "working days, early morning"
   weekly: "Monday morning"
 
+kind_weights:               # weight of each kind of evidence in the ranking (see "Kinds of evidence" in ost-rules)
+  need: 1
+  bug: 1
+  question: 1
+
 freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"
   dormant_after_weeks: 24   # no evidence this long before asking whether an opportunity is still current

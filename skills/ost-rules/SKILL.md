@@ -84,6 +84,17 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
   - The source type says what the file holds (survey, import). With no link to the original, leave the source link empty: the source ID names the file and row.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
+## Kinds of evidence
+
+Classify each piece of evidence when you extract it:
+- **need**: the customer wants to do something the product does not let them do well;
+- **bug**: the product does not work as it should (an error, a crash, a wrong result);
+- **question**: the customer does not know how to do something the product already does.
+
+- All three are evidence of a need and attach the same way: a bug blocks a need, and a question points to a need the product meets but customers do not find.
+- Show the split by kind on each opportunity. When bugs make up most of an opportunity's evidence, say so in the weekly synthesis: it may call for fixes, through the squad's bug process, more than for discovery.
+- The configuration can weigh each kind in the ranking (`kind_weights`, 1 each by default).
+
 ## Changes and autonomy
 
 The agent is proactive from the first day: it acts on its own whenever it is sure, and proposes only when it is not.
