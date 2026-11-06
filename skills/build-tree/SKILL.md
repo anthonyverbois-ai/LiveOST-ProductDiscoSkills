@@ -28,10 +28,10 @@ When a customer asks for a precise feature, look for the need behind the request
 
 ## 3. Test the link to the outcome
 
-For each top-level opportunity, answer in one sentence: if this need were fully met, would the outcome move?
+For each top-level opportunity and each active outcome, answer in one sentence: if this need were fully met, would this outcome move? Link the opportunity to the outcome it moves most. With no outcome yet, skip this step: every opportunity in scope stays in the tree.
 
 - **Clear link**: it stays in the tree.
-- **No link**, though within the squad's scope: propose it as `parked`, with the sentence. It keeps its evidence and comes back if the outcome changes.
+- **No link** to any active outcome, though within the squad's scope: propose it as `parked`, with the sentence. It keeps its evidence and comes back if the outcome changes.
 - **Unsure**: keep it, and flag it for the user to decide.
 
 Sub-opportunities follow their parent. Check them only when they drift from the parent's topic.

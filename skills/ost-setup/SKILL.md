@@ -42,10 +42,12 @@ If the squad has no name yet, ask for it (see "Several squads"). Then ask for th
 - **how the scope shows up in the sources**: ticket tags or categories, call topics, documentation sections. Step 2 uses them to set the filters.
 
 Then ask for:
-- the outcome the squad is working toward;
-- optionally, the north star that outcome serves.
+- the outcome the squad is working toward. A squad that owns several product areas may set one outcome per area; a squad with no outcome yet can start without one;
+- optionally, the north star the outcomes serve.
 
-Check the outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
+Check each outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
+
+Without an outcome, say what changes: the tree is ranked on evidence alone and nothing is parked for lack of a link. The squad can add an outcome later with `ost-change-outcome`.
 
 ## Step 2 – Sources
 
@@ -95,7 +97,7 @@ Read the last month and the extra material, and extract candidate evidence. For 
 ## Step 6 – First tree
 
 1. Build the first set of opportunities under the outcome, following `build-tree`: the needs behind the evidence, grouping from the specific up, the link to the outcome, the check against shipped features, sizing and a first ranking.
-2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they do not move the outcome.
+2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they move none of the active outcomes.
 
 ## Step 7 – Quick review
 

@@ -47,7 +47,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | --- | --- | --- |
 | Outcome | Title | Measurable result the squad works toward |
 | North star | Text | Optional long-term direction the outcome serves |
-| Status | Select | active, past (only one active at a time) |
+| Status | Select | active, past. Several may be active at once, one per area of the squad; none while the squad has no outcome yet |
 | Start | Date | |
 | End | Date | Set when the squad changes course |
 | Reason for change | Text | Why the squad moved on |
@@ -58,7 +58,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Name | Title | Customer-phrased need or pain |
 | Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
-| Outcomes | Relation (Outcomes) | Every outcome this opportunity has served |
+| Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
 | Status | Select | candidate, active, parked, addressed, merged, archived |
 | Product area | Select | From the product documentation |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |

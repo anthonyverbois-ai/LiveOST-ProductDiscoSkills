@@ -5,6 +5,7 @@ All notable changes to this plugin are listed here.
 ## Unreleased
 
 ### Added
+- Several outcomes, or none yet: a squad that owns several product areas can set one outcome per area, and each top-level opportunity is linked to the outcome it moves most. A squad with no outcome yet can start without one: the tree is ranked on evidence alone, nothing is parked for lack of a link, and the drift check is off until the squad sets an outcome. `ost-change-outcome` now adds, replaces or retires one outcome without touching the others.
 - Undo and a record of every change: new `/live-product-discovery:ost-undo` command that reverses a change the agent made on its own (creation, merge, rename, move, re-rank, link, status), moves the evidence back, says what later changes it also affects, and records the undo as a correction. Every structural change, made or proposed, is now a row of a new Changes database (type, status, before, after, evidence moved, reason, run): it feeds the recap, the live view's pending decisions, timeline and tree changelog, and replaces the free-text Changes of the run log.
 - Live view technical choices in `docs/live-view.md`: built with Astryx (Meta's design system), pinned version, packaged as one self-contained file.
 - Live view metadata: the run log now records the finish time, the status of each source and the plugin version, and who made each change (agent or squad). They feed the "last refresh" date and the tree changelog of the v0.2 live view, specified in `docs/live-view.md`.

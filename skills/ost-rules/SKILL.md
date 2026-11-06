@@ -12,10 +12,11 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 ## Structure
 
-- The tree has one **active outcome** at the top. The squad sets it; the agent never creates or changes it.
+- The tree has one or more **active outcomes** at the top. A focused squad has one; a squad that owns several product areas may have one per area. The squad sets them; the agent never creates or changes them.
+- A squad may also start with **no outcome yet** (`outcomes: []` in the configuration). The tree is then built from the customers' needs and ranked on evidence alone: nothing is parked for lack of a link to an outcome, and the drift check is off. When the squad sets an outcome, it runs `ost-change-outcome`.
 - An optional **north star** sits above the outcome as context: the long-term direction the outcome serves.
-- When the squad changes course (a new outcome or a new north star), follow `ost-change-outcome`. Past outcomes are kept with their dates, and opportunities are never deleted: what no longer fits is parked.
-- Under the outcome: **opportunities** (customer needs, pain points, desires), then **sub-opportunities**, then **solutions**, then **assumptions** to test.
+- When the squad changes course (an outcome added, replaced or retired, or a new north star), follow `ost-change-outcome`. Past outcomes are kept with their dates, and opportunities are never deleted: what no longer fits is parked.
+- Under each outcome: **opportunities** (customer needs, pain points, desires), then **sub-opportunities**, then **solutions**, then **assumptions** to test.
 - Maximum depth for opportunities: 3 levels under the outcome. Deeper than that, propose a merge or a reframe.
 - A sub-opportunity must be a more specific case of its parent, not a different topic.
 
@@ -24,7 +25,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Phrase every opportunity from the customer's point of view, in their words where possible: "I lose time reformatting my exports", not "Improve export formatting".
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
 - An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
-- A `parked` opportunity is out of scope for the active outcome. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
+- A `parked` opportunity moves none of the active outcomes. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
 - An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
 
 ## Shipped features
