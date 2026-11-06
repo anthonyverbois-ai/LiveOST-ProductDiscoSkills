@@ -76,7 +76,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Verbatim | Title | Exact customer words |
-| Source type | Select | call, ticket, message, survey, import, interview, other |
+| Source type | Select | call, ticket, message, insight, survey, import, interview, other |
 | Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |
 | Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply; empty for a file import |

@@ -87,6 +87,11 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
   - When the file has no ID column, build a stable ID from the file name and a fingerprint of the row's content. A later version of the same file then adds only its new rows.
   - Skip empty rows, exact duplicates and answers with no content ("n/a", "nothing to add"). Count them apart.
   - The source type says what the file holds (survey, import). With no link to the original, leave the source link empty: the source ID names the file and row.
+- Insight platforms (tools that already turn conversations into customer insights, for example a product feedback tool's notes or a research repository's highlights) are evidence too:
+  - Read the insights, not the conversations behind them. Use the insight's ID as the source ID and its link as the source link.
+  - Use the customer's words when the insight gives them. When it gives only a summary written by the tool or a colleague, keep it as the verbatim, say so in the rationale, and set the confidence no higher than medium.
+  - Use the platform's search to find insights, never to count them: a search for one need also returns its neighbours, and a platform may index the same sentence several times. Count only the insights read and attached one by one.
+  - When the platform already covers some conversations (for example the calls of the call recorder), read those conversations from one place only, as set in the configuration (`covers`); the duplicate check catches the rest.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Kinds of evidence
