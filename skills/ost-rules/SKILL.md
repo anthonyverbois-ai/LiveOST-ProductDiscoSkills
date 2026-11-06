@@ -110,14 +110,14 @@ Classify each piece of evidence when you extract it:
 
 Rank opportunities among their siblings the same way at every run, so a rank moves only when its inputs move.
 
-1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight.
-   - Age weight: 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond.
-   - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
+1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight. Compute it from the opportunity's Ledger, never by re-reading its evidence: the ledger holds, per account, the inputs of its best piece of evidence, and every attachment, move or undo updates it.
+   - Age weight (`ranking.age_weights` in the configuration): 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond, by default. Age moves with time: scores change without new evidence.
+   - Release weight (`ranking.before_release_weight`): 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise, by default. A shipped solution with no known release date does not lower any weight.
    - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
 2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
-3. **Stability**: two siblings whose scores differ by less than 5% of the higher score keep their previous order.
+3. **Stability** (`ranking.stability`, 5% by default): sort the siblings by score, then walk the new order once from the top and swap back two neighbours that were in the opposite order before, when their scores differ by less than the margin (a share of the higher score). At the first ranking there is no previous order: the score order stands.
 
-Write the score on the opportunity. Candidates, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
+The daily run refreshes the scores of the ranked opportunities from their ledgers (one property each, cheap to read); the weekly synthesis writes the ranks. Candidates, proposed, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
 
 ## Changes and autonomy
 

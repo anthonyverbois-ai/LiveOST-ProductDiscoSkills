@@ -39,7 +39,8 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
   - Kinds: the number of needs, bugs and questions among that evidence.
-- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
+  - Ledger: per account, the inputs of its best piece of evidence (see "Ranking" in `ost-rules`).
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are different: they are refreshed for every ranked opportunity at each daily run, from the Ledger property alone.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 
@@ -70,8 +71,9 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
-| Score | Number | Written by the plugin: the ranking score (see "Ranking" in `ost-rules`) |
-| Rank | Number | Order among its siblings, from the score; set when the tree is built (`build-tree`), then by the weekly synthesis |
+| Ledger | Text | Written by the plugin at every attachment, move or undo: one line per customer or unknown account with the inputs of its best piece of evidence (source, kind, date, before or after release), for example `Contoso · call · need · 2026-10-20 · after`. The score is computed from it without reading the evidence |
+| Score | Number | Written by the plugin from the Ledger (see "Ranking" in `ost-rules`); refreshed by the daily run |
+| Rank | Number | Order among its siblings, from the score; written when the tree is built (`build-tree`), then by the weekly synthesis only |
 
 ## Evidence
 | Property | Type | Notes |

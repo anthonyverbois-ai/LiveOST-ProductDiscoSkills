@@ -112,7 +112,7 @@ kind_weights:               # weight of each kind of evidence in the ranking (se
 ranking:                    # see "Ranking" in ost-rules
   age_weights: {last_90_days: 1, up_to_a_year: 0.5, older: 0.25}
   before_release_weight: 0.5
-  stability: 0.05           # siblings whose scores differ by less than 5% of the higher one keep their order
+  stability: 0.05           # neighbours whose scores differ by less than 5% of the higher one keep their previous order
 
 freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"

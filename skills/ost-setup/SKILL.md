@@ -82,7 +82,7 @@ The tree lives in a configuration page and ten Notion databases described in `${
 
 ## Step 4 – Trial batch: go
 
-Count what the last month holds **without reading the content**: list items through each connector or folder using metadata only. Then ask for the go in one short message, for example:
+Count what the trial period holds (`trial_days`, the last 30 days by default) **without reading the content**: list items through each connector or folder using metadata only. Then ask for the go in one short message, for example:
 
 > Before I start, here is what I will process for the last month: 34 calls (call recorder), 120 tickets (support tool), 18 documentation pages. Go?
 
@@ -117,7 +117,7 @@ This is the normal next step: propose it by default.
 
    > The tree looks right? The full history adds 410 calls and 2,300 tickets, back to March 2023. It will take a few hours, in batches I can resume if interrupted. Go?
 
-   The user can also choose a later start date instead of all time.
+   The user can also choose a later start date instead of all time. Write the choice as `history` in the configuration.
 3. On go, process the full history with any rules learned from the user's corrections, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
 4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7.
 
