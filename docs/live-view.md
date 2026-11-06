@@ -22,7 +22,7 @@ The live view is a page that shows the tree as it is now. Notion stays the sourc
 Shown discreetly, at the bottom or in the margin of the page:
 
 - **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
-- **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), with the tool, the last successful read and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Read from the Sources database.
+- **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), with the tool, the last successful read and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Replaced and removed sources are not shown. Read from the Sources database.
 - **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to the run log entry. Built from the `Changes` of the run log and from the corrections database.
 - **Plugin version**: the version that produced the last run, with a link to the plugin's `CHANGELOG.md` on GitHub.
 

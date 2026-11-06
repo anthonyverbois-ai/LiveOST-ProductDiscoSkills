@@ -23,6 +23,7 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 2. **Daily run**: new calls and tickets are read, evidence is attached, and you get a short recap plus a detailed log entry. Every change can be undone.
 3. **Weekly synthesis**: opportunities are re-ranked, structural changes are proposed, and the agent learns from the corrections you made during the week. It also flags when the evidence starts drifting away from your outcome.
 4. **Change of course** (`/live-product-discovery:ost-change-outcome`): when the squad adopts a new outcome or north star, the tree is re-anchored. Opportunities are kept, reframed or parked, nothing is deleted, and the squad recalibrates the result.
+5. **Change of sources** (`/live-product-discovery:ost-change-sources`): when a tool is added, replaced or removed (for example one data warehouse for another), the new tool is connected and tested, the saved queries are rewritten, old and new figures are compared before switching, and no evidence is ingested twice. The tree does not change.
 
 Design principles:
 
@@ -57,6 +58,7 @@ Following several squads? Run the onboarding once per squad. Each squad gets its
 skills/
   ost-setup/           onboarding: outcome, sources, backfill, calibration
   ost-change-outcome/  re-anchoring the tree when the squad changes course
+  ost-change-sources/  adding, replacing or removing a source without touching the tree
   ost-rules/           the OST rules every other skill follows
   build-tree/          turning evidence into opportunities: grouping, hierarchy, outcome link, ranking
   backfill/            processing large volumes: batches, resume, deduplication
