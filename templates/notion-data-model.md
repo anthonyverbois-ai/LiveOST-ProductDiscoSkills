@@ -36,7 +36,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 - **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
 - **Counts are stored, never rolled up.** The connector returns a reference instead of a rollup's value, on every plan. So the plugin writes Evidence count, Accounts and Last evidence on each opportunity itself, and everyone (runs, live view, people in Notion) reads them as plain properties:
   - Evidence count: the evidence attached to the opportunity, duplicates excluded.
-  - Accounts: the distinct customer accounts among that evidence. Prospects: the distinct prospect accounts.
+  - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
   - Kinds: the number of needs, bugs and questions among that evidence.
 - **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity in a daily or weekly run.
@@ -81,7 +81,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |
 | Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply; empty for a file import |
 | Account | Text | |
-| Account type | Select | customer, prospect, internal, unknown; only customers count in Accounts |
+| Account type | Select | customer, prospect, internal, unknown; customers and unknown accounts count in Accounts |
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
 | Opportunity | Relation (Opportunities) | Empty when unattached |
