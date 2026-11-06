@@ -17,7 +17,7 @@ Work from this week's evidence and the counts stored on each opportunity; never 
 
 ## 1. Rank
 
-Rank opportunities by volume and recency of evidence and number of distinct accounts, weighted by the quantitative data available (accounts affected, frequency, revenue at stake). Show what moved since last week and why.
+Rank opportunities following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
 
 ## 2. Act or propose
 
@@ -26,6 +26,8 @@ Read the release notes published since the last synthesis and check them against
 Read the backlog items created or changed since the last synthesis, following the "Backlog" rules in `ost-rules`: link items to opportunities or propose the links, and ask about the two gaps (backlog items with no opportunity, top opportunities with no solution in the backlog).
 
 Check freshness, following the "Shipped features" and "Freshness" rules in `ost-rules`: opportunities past the waiting period after a release, the adoption of recently shipped features when usage data exists, and dormant opportunities to ask about.
+
+Check the opportunities that grew most this week for catch-alls: read about ten of their recent pieces of evidence and the needs behind them. If they fall into two or more distinct needs (one solution would not remove them all), propose a split, with the groups and their evidence. Splitting stays human.
 
 Apply the structural changes that meet the conditions in "Changes and autonomy" (`ost-rules`) and list them with their reasons. Propose the rest for the squad to decide on: new opportunities, merges, splits, reframes, archives, opportunities newly covered by a shipped feature, and opportunities to mark `addressed`. Each change and each proposal cites its evidence and is written to the Changes database. List the assumptions worth testing next for solutions in progress. Name the opportunities where bugs make up most of the evidence, following "Kinds of evidence" in `ost-rules`.
 
@@ -52,7 +54,8 @@ When the outcome query is set up, report the outcome's metric and its trend, and
 Report the trend of:
 - the share of evidence correctly attached, measured on the test cases built from the squad's corrections;
 - the share of proposals accepted without edits, and the share of the agent's own changes undone;
-- the number of changes undone this week.
+- the number of changes undone this week;
+- the types of change the agent now makes on its own, and those that went back to proposals.
 
 ## Output
 

@@ -70,12 +70,14 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
 | Signals | Text | Written by the plugin: volume from signal sources over the last 90 days, for example "86 tickets (category Export)" |
-| Rank | Number | Set when the tree is built (`build-tree`), then by the weekly synthesis |
+| Score | Number | Written by the plugin: the ranking score (see "Ranking" in `ost-rules`) |
+| Rank | Number | Order among its siblings, from the score; set when the tree is built (`build-tree`), then by the weekly synthesis |
 
 ## Evidence
 | Property | Type | Notes |
 | --- | --- | --- |
-| Verbatim | Title | Exact customer words |
+| Need | Title | The need behind it, in one short line in the customer's words (see `build-tree`, step 1) |
+| Verbatim | Text | Exact customer words, never cut mid-thought |
 | Source type | Select | call, ticket, message, insight, survey, import, interview, other |
 | Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |

@@ -14,7 +14,7 @@ Work from evidence already extracted and checked for scope. Do not re-read the s
 
 ## 1. Write the need behind each piece of evidence
 
-For each piece of evidence, write the need behind it in one short sentence, in the customer's words: what they are trying to do, and what gets in the way. This is a working label. The verbatim stays untouched.
+For each piece of evidence, write the need behind it in one short sentence, in the customer's words: what they are trying to do, and what gets in the way. Write it in the Need property, the title of the evidence. The verbatim stays untouched.
 
 When a customer asks for a precise feature, look for the need behind the request. "I want a PDF button" becomes "I need to send the report to people who don't use the tool".
 
@@ -50,7 +50,7 @@ When quantitative data is available, run the saved queries (see `ost-rules`) and
 
 ## 6. Rank
 
-Rank the opportunities with the criteria of `weekly-synthesis`: volume and recency of evidence, distinct accounts, weighted by quantitative data. Evidence from before a shipped feature weighs less. The tree then has an order from the first day; the weekly synthesis keeps it up to date.
+Rank the opportunities following "Ranking" in `ost-rules`. The tree then has an order from the first day; the weekly synthesis keeps it up to date.
 
 Below 2 pieces of evidence from 2 different accounts, an opportunity stays `candidate` and is not ranked.
 
@@ -58,4 +58,4 @@ Below 2 pieces of evidence from 2 different accounts, an opportunity stays `cand
 
 Then present the result as a short outline: each opportunity with its number in the tree, its evidence count and accounts, its link to the outcome and two representative verbatims. Show apart: the opportunities proposed as `parked` or `addressed`, the candidates, and the evidence that fits nothing.
 
-Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval.
+Write the opportunities to Notion following "Changes and autonomy" in `ost-rules`: those that meet the conditions are created directly, the others as `candidate`. In the onboarding and after a change of course, write the whole tree, then show it: the quick review replaces approval, and what the squad keeps counts as accepted creations.

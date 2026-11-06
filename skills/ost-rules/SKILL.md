@@ -24,6 +24,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 - Phrase every opportunity from the customer's point of view, in their words where possible: "I lose time reformatting my exports", not "Improve export formatting".
 - An opportunity is never a solution in disguise. Test: if it names a feature, a button or a technology, it is a solution.
+- An opportunity holds one need. One that gathers evidence much faster than its siblings, with generic rationales, is often several needs under one name: propose a split.
 - An opportunity must be backed by at least one piece of evidence. Below 2 pieces from 2 different accounts, its status stays `candidate`.
 - A `parked` opportunity moves none of the active outcomes. It keeps its evidence and keeps receiving new evidence, but it is not ranked.
 - An `addressed` opportunity is covered by a shipped feature and has received no evidence since the release. It keeps its evidence, is not ranked, and becomes `active` again if new evidence arrives.
@@ -61,7 +62,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Keep the customer contact (name, email) when the source gives it: it is how the squad reaches the customers who raised a need, for solution discovery. The agent never contacts them itself: it only drafts messages that a person sends.
 - Never ingest the same source item twice: skip any item whose source ID is already in the evidence database. Right after a source tool is replaced, source IDs change: also compare date, account and verbatim (see `ost-change-sources`).
 - The same need from the same customer often reaches several sources: a call, the note a colleague wrote after it, a chat message relaying it. Before counting a piece of evidence, look on its opportunity for evidence from the same account, dated within the duplicate window (`duplicate_window_days`, 3 by default), that states the same need. If there is one, link the new piece to it (Duplicate of) instead of counting it again, and keep as the original the piece with the customer's own words. Evidence with no account is never treated as a duplicate.
-- Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field.
+- Never paraphrase a verbatim into the verbatim field. Put interpretation in the rationale field, and the need behind it, in one line, in the Need field.
 - First check the evidence is within the squad's scope (product areas and features owned, segments). If it clearly concerns an area marked out of scope, or owned by another squad, mark it `out of scope`: it is neither attached nor left unattached, it does not count toward any opportunity, and the recap counts it. When in doubt, treat it as in scope and let the user decide.
 - Attach a piece of evidence to the most specific opportunity that fits. If none fits, mark it `unattached` and add it to the pending list; never force a fit.
 - Every attachment carries a one-sentence rationale. Record the agent's own choice on the evidence (Agent choice): a later move by a person then shows as a correction.
@@ -72,7 +73,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 - Match the accounts of the evidence with the account key. When an account cannot be matched, say so; never guess.
 - Give each account a type: customer, prospect, internal or unknown. With the accounts query, an account with revenue is a customer, an account without revenue is a prospect, and an account the key cannot match is unknown. Without the query, every named account other than the own company is a customer. When the account field names the user's own company (`own_company` in the configuration) or one of its people, look for the real customer in the text: colleagues often log feedback under their own company. If the text names a customer, use it; if it is a colleague's own opinion with no customer, mark it `internal`.
 - Customer and unknown accounts count in Accounts and in the ranking; the recap lists the unknown ones so the user can match them. Prospect evidence is attached and shown apart ("asked by 3 prospects"); internal evidence is attached but never counted as an account.
-- Revenue weighs in the ranking but never on its own: show it next to the evidence count and the number of accounts, and say in one sentence what drove each rank.
+- Revenue breaks ties in the ranking and never ranks on its own (see "Ranking"): show it next to the evidence count and the number of accounts.
 - Report revenue at the level of an opportunity (the total ARR of the accounts concerned), never per customer in the recap.
 - Team chat channels (for example a Slack or Teams channel where colleagues share customer feedback) are evidence too, with these rules:
   - Read only the channels named in the configuration. Never read other channels or private messages, and never post.
@@ -105,20 +106,33 @@ Classify each piece of evidence when you extract it:
 - Show the split by kind on each opportunity. When bugs make up most of an opportunity's evidence, say so in the weekly synthesis: it may call for fixes, through the squad's bug process, more than for discovery.
 - The configuration can weigh each kind in the ranking (`kind_weights`, 1 each by default).
 
+## Ranking
+
+Rank opportunities among their siblings the same way at every run, so a rank moves only when its inputs move.
+
+1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight.
+   - Age weight: 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond.
+   - Release weight: 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise.
+   - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
+2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
+3. **Stability**: two siblings whose scores differ by less than 5% keep their previous order.
+
+Write the score on the opportunity. Candidates, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
+
 ## Changes and autonomy
 
-The agent is proactive from the first day: it acts on its own whenever it is sure, and proposes only when it is not.
+The agent earns its autonomy, one type of change at a time: it proposes until the squad's decisions show it gets that type right, then acts on its own whenever it is sure.
 
-- **Always on its own**: attach evidence, update counts and dates, flag a trend.
-- **On its own when sure, proposed otherwise**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, re-rank, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Act alone only when all of these hold:
+- **Always on its own**: attach evidence, update counts, scores and ranks (the ranking follows the written formula above), flag a trend.
+- **Earned, type by type**: create an opportunity, merge two duplicates, rename one for clarity, move a sub-opportunity under a better parent, link a shipped feature or a backlog item, add a solution, mark a solution `shipped`, mark an opportunity `addressed`. Each type starts as a proposal. It becomes automatic when the squad has accepted, without edits, at least 9 of the last 10 proposals of that type (`autonomy_threshold` in the configuration), counted from the Changes database. Opportunities created at onboarding count: those the squad keeps after the quick review are accepted creations. Once a type is automatic, act alone only when all of these hold:
   - the evidence is clear. A new opportunity: at least 3 pieces from 3 different accounts express the same need, with an obvious parent and no close opportunity. A merge: the two opportunities say the same thing. A shipped feature or a backlog item: the source describes it explicitly. `addressed`: the waiting period has passed with no evidence and, when usage data exists, the feature is used.
-  - no learned rule and no past decision of the squad goes against it;
-  - the squad has not undone this type of change twice in the last 4 weeks.
+  - no learned rule and no past decision of the squad goes against it.
 
   When one condition fails, propose instead.
+- A type goes back to proposals when the squad undoes it twice in 4 weeks. Say in the recap when a type becomes automatic or goes back, with the reason ("From now on, the agent merges duplicates on its own: 10 of the last 10 merges were accepted").
 - **Always a human**: changing the outcome or the north star (the agent only flags a drift); parking, archiving or splitting an opportunity; deleting anything; reversing a decision the squad made, such as recreating an opportunity it rejected.
 - Every structural change, made or proposed, is a row of the Changes database: before, after, the evidence it moved and a one-sentence reason. Proposals wait there with the status `proposed` until the squad decides. Changes the agent made on its own are listed in the recap under "Done by the agent" and can be undone with `/live-product-discovery:ost-undo`. An undo is recorded as a correction.
-- A squad that prefers to decide everything sets `autonomy: propose-only` in the configuration: then every change beyond attaching evidence and updating counts is a proposal.
+- `autonomy` in the configuration: `earned` (the default, above), `proactive` (every type is automatic from the first day, under the same conditions) or `propose-only` (every change beyond attaching evidence and updating counts is a proposal).
 
 ## Data handling
 
