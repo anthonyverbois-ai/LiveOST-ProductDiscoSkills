@@ -82,6 +82,7 @@ sources:
 imports:                    # files of customer feedback, mapped with the user during onboarding
   - file: "feedback-export.csv"
     kind: survey            # survey | import
+    rank_weight: 1          # weight in the ranking, as for any source
     columns:                # column names in the file; null when the file has none
       verbatim: "Comment"
       date: "Created at"

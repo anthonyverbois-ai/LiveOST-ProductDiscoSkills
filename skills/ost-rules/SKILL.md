@@ -33,7 +33,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 ## Shipped features
 
 - Product documentation and release notes tell what the product already does. Before proposing, ranking or reviving an opportunity, check whether a shipped feature already addresses it.
-- When one does, record it as a solution with status `shipped`, linked to the documentation page or release note, with its release date. Never guess a release date: if the sources do not give one, write "date unknown".
+- When one does, record it as a solution with status `shipped`, linked to the documentation page or release note, with its release date. Never guess a release date: if the sources do not give one, write "date unknown". When a shipped solution is linked, or its date learned later, rebuild the opportunity's Ledger from its evidence.
 - Split the opportunity's evidence into before and after the release. Never delete evidence from before the release: it is history, and it weighs less in the ranking.
 - Evidence after the release means the need persists despite the feature (incomplete, unknown to customers, or not adopted). Keep the opportunity active and say so in the recap.
 - No evidence after the release during the waiting period set in the configuration (`addressed_after_weeks`, 8 weeks by default): mark the opportunity `addressed`, or propose it, following "Changes and autonomy".
@@ -112,14 +112,15 @@ Classify each piece of evidence when you extract it:
 
 Rank opportunities among their siblings the same way at every run, so a rank moves only when its inputs move.
 
-1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight. Compute it from the opportunity's Ledger, never by re-reading its evidence: the ledger holds, per account, the inputs of its best piece of evidence, and every attachment, move or undo updates it.
+1. **Score**: the sum, over the distinct customer and unknown accounts of the opportunity's evidence, of each account's weight. An account's weight is the highest, among its pieces of evidence, of: source weight (`rank_weight`) × kind weight (`kind_weights`) × age weight × release weight. Compute it from the opportunity's Ledger, never by re-reading its evidence. The ledger holds one line per account and per distinct static weight (source weight × kind weight) with the latest date of a piece of evidence carrying that weight; the age and release weights are applied at score time from that date. Every attachment, move, merge or undo updates it; linking a shipped solution or learning its release date rebuilds it from the opportunity's evidence (one opportunity, bounded).
+   - Source weight: the `rank_weight` of the configured source the evidence came from (calls, tickets, team channels, insights, each file import), 1 when not set.
    - Age weight (`ranking.age_weights` in the configuration): 1 for evidence of the last 90 days, 0.5 up to a year, 0.25 beyond, by default. Age moves with time: scores change without new evidence.
    - Release weight (`ranking.before_release_weight`): 0.5 for evidence from before a shipped solution of this opportunity, 1 otherwise, by default. A shipped solution with no known release date does not lower any weight.
    - Duplicates, internal evidence, prospects and evidence with no account add nothing to the score.
-2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence.
-3. **Stability** (`ranking.stability`, 5% by default): sort the siblings by score, then walk the new order once from the top and swap back two neighbours that were in the opposite order before, when their scores differ by less than the margin (a share of the higher score). At the first ranking there is no previous order: the score order stands.
+2. **Ties**: the total revenue of those accounts when the accounts query exists, then the date of the latest evidence, then the opportunity's creation date (older first).
+3. **Stability** (`ranking.stability`, 5% by default): sort the siblings by score, then walk the new order once from the top and swap back two neighbours that were in the opposite order before, when their scores differ by less than the margin (a share of the higher score). At the first ranking there is no previous order: the score order stands. A sibling ranked for the first time (just activated or reactivated) takes its score position.
 
-The daily run refreshes the scores of the ranked opportunities from their ledgers (one property each, cheap to read); the weekly synthesis writes the ranks. Candidates, proposed, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
+The daily run refreshes the score of every opportunity it touched; the weekly synthesis refreshes every ranked opportunity's score from its ledger (age moves scores) and writes the ranks. Candidates, proposed, parked and addressed opportunities are not ranked. When a rank changes, say in one sentence which input moved it.
 
 ## Changes and autonomy
 
