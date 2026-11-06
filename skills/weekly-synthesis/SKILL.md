@@ -59,7 +59,8 @@ Report the trend of:
 - the share of evidence correctly attached, measured on the test cases built from the squad's corrections;
 - the share of proposals accepted without edits, and the share of the agent's own changes undone;
 - the number of changes undone this week;
-- the types of change the agent now makes on its own, and those that went back to proposals.
+- the types of change the agent now makes on its own, and those that went back to proposals;
+- for each type still proposed, where it stands, in one plain line from its last 5 decisions in the Changes database (for example "Merges: 3 of the last 5 accepted as they were; it takes 4"). Never phrase it as a countdown or a goal to reach: the squad decides each proposal on its merits, not to unlock a type.
 
 ## 7. Close the run
 
