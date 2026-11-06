@@ -95,7 +95,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
   - Read the insights, not the conversations behind them. Use the insight's ID as the source ID and its link as the source link.
   - Use the customer's words when the insight gives them. When it gives only a summary written by the tool or a colleague, keep it as the verbatim, say so in the rationale, and set the confidence no higher than medium.
   - Use the platform's search to find insights, never to count them: a search for one need also returns its neighbours, and a platform may index the same sentence several times. Count only the insights read and attached one by one.
-  - When the platform already covers some conversations (for example the calls of the call recorder), read those conversations from one place only, as set in the configuration (`covers`); the duplicate check catches the rest.
+  - When the platform covers some of the conversations of another source (for example calls that colleagues push into it), read both sources: an insight that links to the original conversation is a duplicate of that call or ticket, matched by the original's ID or link, whatever the dates; `covers: all` in the configuration means the platform holds every conversation of that source, which is then not read on its own.
 - Product and support documentation is a reference for locating opportunities by product area and for knowing what already shipped. It is not customer evidence. Support tickets are.
 
 ## Kinds of evidence

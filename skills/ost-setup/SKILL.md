@@ -35,7 +35,7 @@ A PM can follow several squads. Each squad gets its own tree: its own configurat
 
 ## Step 1 – Frame
 
-If the squad has no name yet, ask for it (see "Several squads"). Ask for the company's own name and email domains (`own_company`): feedback a colleague logs under them is resolved to the customer it names, or marked internal. Then ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features:
+If the squad has no name yet, ask for it (see "Several squads"). Ask for the company's own name and email domains (`own_company`): feedback a colleague logs under them is resolved to the customer it names, or marked internal. Then ask for the squad's precise scope. It decides which sources are filtered in, which evidence belongs to this tree and which documentation is checked for shipped features. Offer choices rather than open questions: list the ticket tags, the call trackers and the documentation sections you can read from the connected tools (for the documentation, from its sitemap or index page) and let the user pick, instead of asking them to recall these from memory:
 - **what the squad owns**: the product areas and features, named as they appear in the product and its documentation;
 - **what is explicitly out of scope**: neighboring areas owned by other squads, where ambiguity usually sits;
 - **the customer segments and personas** that matter;
@@ -47,6 +47,8 @@ Then ask for:
 
 Check each outcome is a measurable result, not an output. "Reduce the time to build a client presentation" is an outcome; "Launch the AI editor" is an output. If it is an output, help the user reframe it, then confirm.
 
+Say what the outcome does to the tree: every need that does not move it is proposed as parked. A narrow outcome (one segment, one moment such as activation) parks most of what existing customers say; an outcome on the squad's whole area parks little. Offer the no-outcome start when the squad wants the whole picture first.
+
 Without an outcome, say what changes: the tree is ranked on evidence alone and nothing is parked for lack of a link. The squad can add an outcome later with `ost-change-outcome`.
 
 ## Step 2 – Sources
@@ -55,7 +57,7 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
 2. Check which matching connectors are already available in this session.
 3. For each declared tool without a connector, ask the user to connect it. The user authenticates; never ask for, read or store credentials. Where the app can show a connection card, show it.
 4. Test each source with one read-only call (for example: fetch the most recent call). Report what you found. Do not continue with a source that fails its test.
-5. If no connector exists for a tool, offer the fallbacks: documentation and release notes on a public website are read directly from their pages (`via: url`: ask for the sitemap or the index page, and test one page); for anything else, the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
+5. If a source's test shows only part of the data (for example only the user's own calls), say so and ask for the access to be widened before the trial batch. If no connector exists for a tool, offer the fallbacks: documentation and release notes on a public website are read directly from their pages (`via: url`: ask for the sitemap or the index page, and test one page); for anything else, the user drops exports (transcripts, CSV) in a dedicated folder that the runs will read.
 6. Apply the scope from step 1: set each source's filters from the tags, categories and topics the user gave (team channels usually cover the whole product: they get no filter at the source, and the scope check filters each message), and the backlog's filter from the squad's project, board or labels, and map the scope to the documentation sections it covers. Show the resulting filters and the list of documentation sections, and let the user confirm or correct them. Then ask, once for all sources, whether customer contacts (names, emails) may be copied into Notion, and from which sources (`keep_contacts`, false by default: say who will see them, from step 3). Ask about `rank_weight` only when the user wants a source visible but out of the ranking (1 by default, 0 for that). A source whose items carry no customer words (only a category and tags) is set up as a signal source (see `ost-rules`).
 7. Set up the quantitative source (a data warehouse, an analytics tool or an analytics agent), read only:
    - Explore what it holds: the tables or metrics available. Ask the user where things are rather than guessing.
@@ -73,7 +75,7 @@ Without an outcome, say what changes: the tree is ranked on evidence alone and n
 The tree lives in a configuration page and ten Notion databases described in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: outcomes, opportunities, evidence, solutions, assumptions, run log, corrections, sources, rules and changes.
 
 1. **Ask where**: an existing page (by name or link), or a new dedicated page (for example "OST – <squad name>") in the teamspace the user chooses. Each squad has its own page and databases: never reuse another squad's databases. Search Notion to confirm the page they mean; if several match, show them and let the user pick.
-2. **Check access**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. The plugin works on every Notion plan (see "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`): do not ask the user about their plan.
+2. **Check access and capabilities**: make sure the Notion connector can write at that location. If it cannot, explain how to give it access (share the page with the connection) and wait, rather than failing later. Then probe what the connector can do, on one throwaway database that you delete afterwards: a two-way relation to itself, a select with options, a page with a code block read back as text, a filter on last edited time. For each capability missing, say the fallback before creating anything: Parent as a one-way relation (the user turns it two-way in Notion), a text property for the configuration, hand edits detected at the weekly synthesis only. The plugin works on every Notion plan (see "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`): do not ask the user about their plan.
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
 5. **Confirm, then create**: recap the location, the configuration page, the ten databases and who will have access, and create them only after the user confirms. Write the configuration gathered at step 2 to the configuration page, then read it back. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist.
@@ -82,9 +84,9 @@ The tree lives in a configuration page and ten Notion databases described in `${
 
 ## Step 4 – Trial batch: go
 
-Count what the trial period holds (`trial_days`, the last 30 days by default) **without reading the content**: list items through each connector or folder using metadata only. Then ask for the go in one short message, for example:
+Count what the trial period holds (`trial_days`, the last 30 days by default) **without reading the content**: list items through each connector or folder using metadata only. Then ask for the go in one short message that says what the go commits to: the volume, the expected duration, that this session must stay open meanwhile, and that the tree will be written to Notion before the review. For example:
 
-> Before I start, here is what I will process for the last month: 34 calls (call recorder), 120 tickets (support tool), 18 documentation pages. Go?
+> Before I start, here is what I will process for the last month: 34 calls (call recorder), 120 tickets (support tool), 18 documentation pages. About 40 minutes, in this session (keep it open). I will write the first tree to Notion, then we review it together. Go?
 
 Count the useful rows of each feedback file the same way, from the date column for the last month. Add a line only when something looks wrong: a source returning nothing, partial access (for example only the user's own calls are visible), or extra material that cannot be read. For a large volume, add the expected duration (batches of about 40,000 tokens of text: one or two call transcripts, or fifty tickets). Give more detail (sample items, filters, what is left out, duration) only if the user asks.
 
@@ -106,7 +108,7 @@ The tree is already written. Do not walk the user through every branch. Show:
 - only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing.
 - when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm. Write the confirmed mapping to the configuration page (`mapping`, keyed by the opportunity's Notion page, so a rename does not break it), then read it back.
 
-The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Corrections become rules and test cases.
+The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Then close the "First tree" change (`accepted` when the user changed at most one opportunity, `edited` otherwise) and, when the corrections show a pattern, draft rules from them as in "Learn" of `weekly-synthesis`: they guide the full history.
 
 ## Step 8 – Full history
 
@@ -118,7 +120,7 @@ This is the normal next step: propose it by default.
    > The tree looks right? The full history adds 410 calls and 2,300 tickets, back to March 2023. It will take a few hours, in batches I can resume if interrupted. Go?
 
    The user can also choose a later start date instead of all time. Write the choice as `history` in the configuration.
-3. On go, process the full history with any rules learned from the user's corrections, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
+3. On go, process the full history with the rules drafted at step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
 4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.

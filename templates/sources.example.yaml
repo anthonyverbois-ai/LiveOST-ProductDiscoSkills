@@ -47,7 +47,7 @@ sources:
     tool: "insight platform (e.g. a product feedback tool or a research repository)"
     via: connector
     use: evidence           # insights are already extracted: read them, never the conversations behind them
-    covers: ["calls"]       # conversations this platform already reads: they are read here only, not from the call recorder too
+    covers: {calls: some}   # some: both are read and an insight linked to its call is a duplicate of it | all: the call recorder is not read on its own
   ticket_signals:
     tool: "support tool or data warehouse holding ticket categories without their text"
     via: connector
