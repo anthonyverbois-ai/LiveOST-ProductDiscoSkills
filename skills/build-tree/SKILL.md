@@ -38,7 +38,7 @@ Sub-opportunities follow their parent. Check them only when they drift from the 
 
 ## 4. Check what already shipped and what is planned
 
-Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`: the documentation, the release notes and the delivered items of the squad's backlog. When a feature already addresses it, record it as a `shipped` solution and split the evidence into before and after the release.
+Check each opportunity against shipped features, following the "Shipped features" rules in `ost-rules`: the documentation, the release notes and the delivered items of the squad's backlog. Read the documentation and the release notes where the configuration says (the site, a dated copy, or the documentation base the squad maintains), and say the age of a copy with the result, following "Reach and age of sources". When a feature already addresses it, record it as a `shipped` solution and split the evidence into before and after the release.
 
 Then look for planned and in-progress backlog items that address it, following the "Backlog" rules in `ost-rules`, and propose them as solutions with their backlog link.
 

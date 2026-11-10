@@ -11,7 +11,7 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 When several squads are set up, run the synthesis for each squad in turn, from its own tree and its own corrections: a rule learned for one squad never applies to another. Send the summaries together, one section per squad.
 
-Record the health of the sources this synthesis reads (documentation, release notes, backlog, quantitative data) in the Sources database, as `daily-run` does.
+Record the health of the sources this synthesis reads (documentation, release notes, backlog, quantitative data) in the Sources database, as `daily-run` does. For documentation and release notes read from a dated copy or from the squad's documentation base, read the copy's own date first: past `max_age_days`, the source is `partial` and the summary says its age (see "Reach and age of sources" in `ost-rules`). Never refresh or rebuild the base yourself: ask the squad to run its refresh.
 
 Work from this week's evidence and the counts stored on each opportunity; never re-read the whole evidence base. Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`.
 
@@ -21,7 +21,7 @@ Create the run log entry (type weekly, Started at, Status `running`), then apply
 
 ## 2. Act or propose
 
-Read the release notes published since the last synthesis and check them against active opportunities, following the "Shipped features" rules in `ost-rules`.
+Read the release notes published since the last synthesis and check them against active opportunities, following the "Shipped features" rules in `ost-rules`. When they come from a dated copy, releases after the copy's date are not in it: say so instead of concluding that nothing shipped.
 
 Read the backlog items created or changed since the last synthesis, following the "Backlog" rules in `ost-rules`: link items to opportunities or propose the links, and ask about the two gaps (backlog items with no opportunity, top opportunities with no solution in the backlog).
 
