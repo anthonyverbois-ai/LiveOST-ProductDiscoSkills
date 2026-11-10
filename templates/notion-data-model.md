@@ -30,7 +30,37 @@ Run log, Corrections and Sources depend on no other database: they can be create
 
 An option of a select cannot hold a comma in Notion: the creation of the database fails. When a name taken from the squad's scope has one (a product area, for example), replace the comma before creating the options.
 
-The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
+Write the description of each property in Notion when you create it: the sentence of its Notes column below, shortened if needed. The squad then reads what a column means where it is.
+
+The nested display of sub-opportunities (Notion's Sub-items, based on Parent) can only be turned on by the user, in a view's menu: the connector cannot do it. The views below do not depend on it.
+
+## Views
+
+Create these views on the tree's page, as linked views, and the four tabs of the opportunities in the Opportunities database too. One flat table sorted by rank mixes parents and sub-opportunities: a rank is an order among siblings, so several rows carry the rank 1.
+
+- **Sources**, at the top: a table of the Sources database (source, tool, status, last successful read, detail).
+- **Top level**: the opportunities with no Parent and the status `active`, sorted by Rank. Show Rank, Accounts, ARR, Prospects, Evidence count, Signals, Sub-opportunities, Product area, Solutions and Last evidence.
+- **Sub-opportunities**: the opportunities with a Parent, grouped by Parent, sorted by Rank. Show Rank, Status, Accounts, ARR, Prospects, Evidence count, Signals, Solutions and Last evidence.
+- **Candidates**: the status `candidate`, sorted by Accounts, then Prospects, then Evidence count, largest first. Show Parent, Accounts, ARR, Prospects, Evidence count, Signals, Product area and Last evidence.
+- **All**: every opportunity, with Parent and Status next to the name.
+- **Solutions**: a board of the Solutions database grouped by Status.
+
+Leave ARR out of the views while the squad has no accounts query.
+
+## Legend
+
+Write this legend at the top of the tree's page, above the views, in the user's language:
+
+- **Evidence**: one thing one customer said, in one source, on one date. One row of the Evidence database.
+- **Verbatim**: the customer's exact words. **Need**: the need behind them, in one line.
+- **Kind**: what the piece is: a need, a bug or a question.
+- **Evidence count**: the pieces attached to an opportunity, duplicates excluded.
+- **Accounts**: the distinct customers behind that evidence. **Prospects** are counted apart and do not move the rank.
+- **ARR**: the total revenue of those customers. It sizes an opportunity and breaks ties; it is not part of the score.
+- **Signals**: volumes from sources with no customer words, such as tickets counted by category.
+- **Candidate**: an opportunity with fewer than 2 pieces of evidence from 2 accounts. It is not ranked.
+- **Rank**: the order among siblings: top-level opportunities together, sub-opportunities within their parent.
+- A parent counts the evidence of its sub-opportunities with its own.
 
 ## Reading the databases
 
@@ -40,13 +70,16 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 - **Row reads first.** Read rows with filters and sorts, up to 100 rows per call. This works on every plan. Read more than 100 rows in pages, and never load the whole evidence base at once.
 - **Counts are stored, never rolled up.** The connector returns a reference instead of a rollup's value, on every plan. So the plugin writes Evidence count, Accounts and Last evidence on each opportunity itself, and everyone (runs, live view, people in Notion) reads them as plain properties:
   - Evidence count: the evidence attached to the opportunity, duplicates excluded.
-  - Accounts: the distinct customer and unknown accounts among that evidence. Prospects: the distinct prospect accounts.
+  - Accounts: the distinct customer and unknown accounts among that evidence, counted as "Evidence" in `ost-rules` says. Prospects: the distinct prospect accounts.
   - Last evidence: the latest Date among that evidence.
   - Kinds: the number of needs, bugs and questions among that evidence.
   - Ledger: per account and static weight, the latest date (see "Ranking" in `ost-rules`).
-- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
+  - ARR: the total revenue of those customer accounts, from the accounts query (see "Evidence" in `ost-rules`); empty without the query.
+  - A parent's values cover its own evidence and that of its sub-opportunities, with each account counted once.
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched and of their parents, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
+- **Check large writes.** After writing more than about a hundred rows (a first tree, a backfill), read back what is stored and compare it with what was meant to be written: the number of rows per status, the relations, and the verbatims word for word. Fix the differences before showing the result: a write made of many calls can drop or alter a row without an error.
 
 ## Outcomes
 | Property | Type | Notes |
@@ -62,7 +95,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Name | Title | Customer-phrased need or pain |
-| Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; hidden in the tree view once Sub-items are on |
+| Parent | Relation (Opportunities), two-way | Empty for top-level opportunities; groups the Sub-opportunities view |
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
 | Status | Select | proposed, candidate, active, parked, addressed, merged, archived |
@@ -72,6 +105,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Evidence count | Number | Written by the plugin: evidence attached, duplicates excluded |
 | Accounts | Number | Written by the plugin: distinct customer and unknown accounts among that evidence; used in the ranking |
 | Prospects | Number | Written by the plugin: distinct prospect accounts among that evidence, shown apart |
+| ARR | Number | Written by the plugin when the accounts query exists: total revenue of the customer accounts behind the evidence, each account of the data source counted once. Sizes the opportunity and breaks ties; never part of the score. Never stored per customer |
 | Last evidence | Date | Written by the plugin: date of the latest evidence |
 | Freshness asked on | Date | Set by the weekly synthesis when it asks whether a dormant opportunity is still current; cleared when evidence arrives |
 | Kinds | Text | Written by the plugin: the split of its evidence by kind, for example "12 needs, 7 bugs, 2 questions" |
@@ -85,12 +119,12 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Property | Type | Notes |
 | --- | --- | --- |
 | Need | Title | The need behind it, in one short line in the customer's words (see `build-tree`, step 1) |
-| Verbatim | Text | Exact customer words, never cut mid-thought |
+| Verbatim | Text | Exact customer words, never cut mid-thought; empty for a piece out of scope |
 | Source type | Select | call, ticket, message, insight, survey, import, interview, other |
 | Kind | Select | need, bug, question (see "Kinds of evidence" in `ost-rules`) |
 | Source ID | Text | ID of the call, ticket, message or document in its source tool, or the file and row of an import; used to never ingest it twice |
 | Source link | URL | Link to the original; for a team chat message, the permalink of the exact message or reply; empty for a file import |
-| Account | Text | |
+| Account | Text | One account, or several separated by ";" when the piece names several |
 | Account type | Select | customer, prospect, internal, unknown; customers and unknown accounts count in Accounts |
 | Contact | Text | Name and email of the customer contact, when the source gives it; used to reach customers for solution discovery |
 | Date | Date | |
@@ -99,7 +133,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Agent status | Select | attached, unattached, out of scope: the status the agent gave it. When Opportunity differs from Agent choice, or Status from Agent status, a person moved the evidence |
 | Duplicate of | Relation (Evidence) | The piece it repeats, from another source: shown with it, never counted again |
 | Status | Select | attached, unattached, out of scope |
-| Rationale | Text | One sentence: why this opportunity |
+| Rationale | Text | One sentence: why this opportunity. For a piece grouped at a first tree or a consolidation, the reason is on the opportunity's `create` row |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |
 | Run | Relation (Run log) | Run that created it |
 
@@ -108,7 +142,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | --- | --- | --- |
 | Name | Title | |
 | Opportunity | Relation (Opportunities), two-way | |
-| Status | Select | idea, to test, testing, validated, shipped, paused, dropped |
+| Status | Select | idea, to test, testing, validated, planned, in delivery, shipped, paused, dropped, in this order (the board follows it). The squad decides idea, to test, testing, validated, paused and dropped; the plugin writes planned and in delivery from the backlog (see "Backlog" in `ost-rules`) |
 | Assumptions | Relation (Assumptions) | The other side of Assumptions › Solution |
 | Documentation link | URL | For shipped solutions: the documentation page or release note |
 | Released on | Date | For shipped solutions; empty when the date is unknown |

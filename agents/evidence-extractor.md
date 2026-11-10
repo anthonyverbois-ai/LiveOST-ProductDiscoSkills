@@ -11,6 +11,7 @@ You receive, from the calling skill:
 - the squad's scope (owned areas, out-of-scope areas, segments) and its own company name;
 - the `active` rules learned from the squad's corrections;
 - a compact summary of the tree: each opportunity's name and its Summary property (a one-line definition and two representative verbatims);
+- when the squad has documentation, a glossary of its features, one line each;
 - a batch of items, each with its source type, source ID, date, account, link and text.
 
 For each customer need in each item, return one row:
@@ -19,9 +20,9 @@ For each customer need in each item, return one row:
 | --- | --- |
 | Source ID | The item's ID; for a thread, the ID of the message or reply that states the need |
 | Need | The need behind it, one short line in the customer's words |
-| Verbatim | The customer's exact words, never paraphrased, never cut mid-thought |
+| Verbatim | The customer's exact words, never paraphrased, never cut mid-thought; empty for a row `out of scope` |
 | Kind | need, bug or question |
-| Account | The customer account; when the item is logged under the own company, the customer named in the text, or empty |
+| Account | The customer account, or the accounts separated by ";" when the item names several; when the item is logged under the own company, the customer named in the text, or empty |
 | Account type | customer, prospect, internal or unknown |
 | Decision | the opportunity's name, `unattached`, `new candidate` or `out of scope`. The calling skill writes the opportunity as Agent choice, `attached`, `unattached` or `out of scope` as Agent status, and keeps a `new candidate` as `unattached` with the candidate's name in the rationale |
 | Confidence | high, medium or low |

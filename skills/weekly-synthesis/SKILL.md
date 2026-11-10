@@ -33,7 +33,7 @@ Apply the structural changes that meet the conditions in "Changes and autonomy" 
 
 ## 3. Rank
 
-Refresh every ranked opportunity's score from its ledger, then rank the siblings following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
+Refresh every ranked opportunity's score from its ledger, and its revenue from the accounts query when there is one, then rank the siblings following "Ranking" in `ost-rules`. Show what moved since last week, and which input moved it.
 
 ## 4. Learn
 
