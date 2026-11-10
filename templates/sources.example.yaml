@@ -69,8 +69,9 @@ sources:
     use: sizing-only        # quantitative data never creates opportunities; read only
     # Set up and tested with the user during onboarding (step 2):
     account_key: "how an account is identified in the data (e.g. CRM account ID, company domain)"
+    account_level: entity   # entity: a subsidiary or member firm named in the evidence is an account of its own | group: every entity counts as its group. The teams of one company always count as the company
     queries:                # each query is saved as written and tested, and reused by every run
-      accounts: "ARR, segment and plan per account"
+      accounts: "revenue (ARR), segment and plan per account, and the group each account belongs to"   # the revenue of an opportunity is read from here, never from a source's own record
       usage: "usage of the squad's features per account, over time"
       outcome: "the outcome's metric over time"   # leave out while the squad has no outcome
   documentation:
@@ -95,6 +96,10 @@ sources:
     via: connector
     filter: "the squad's project, board or labels"
     use: delivery           # what the squad delivered and plans; read only, not customer evidence
+    status_map:             # agreed during onboarding: what each tracker status means for a linked solution; a status left out changes nothing
+      planned: ["To do", "Ready"]
+      in delivery: ["In progress", "In review"]
+      shipped: ["Done"]     # delivered: the solution is then marked shipped following "Shipped features", never through the map alone
 
 imports:                    # files of customer feedback, mapped with the user during onboarding
   - file: "feedback-export.csv"
