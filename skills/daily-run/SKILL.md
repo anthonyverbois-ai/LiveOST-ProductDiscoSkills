@@ -1,11 +1,13 @@
 ---
 name: daily-run
-description: The daily run of live-product-discovery. Applies the squad's decisions, reads the new items of every source since the last run, attaches evidence to the tree, writes a log entry and returns a short recap. Meant to be triggered by a scheduled task.
+description: The daily run of live-product-discovery. Applies the squad's decisions, reads the new items of every source since the last run, attaches evidence to the tree, writes a log entry, refreshes the visual tree and returns a short recap. Triggered by a scheduled task, or by the user asking to refresh or update the tree.
 ---
 
 # Daily run
 
 You run unattended. Nobody will answer questions during the run: make reasonable decisions, log them, and finish. Follow `ost-rules`.
+
+Run it too when the user asks, in a conversation, to refresh or update the tree ("refresh the tree"). They mean the whole of it: read what is new in the sources, update Notion, then refresh the visual tree. The user is there: ask only what blocks the run, and end with the recap and the link to the visual tree.
 
 Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 

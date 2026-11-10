@@ -1,6 +1,6 @@
 ---
 name: ost-view
-description: Publishes the visual tree of a squad for live-product-discovery, or refreshes it. The visual tree is the page the squad looks at, a copy of the Notion tree. Run it on demand; ost-setup, daily-run and weekly-synthesis end with it.
+description: Publishes the visual tree of a squad for live-product-discovery, or refreshes it. The visual tree is the page the squad looks at, a copy of the Notion tree. It refreshes the page only, without reading the sources: when the user asks to refresh the tree, run daily-run, which reads what is new, updates Notion and ends with this skill.
 argument-hint: "[optional: squad name]"
 ---
 
@@ -14,7 +14,8 @@ Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfil
 
 - During the onboarding, once the first tree is written: the user reviews the tree on the page.
 - At the end of every daily run and every weekly synthesis, and after a change of course or an undo.
-- On demand: `/live-product-discovery:ost-view <squad>` refreshes the page without reading the sources again.
+- On demand: `/live-product-discovery:ost-view <squad>` refreshes the page without reading the sources again, for example after a change made by hand in Notion.
+- Not when the user asks to refresh the tree: they mean the tree and its page. Run `daily-run`, which reads what is new, updates Notion and ends with this skill.
 
 Each squad has its own page. With several squads and no squad named, refresh them all.
 

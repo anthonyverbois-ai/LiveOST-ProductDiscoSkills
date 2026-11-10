@@ -5,6 +5,7 @@ All notable changes to this plugin are listed here.
 ## Unreleased
 
 ### Added
+- Refreshing the tree by asking: when the user asks in a conversation to refresh the tree, the daily run reads what is new in the sources, updates Notion and ends by publishing the visual tree again. `ost-view` alone refreshes the page only.
 - The visual tree, delivered: a new `ost-view` skill publishes the page that shows the squad's tree, and refreshes it. The onboarding publishes it once the first tree is written and the quick review happens on it; every daily run and weekly synthesis, a change of course and an undo refresh it; `/live-product-discovery:ost-view` refreshes it on demand. The page is built once, in the repository, and loads the squad's tree from a data file published next to it, so nobody builds anything. It is a copy of the Notion tree: decisions are still taken in Notion, and a page that reads Notion when it opens remains the next step.
 - What a tree with no outcome is for: the squad can state it (`focus`). The visual tree shows it at the top; it is never used as an outcome.
 - On the page: the prospects, the revenue of the accounts and the signals of each opportunity, the backlog status of a solution, the link to the source of each verbatim, and the evidence of sub-opportunities under their parent. Candidates sit under "Too early to rank", proposed creations under "Waiting for a decision".

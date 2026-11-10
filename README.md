@@ -24,7 +24,7 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 3. **Weekly synthesis**: opportunities are re-ranked, structural changes are applied when the agent is sure and proposed otherwise, and the agent learns from the corrections you made during the week. It also flags when the evidence starts drifting away from your outcome.
 4. **Change of course** (`/live-product-discovery:ost-change-outcome`): when the squad adopts a new outcome or north star, the tree is re-anchored. Opportunities are kept, reframed or parked, nothing is deleted, and the squad reviews the result.
 5. **Change of sources** (`/live-product-discovery:ost-change-sources`): when a tool is added, replaced or removed (for example one data warehouse for another), the new tool is connected and tested, the saved queries are rewritten, old and new figures are compared before switching, and no evidence is ingested twice. The tree does not change.
-6. **Visual tree** (`/live-product-discovery:ost-view`): the page that shows the tree as it stands. The onboarding publishes it, every run refreshes it, and you can refresh it on demand.
+6. **Visual tree** (`/live-product-discovery:ost-view`): the page that shows the tree as it stands. The onboarding publishes it and every run refreshes it. Ask to refresh the tree at any time: the daily run reads what is new, updates Notion and publishes the page again.
 
 Design principles:
 
