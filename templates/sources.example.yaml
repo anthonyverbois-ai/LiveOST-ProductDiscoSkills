@@ -27,10 +27,14 @@ scope:
     call_topics: ["building a report", "report layout"]
     doc_sections: ["Reports", "Templates"]
 
+# Any source can only be read in part? Add to it:
+#   coverage: partial       # full by default
+#   missing: "what the source cannot reach, and from which date"
+# The source then stays partial in the Sources database, and its counts are a floor (see "Reach and age of sources" in ost-rules).
 sources:
   calls:
     tool: "call recorder name (e.g. Gong, Modjo)"
-    via: connector          # connector | export-folder
+    via: connector          # connector | export-folder | script (a command the user runs fills the export folder: add command: "...")
     filter: "calls with customers of the squad's segments"
     keep_contacts: false    # true copies the customer contact (name, email) into the Evidence database; false by default for every source
   tickets:
@@ -56,6 +60,7 @@ sources:
     tool: "support tool or data warehouse holding ticket categories without their text"
     via: connector
     use: signals            # no customer words: counts per category size the mapped opportunities, never create evidence
+    query: "the saved query or call that counts the items per category over the signal window"   # written and tested during onboarding, like the quantitative queries
     mapping:                # confirmed with the user at the quick review: category -> the opportunity's Notion page (a rename does not break it)
       "Export > Formatting": "https://www.notion.so/<opportunity page>"
   quantitative:
@@ -67,17 +72,24 @@ sources:
     queries:                # each query is saved as written and tested, and reused by every run
       accounts: "ARR, segment and plan per account"
       usage: "usage of the squad's features per account, over time"
-      outcome: "the outcome's metric over time"
+      outcome: "the outcome's metric over time"   # leave out while the squad has no outcome
   documentation:
     tool: "help center or product docs"
-    via: url                # connector | url (public pages read directly: give the sitemap or the index page) | export-folder
+    via: url                # connector | url (public pages read directly: give the sitemap or the index page) | export-folder | knowledge-base (a documentation base the squad already maintains: read it, never rebuild it)
     url: "https://help.example.com/sitemap.xml"
     use: reference-only     # not customer evidence
+    freshness: live         # live: read from the site or the connector at each run | snapshot: a dated copy the squad refreshes
+    # With via: knowledge-base, or with freshness: snapshot:
+    # location: "the index file or page of the base, or the copy"
+    # refresh: "the command or routine that refreshes it; the squad runs it, never the plugin"
+    # max_age_days: 35      # past this age the source is partial and the recap says how old the copy is
+    # The date of the copy is read from the copy itself at each run: do not write it here.
   release_notes:
     tool: "release notes or product changelog"
-    via: url
+    via: url                # same choices as the documentation; often the same base
     url: "https://help.example.com/release-notes"
     use: shipped-features   # which features shipped, and when
+    freshness: live
   backlog:
     tool: "issue tracker (e.g. Jira, Linear)"
     via: connector
@@ -96,14 +108,14 @@ imports:                    # files of customer feedback, mapped with the user d
       id: null              # no ID column: a stable ID is built from the file name and the row's content
       link: null
 
-export_folder: null         # folder read when a source uses via: export-folder; a cloud scheduled task cannot see it
+export_folder: null         # folder read when a source uses via: export-folder or via: script; a cloud scheduled task cannot see it
 
 tree:
   workspace: notion
   location: "the page chosen during onboarding"
 
 schedule:
-  runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open
+  runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open | none: no scheduled run (a tree over a fixed period, or a trial of the plugin)
   daily: "working days, early morning"
   weekly: "Monday morning"
   notify: decisions-only    # decisions-only: notify when something waits for the user or the agent changed the tree on its own | every-run

@@ -17,14 +17,18 @@ A relation needs its target database to exist. Create, in this order:
 
 1. Outcomes.
 2. Opportunities, with its relation to Outcomes; then add Parent as a two-way relation to itself (paired with Sub-opportunities).
-3. Evidence, with its two-way relation to Opportunities.
-4. Solutions, with its two-way relation to Opportunities.
-5. Assumptions, with its two-way relation to Solutions.
-6. Run log; then add the two-way relation from Evidence to Run log.
+3. Evidence, with its two-way relation to Opportunities (paired with Evidence) and Agent choice, a one-way relation to Opportunities; then add Duplicate of as a one-way relation to itself.
+4. Solutions, with its two-way relation to Opportunities (paired with Solutions).
+5. Assumptions, with its two-way relation to Solutions (paired with Assumptions); then add Riskiest assumption on Solutions, a one-way relation to Assumptions: Solutions is created first, so this relation can only come now.
+6. Run log; then add Run on Evidence, a two-way relation to Run log (paired with Evidence on the run log).
 7. Corrections.
 8. Sources.
-9. Rules, with its two-way relation to Corrections (paired with Rule).
+9. Rules, with its two-way relation to Corrections (paired with Rule) and its one-way relation to Outcomes.
 10. Changes, with its relations to Opportunities and Evidence, and its two-way relation to Run log (paired with Changes).
+
+Run log, Corrections and Sources depend on no other database: they can be created at any point, for example first, together with Outcomes.
+
+An option of a select cannot hold a comma in Notion: the creation of the database fails. When a name taken from the squad's scope has one (a product area, for example), replace the comma before creating the options.
 
 The nested display of sub-opportunities (Notion's Sub-items, based on Parent) is turned on by the user in the view's menu: the connector cannot do it.
 
@@ -62,7 +66,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Sub-opportunities | Relation (Opportunities) | The other side of Parent |
 | Outcomes | Relation (Outcomes) | Every outcome this opportunity has served; the active one is the outcome it serves now |
 | Status | Select | proposed, candidate, active, parked, addressed, merged, archived |
-| Product area | Select | One of the areas the squad owns (scope of the configuration); set by `build-tree` |
+| Product area | Select | One of the areas the squad owns (scope of the configuration); set by `build-tree`. The options are created during onboarding, grouped with the user above about fifteen areas |
 | Evidence | Relation (Evidence) | The other side of Evidence › Opportunity |
 | Solutions | Relation (Solutions) | The other side of Solutions › Opportunity |
 | Evidence count | Number | Written by the plugin: evidence attached, duplicates excluded |
@@ -135,9 +139,10 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Attached | Number | Evidence attached |
 | Pending | Number | Unattached evidence and proposals |
 | Changes | Relation (Changes) | The changes made or proposed during the run; the other side of Changes › Run |
+| Evidence | Relation (Evidence) | The evidence created by the run; the other side of Evidence › Run |
 | Anomalies | Text | Failed sources, unreadable items |
 | Status | Select | running, finished, interrupted |
-| Checkpoint | Text | For a backfill: the last item processed per source, so the next run resumes there |
+| Checkpoint | Text | For a backfill: the last item processed per source, so the next run resumes there. For an onboarding: the step reached and what is waiting on the user, so the next session resumes there |
 
 ## Sources
 One row per source, kept up to date by every run, so anyone can see at a glance that the tree is fed.
@@ -146,7 +151,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | --- | --- | --- |
 | Source | Title | The kind of input: calls, tickets, team channels, interviews, insights, signals, file imports, quantitative, documentation, release notes, backlog |
 | Tool | Text | The tool behind it, as declared in the configuration |
-| Status | Select | ok (green), partial (yellow), failed (red), not connected (gray), replaced or removed (default, kept for history) |
+| Status | Select | Six options: ok (green), partial (yellow), failed (red), not connected (gray), replaced, removed (both in the default color, kept for history). A source accepted as partial at onboarding stays partial |
 | Last successful read | Date (with time) | |
 | Last check | Date (with time) | The last time a run tried to read it |
 | Items read | Number | At the last check |
