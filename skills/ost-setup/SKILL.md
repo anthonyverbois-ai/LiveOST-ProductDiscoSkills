@@ -11,7 +11,7 @@ Run this as a conversation with the user, one step at a time. Confirm each step 
 
 Plugin files: the skills named in backticks (`ost-rules`, `build-tree`, `backfill`, …) belong to this plugin. Load them with the Skill tool as `live-product-discovery:<name>`, or read `${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`. Templates are in `${CLAUDE_PLUGIN_ROOT}/templates/`. When the plugin is read from its repository instead of being installed, `${CLAUDE_PLUGIN_ROOT}` is not substituted: it means the repository root.
 
-The onboarding works in two batches. A **trial batch** on the last month checks that everything works and gives a first tree fast. The **full history** is then processed with any rules learned from the user's corrections. Keep the user's effort low: the agent asks only about what it is unsure of, and earns the right to act on its own as the user's decisions show it gets things right (see "Changes and autonomy" in `ost-rules`).
+The onboarding works in two batches. A **trial batch** on the last month checks that everything works and gives a first tree fast. The **full history** is then processed with any rules learned from the user's corrections. Keep the user's effort low: the agent asks only about what it is unsure of, and earns the right to act on its own as the user's decisions show it gets things right (see "Changes and autonomy" in `ost-rules`). The onboarding delivers the visual tree: the page published by `ost-view`, on which the first tree is reviewed and which every run then refreshes.
 
 ## Keep the user oriented
 
@@ -52,7 +52,7 @@ Check each outcome is a measurable result, not an output. "Reduce the time to bu
 
 Say what the outcome does to the tree: every need that does not move it is proposed as parked. A narrow outcome (one segment, one moment such as activation) parks most of what existing customers say; an outcome on the squad's whole area parks little. Offer the no-outcome start when the squad wants the whole picture first.
 
-Without an outcome, say what changes: the tree is ranked on evidence alone and nothing is parked for lack of a link. The squad can add an outcome later with `ost-change-outcome`.
+Without an outcome, say what changes: the tree is ranked on evidence alone and nothing is parked for lack of a link. The squad can add an outcome later with `ost-change-outcome`. Ask in one sentence what the tree is for (`focus`, for example "the biggest customer signals on our scope"): the visual tree shows it at the top. A focus is not an outcome: nothing is tested against it.
 
 ## Step 2 – Sources
 
@@ -107,15 +107,17 @@ Read the last month and the extra material, and extract candidate evidence. For 
 
 1. Build the first set of opportunities under the outcome, following `build-tree`: the needs behind the evidence, grouping from the specific up, the link to the outcome, the check against shipped features, sizing and a first ranking.
 2. Present the tree to the user as the short outline described in `build-tree`. Flag the opportunities with a shipped solution: those with no evidence after the release are proposed as `addressed`; those with evidence after the release show that the need persists despite the feature. Flag the opportunities proposed as `parked` because they move none of the active outcomes.
+3. Publish the visual tree, following `ost-view`, and give its link: the quick review happens on it.
 
 ## Step 7 – Quick review
 
-The tree is already written. Do not walk the user through every branch. Show:
+The tree is already written and its visual tree published. Do not walk the user through every branch. Show:
+- the link to the visual tree, where the whole tree reads at a glance;
 - a short summary: the opportunities in order, with their evidence, accounts and revenue;
 - only what the agent is unsure of: opportunities whose link to the outcome is uncertain, proposed parks, low-confidence attachments, evidence that fits nothing, accounts the key could not match.
 - when a signal source is set up, the proposed mapping of its categories to opportunities, for the user to confirm. Write the confirmed mapping to the configuration page (`mapping`, keyed by the opportunity's Notion page, so a rename does not break it), then read it back.
 
-The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Then close the "First tree" change (`accepted` when the user changed at most one opportunity, `edited` otherwise) and, when the corrections show a pattern, draft rules from them as in "Learn" of `weekly-synthesis`: they guide the full history.
+The user corrects what they want, now or later from Notion or the live view; nothing else is required. Record every correction in the corrections database with: what the agent did, what the user decided, and why if they say. Then close the "First tree" change (`accepted` when the user changed at most one opportunity, `edited` otherwise) and, when the corrections show a pattern, draft rules from them as in "Learn" of `weekly-synthesis`: they guide the full history. Refresh the visual tree once the corrections are recorded.
 
 ## Step 8 – Full history
 
@@ -128,7 +130,7 @@ This is the normal next step: propose it by default.
 
    The user can also choose a later start date instead of all time. Write the choice as `history` in the configuration.
 3. On go, process the full history with the rules drafted at step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
-4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7.
+4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7, then refresh the visual tree.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.
 
@@ -145,4 +147,4 @@ A squad that only wants a tree over a fixed period, for example to try the plugi
    - **No schedule.** With `runner: none`, create no task: the tree moves only when the user runs `daily-run` or `weekly-synthesis` by hand. Say so in the summary.
 2. Explain how the agent works from now on: it proposes each type of structural change until the squad's decisions show it gets that type right, then acts on its own when it is sure, and lists what it did in the recap, where `/live-product-discovery:ost-undo` reverses any of it. Say that every type starts as a proposal and that the quick review was the first of the five decisions on creations. Offer `autonomy: proactive` to a squad that wants the agent to act from the first day, and `autonomy: propose-only` to one that prefers to decide everything.
 3. Confirm the freshness settings: 8 weeks without evidence after a release before proposing `addressed`, 24 weeks without evidence before asking whether an opportunity is still current. The user can change them.
-4. End with a summary: outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, that `/live-product-discovery:ost-change-sources <squad name>` adds, replaces or removes a source, that `/live-product-discovery:ost-undo` reverses a change made by the agent, and that running this onboarding again adds another squad.
+4. End with a summary: the link to the visual tree first, then outcome, period covered, number of opportunities and evidence, sources connected, schedule, and what the first daily recap will look like. Tell the user that if the squad changes course later, they can run `/live-product-discovery:ost-change-outcome <squad name>`, that `/live-product-discovery:ost-change-sources <squad name>` adds, replaces or removes a source, that `/live-product-discovery:ost-undo` reverses a change made by the agent, that `/live-product-discovery:ost-view <squad name>` refreshes the visual tree on demand, and that running this onboarding again adds another squad.

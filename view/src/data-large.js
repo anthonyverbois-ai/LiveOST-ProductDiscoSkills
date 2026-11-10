@@ -1,7 +1,7 @@
 // Larger fictional tree, used to check how the view holds up with 10 branches across 4 features.
 // Build it with: LPD_DATA=large node build.mjs (writes dist/live-view-large.html).
 // Opportunities and solutions that also exist in the Notion demo keep their links; the others have none.
-import * as base from './data.js';
+import * as base from './demo-data.js';
 
 const keep = Object.fromEntries(base.opportunities.map((o) => [o.id, o]));
 
@@ -59,3 +59,4 @@ export const solutions = [
 ];
 
 export const {evidence, pending, changelog} = base;
+export const isDemo = true;

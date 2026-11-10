@@ -1,5 +1,6 @@
 // Builds the live view into one self-contained page: React, Astryx and all CSS are inlined,
 // because published Claude pages only load scripts from a few CDNs and stylesheets from Google Fonts.
+// The page carries no data and no title: ost-view publishes it with the squad's data.json next to it and gives it its title.
 import {build} from 'esbuild';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {createRequire} from 'node:module';
@@ -43,8 +44,7 @@ const styles = [
   .join('\n')
   .replace(/<\/style/gi, '<\\/style');
 
-const page = `<title>Live OST view</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+const page = `<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
@@ -59,5 +59,5 @@ ${js}
 
 await mkdir('dist', {recursive: true});
 const out = variant ? `dist/live-view-${variant}.html` : 'dist/live-view.html';
-await writeFile(out, variant ? page.replace('<title>Live OST view</title>', '<title>Live OST view, large test</title>') : page);
+await writeFile(out, page);
 console.log(`${out}: ${(page.length / 1024).toFixed(0)} KB`);

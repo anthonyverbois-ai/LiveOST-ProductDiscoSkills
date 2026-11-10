@@ -38,7 +38,8 @@ The nested display of sub-opportunities (Notion's Sub-items, based on Parent) ca
 
 Create these views on the tree's page, as linked views, and the four tabs of the opportunities in the Opportunities database too. One flat table sorted by rank mixes parents and sub-opportunities: a rank is an order among siblings, so several rows carry the rank 1.
 
-- **Sources**, at the top: a table of the Sources database (source, tool, status, last successful read, detail).
+- **Visual tree**: at the very top of the page, the link to the page published by `ost-view`, once it exists.
+- **Sources**, below it: a table of the Sources database (source, tool, status, last successful read, detail).
 - **Top level**: the opportunities with no Parent and the status `active`, sorted by Rank. Show Rank, Accounts, ARR, Prospects, Evidence count, Signals, Sub-opportunities, Product area, Solutions and Last evidence.
 - **Sub-opportunities**: the opportunities with a Parent, grouped by Parent, sorted by Rank. Show Rank, Status, Accounts, ARR, Prospects, Evidence count, Signals, Solutions and Last evidence.
 - **Candidates**: the status `candidate`, sorted by Accounts, then Prospects, then Evidence count, largest first. Show Parent, Accounts, ARR, Prospects, Evidence count, Signals, Product area and Last evidence.

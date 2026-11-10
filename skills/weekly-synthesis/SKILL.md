@@ -64,8 +64,8 @@ Report the trend of:
 
 ## 7. Close the run
 
-Complete the run log entry as in `daily-run` step 8: counts, anomalies, sources status, plugin version, Finished at, Duration, Status `finished`, the one-page summary as Recap, and every Changes row written by this synthesis linked to it. Close it even when nothing changed.
+Complete the run log entry as in `daily-run` step 8: counts, anomalies, sources status, plugin version, Finished at, Duration, Status `finished`, the one-page summary as Recap, and every Changes row written by this synthesis linked to it. Close it even when nothing changed. Then refresh the visual tree, following `ost-view`.
 
 ## Output
 
-A one-page summary: top opportunities and movements, decisions needed, drift signals if any, rules learned, metrics.
+A one-page summary, opening with the link to the visual tree: top opportunities and movements, decisions needed, drift signals if any, rules learned, metrics.

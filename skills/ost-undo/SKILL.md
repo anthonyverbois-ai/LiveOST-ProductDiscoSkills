@@ -46,4 +46,4 @@ Set Agent choice on every piece of evidence you move, so the undo is never read 
 
 ## 5. Confirm
 
-End with one line per change undone: what was restored, what else moved, and the new counts of the opportunities touched.
+End with one line per change undone: what was restored, what else moved, and the new counts of the opportunities touched. Then refresh the visual tree, following `ost-view`.

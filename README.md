@@ -4,7 +4,7 @@
 
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery. Every day, an agent reads your squad's new customer calls and support tickets, attaches each piece of customer evidence to the right opportunity in your tree, and tells you exactly what changed. Your team stays in charge of the decisions; the agent does the linking.
 
-> Status: **v0.1 in progress.** The skills are written and have been through four reviews on paper; the plugin has not yet run on a real squad. Expect rough edges on the first onboarding.
+> Status: **v0.1 in progress.** The onboarding has run on one real squad. The daily run and the weekly synthesis have not run yet: expect rough edges.
 
 ## Why
 
@@ -24,6 +24,7 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 3. **Weekly synthesis**: opportunities are re-ranked, structural changes are applied when the agent is sure and proposed otherwise, and the agent learns from the corrections you made during the week. It also flags when the evidence starts drifting away from your outcome.
 4. **Change of course** (`/live-product-discovery:ost-change-outcome`): when the squad adopts a new outcome or north star, the tree is re-anchored. Opportunities are kept, reframed or parked, nothing is deleted, and the squad reviews the result.
 5. **Change of sources** (`/live-product-discovery:ost-change-sources`): when a tool is added, replaced or removed (for example one data warehouse for another), the new tool is connected and tested, the saved queries are rewritten, old and new figures are compared before switching, and no evidence is ingested twice. The tree does not change.
+6. **Visual tree** (`/live-product-discovery:ost-view`): the page that shows the tree as it stands. The onboarding publishes it, every run refreshes it, and you can refresh it on demand.
 
 Design principles:
 
@@ -35,7 +36,7 @@ Design principles:
 ## Roadmap
 
 - **v0.1 – The living tree**: onboarding, daily run, recap and log, weekly synthesis.
-- **v0.2 – The live view**: an always-up-to-date visual of the tree, with what changed today, one-click approvals, the last refresh date and the tree's changelog. See [docs/live-view.md](docs/live-view.md).
+- **v0.2 – The visual tree**: a page that shows the tree as it stands, with what changed, the last refresh date and the tree's changelog. First step delivered: a copy published by the onboarding and refreshed at each run. Next: a page that reads Notion when it opens, with one-click approvals. See [docs/live-view.md](docs/live-view.md).
 - **v0.3 – Solution discovery**: prototypes for solutions under test, compared side by side, and draft outreach to the customers who raised the pain.
 - **Later**: writing back to the product feedback tool (one hierarchy, not two), filling the Assumptions database from the squad's tests, and a cost report per run.
 
@@ -66,11 +67,13 @@ skills/
   backfill/            processing large volumes: batches, resume, deduplication
   daily-run/           daily ingestion, attachment, recap and log
   weekly-synthesis/    ranking, structural changes, learning loop
+  ost-view/            publishing and refreshing the visual tree
 agents/
   evidence-extractor   extraction and classification of a batch, on a fast model
 evals/                 test cases on fictional data, run with `claude plugin eval .`
 templates/             Notion data model and sources config example
-docs/                  specifications of upcoming versions (live view)
+docs/                  specification of the visual tree (live view)
+view/                  source and built page of the visual tree
 ```
 
 ## Contributing
