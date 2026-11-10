@@ -54,7 +54,7 @@ The page reads Notion with the viewer's own connector, so it follows "Reading th
 
 ## Data file
 
-`ost-view` writes one JSON file, `data.json`, published next to the page. Every value is copied from Notion; a value Notion does not hold is left out. Dates are `YYYY-MM-DD`; a date with a time is ISO 8601.
+`ost-view` writes one JSON file, `data.json`, published next to the page. Every value is copied from Notion; a value Notion does not hold is left out. Dates are `YYYY-MM-DD`; a date with a time is ISO 8601 with its time zone, and the page shows it in the viewer's own time.
 
 | Key | Content |
 | --- | --- |

@@ -107,7 +107,15 @@ const SOURCE_STATUS = {success: 'OK', warning: 'Partial', error: 'Failed', neutr
 function formatDateTime(iso) {
   if (!iso) return 'an unknown date';
   const [day, time] = iso.split('T');
-  return time ? `${formatDay(day)}, ${time.slice(0, 5)}` : formatDay(day);
+  if (!time) return formatDay(day);
+  // A time written with its zone (Z or an offset) is shown in the viewer's own time.
+  if (/(Z|[+-]\d\d:?\d\d)$/.test(time)) {
+    const d = new Date(iso);
+    const pad = (n) => String(n).padStart(2, '0');
+    const local = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    return `${formatDay(local)}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  return `${formatDay(day)}, ${time.slice(0, 5)}`;
 }
 
 // Source health: one dot per source next to the recap title, and a banner when a source is not fully OK.
