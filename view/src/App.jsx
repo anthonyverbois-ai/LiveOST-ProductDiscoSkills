@@ -17,6 +17,7 @@ import {Text} from '@astryxdesign/core/Text';
 import {
   changelog,
   evidence,
+  isDemo,
   meta,
   opportunities,
   pending as pendingSeed,
@@ -26,18 +27,19 @@ import {
 // One visual language for status: plain words, no colored tags.
 const STATUS = {
   active: 'Active',
-  candidate: 'To decide',
+  proposed: 'Waiting for a decision',
+  candidate: 'Too early to rank',
   parked: 'Set aside for now',
   addressed: 'Addressed by a shipped feature',
 };
 
 const byPriority = (a, b) => (a.rank ?? 99) - (b.rank ?? 99);
 const solutionsOf = (oppId) => solutions.filter((s) => s.opp === oppId);
-// The tree holds the opportunities the squad works with. Candidates and set-aside ones sit below it.
+// The tree holds the opportunities the squad works with. Proposed creations, candidates and set-aside ones sit below it.
 const inTree = (o) => o.status === 'active' || o.status === 'addressed';
 
-// Decisions taken on candidate cards change the tree. In the live view they are written to Notion
-// and logged as corrections; in the demo they only change what is shown.
+// Demo only: a decision taken on the card of a proposed creation changes what is shown. On a published page the
+// decision is taken in Notion, on the row of the proposal in Changes, and the next run carries it out.
 function applyDecisions(opps, decisions) {
   let list = opps.map((o) => ({...o}));
   const find = (id) => list.find((o) => o.id === id);
@@ -67,12 +69,16 @@ function applyDecisions(opps, decisions) {
 
 function buildTree(opps) {
   const byId = Object.fromEntries(opps.map((o) => [o.id, o]));
-  const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).filter(Boolean).sort(byPriority);
+  // Only ranked opportunities are numbered: a candidate under a parent sits below the tree with the other candidates.
+  const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).filter((c) => c && inTree(c)).sort(byPriority);
   const roots = opps.filter((o) => !o.parent && inTree(o)).sort(byPriority);
-  const candidates = opps.filter((o) => o.status === 'candidate');
+  const proposed = opps.filter((o) => o.status === 'proposed');
+  const candidates = opps
+    .filter((o) => o.status === 'candidate')
+    .sort((a, b) => b.accounts - a.accounts || (b.prospects ?? 0) - (a.prospects ?? 0) || b.evidence - a.evidence);
   const setAside = opps.filter((o) => o.status === 'parked');
   // Features (product areas) of the squad, in the order of their highest-priority branch.
-  const features = [...new Set([...roots, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
+  const features = [...new Set([...roots, ...proposed, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
   // Outline numbers follow priority among siblings: 1, 2, 3 for branches; 1.1, 1.2 under branch 1.
   const numberOf = {};
   roots.forEach((root, i) => {
@@ -81,7 +87,7 @@ function buildTree(opps) {
       numberOf[child.id] = `${i + 1}.${j + 1}`;
     });
   });
-  return {byId, childrenOf, roots, candidates, setAside, features, hasFeatures: features.length > 1, numberOf};
+  return {byId, childrenOf, roots, proposed, candidates, setAside, features, hasFeatures: features.length > 1, numberOf};
 }
 
 const TreeContext = createContext(null);
@@ -97,16 +103,18 @@ function formatDay(iso) {
 
 const SOURCE_STATUS = {success: 'OK', warning: 'Partial', error: 'Failed', neutral: 'Not connected'};
 
+// A date and time, or a date alone when the source gives no time.
 function formatDateTime(iso) {
+  if (!iso) return 'an unknown date';
   const [day, time] = iso.split('T');
-  return `${formatDay(day)}, ${time.slice(0, 5)}`;
+  return time ? `${formatDay(day)}, ${time.slice(0, 5)}` : formatDay(day);
 }
 
 // Source health: one dot per source next to the recap title, and a banner when a source is not fully OK.
 function SourceDots() {
   return (
     <ul className="source-dots" aria-label="Sources">
-      {meta.sources.map((s) => {
+      {(meta.sources ?? []).map((s) => {
         const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}. Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
           <li key={s.name} className={`source source-${s.status}`} title={tip}>
@@ -120,7 +128,7 @@ function SourceDots() {
 }
 
 function SourceAlerts() {
-  const issues = meta.sources.filter((s) => s.status === 'warning' || s.status === 'error');
+  const issues = (meta.sources ?? []).filter((s) => s.status === 'warning' || s.status === 'error');
   if (issues.length === 0) return null;
   return (
     <div className="source-alerts">
@@ -146,6 +154,13 @@ function plural(n, word) {
   return `${n} ${word}${n > 1 ? 's' : ''}`;
 }
 
+// Revenue in short form: 2.76M, 445k.
+function formatArr(n) {
+  if (n >= 1e6) return `${(n / 1e6).toFixed(2).replace(/\.?0+$/, '')}M`;
+  if (n >= 1e3) return `${Math.round(n / 1e3)}k`;
+  return `${n}`;
+}
+
 function NotionLink({href, children, className}) {
   if (!href) return <span className={className}>{children}</span>;
   return (
@@ -169,7 +184,11 @@ function SolutionTree({sols, isOpen, onToggle}) {
           {sols.map((s) => (
             <li key={s.name}>
               <NotionLink href={s.notion} className="sol-name">{s.name}</NotionLink>
-              <span className="sol-status">{s.status}</span>
+              <span className="sol-status">
+                {s.status}
+                {s.backlogStatus ? ` · backlog: ${s.backlogStatus}` : ''}
+                {s.released ? ` · ${formatDay(s.released)}` : ''}
+              </span>
               {s.assumption ? (
                 <span className="sol-assumption">Riskiest assumption: {s.assumption} ({s.assumptionResult})</span>
               ) : null}
@@ -192,7 +211,7 @@ function CandidateActions({opp}) {
         {parent ? `Proposed under ${numberOf[parent.id]}. ${parent.name}` : 'Proposed as a new branch'}
         {opp.hesitation ? <span className="cand-why"> {opp.hesitation}</span> : null}
       </p>
-      {merging ? (
+      {isDemo && merging ? (
         <Selector
           label="Merge into"
           size="sm"
@@ -201,18 +220,25 @@ function CandidateActions({opp}) {
           onChange={(value) => decide(opp.id, {action: 'merge', target: value})}
         />
       ) : null}
+      {isDemo ? (
       <div className="actions">
         <Button label="Accept" variant="primary" size="sm" onClick={() => decide(opp.id, {action: 'accept'})} />
         <Button label="Merge with…" variant="secondary" size="sm" onClick={() => setMerging((m) => !m)} />
         <Button label="Set aside" variant="ghost" size="sm" onClick={() => decide(opp.id, {action: 'park'})} />
         <Button label="Reject" variant="ghost" size="sm" onClick={() => decide(opp.id, {action: 'reject'})} />
       </div>
+      ) : (
+        <p className="cand-where">
+          <NotionLink href={opp.decideNotion} className="drawer-notion">Decide in Notion</NotionLink>
+          <span className="cand-why"> The next run carries the decision out.</span>
+        </p>
+      )}
     </div>
   );
 }
 
 function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
-  const {numberOf} = useTree();
+  const {numberOf, byId} = useTree();
   const sols = solutionsOf(opp.id);
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
@@ -233,8 +259,20 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
           </span>
           <span className="stat">
             <span className="stat-n">{opp.accounts}</span>
-            <span className="stat-l">accounts</span>
+            <span className="stat-l">{opp.accounts === 1 ? 'account' : 'accounts'}</span>
           </span>
+          {opp.prospects ? (
+            <span className="stat">
+              <span className="stat-n">{opp.prospects}</span>
+              <span className="stat-l">{opp.prospects === 1 ? 'prospect' : 'prospects'}</span>
+            </span>
+          ) : null}
+          {opp.arr ? (
+            <span className="stat">
+              <span className="stat-n">{formatArr(opp.arr)}</span>
+              <span className="stat-l">ARR</span>
+            </span>
+          ) : null}
           {signal ? <Badge variant="info" label={signal} /> : null}
         </button>
         <span className="opp-last">
@@ -245,7 +283,11 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
             </span>
           ) : null}
         </span>
-        {opp.status === 'candidate' ? <CandidateActions opp={opp} /> : null}
+        {opp.signals ? <span className="opp-last">{opp.signals}</span> : null}
+        {opp.status === 'candidate' && opp.parent && byId[opp.parent] ? (
+          <span className="opp-last">Under: {byId[opp.parent].name}</span>
+        ) : null}
+        {opp.status === 'proposed' ? <CandidateActions opp={opp} /> : null}
       </div>
       {sols.length > 0 ? (
         <SolutionTree sols={sols} isOpen={openSols.has(opp.id)} onToggle={() => toggleSols(opp.id)} />
@@ -276,7 +318,7 @@ function DecisionNotice() {
 }
 
 function TreeMap({onOpen}) {
-  const {roots, candidates, setAside, features, hasFeatures, childrenOf} = useTree();
+  const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf} = useTree();
   const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
   const [openSols, setOpenSols] = useState(() => new Set());
   const allOpen = withSolutions.every((id) => openSols.has(id));
@@ -291,20 +333,33 @@ function TreeMap({onOpen}) {
   const inFeature = (o) => feature === 'all' || o.area === feature;
   const cardProps = {onOpen, openSols, toggleSols, showFeature: hasFeatures && feature === 'all'};
   const shownRoots = roots.filter(inFeature);
+  const shownProposed = proposed.filter(inFeature);
   const shownCandidates = candidates.filter(inFeature);
   const shownSetAside = setAside.filter(inFeature);
 
   return (
     <div className="map">
       <div className="outcome-node">
-        <Text type="supporting">Active outcome · since {formatDay(meta.outcomeSince)}</Text>
-        <NotionLink href={meta.outcomeNotion} className="outcome-text">{meta.outcome}</NotionLink>
+        {meta.outcome ? (
+          <>
+            <Text type="supporting">Active outcome{meta.outcomeSince ? ` · since ${formatDay(meta.outcomeSince)}` : ''}</Text>
+            <NotionLink href={meta.outcomeNotion} className="outcome-text">{meta.outcome}</NotionLink>
+          </>
+        ) : (
+          <>
+            <Text type="supporting">{meta.focus ? 'What this tree is for' : 'No outcome yet'}</Text>
+            <NotionLink href={meta.treeNotion} className="outcome-text">
+              {meta.focus ?? 'Ranked on customer evidence alone'}
+            </NotionLink>
+            {meta.focus ? <Text type="supporting">No outcome yet: the tree is ranked on customer evidence alone.</Text> : null}
+          </>
+        )}
         {meta.northStar ? <Text type="supporting">North star: {meta.northStar}</Text> : null}
       </div>
       <div className="map-tools">
         <p className="map-legend">
           Numbered by priority: 1 is the top branch, 1.1 its top sub-opportunity. Titles open Notion; the counts open
-          the verbatims.
+          the verbatims. Accounts are customers; prospects are shown apart and do not move the rank.
         </p>
         <Button
           label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
@@ -335,12 +390,27 @@ function TreeMap({onOpen}) {
         ))}
       </div>
 
-      {shownCandidates.length > 0 ? (
-        <section className="aside" aria-labelledby="candidates-title">
-          <h2 id="candidates-title" className="aside-title">Waiting for a decision</h2>
+      {shownProposed.length > 0 ? (
+        <section className="aside" aria-labelledby="proposed-title">
+          <h2 id="proposed-title" className="aside-title">Waiting for a decision</h2>
           <p className="aside-note">
             New needs the agent was not sure enough to add on its own. Accept one and it takes its place and number in the
             tree; merge it into an opportunity that says the same thing; set it aside; or reject it.
+          </p>
+          <div className="aside-row">
+            {shownProposed.map((o) => (
+              <OppCard key={o.id} opp={o} {...cardProps} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {shownCandidates.length > 0 ? (
+        <section className="aside" aria-labelledby="candidates-title">
+          <h2 id="candidates-title" className="aside-title">Too early to rank</h2>
+          <p className="aside-note">
+            Needs with fewer than 2 pieces of evidence from 2 customer accounts. They are not ranked yet; some are carried
+            by prospects only.
           </p>
           <div className="aside-row">
             {shownCandidates.map((o) => (
@@ -369,7 +439,7 @@ function TreeMap({onOpen}) {
 }
 
 function TreeAsList() {
-  const {roots, candidates, setAside, hasFeatures, childrenOf, numberOf} = useTree();
+  const {roots, proposed, candidates, setAside, hasFeatures, childrenOf, numberOf} = useTree();
   const solutionGroup = (opp) => {
     const sols = solutionsOf(opp.id);
     if (sols.length === 0) return [];
@@ -394,7 +464,7 @@ function TreeAsList() {
     description: [
       hasFeatures && !opp.parent ? opp.area : null,
       opp.status !== 'active' ? STATUS[opp.status] : null,
-      `${opp.evidence} evidence · ${opp.accounts} accounts`,
+      `${opp.evidence} evidence · ${opp.accounts} accounts${opp.prospects ? ` · ${opp.prospects} prospects` : ''}${opp.arr ? ` · ARR ${formatArr(opp.arr)}` : ''}`,
       signalText(opp),
     ]
       .filter(Boolean)
@@ -407,14 +477,15 @@ function TreeAsList() {
   const items = [
     {
       id: 'outcome',
-      label: meta.outcome,
-      description: 'Active outcome',
-      href: meta.outcomeNotion,
+      label: meta.outcome ?? meta.focus ?? 'No outcome yet',
+      description: meta.outcome ? 'Active outcome' : 'No outcome yet: ranked on customer evidence alone',
+      href: meta.outcomeNotion ?? meta.treeNotion,
       target: '_blank',
       isExpanded: true,
       children: roots.map(toItem),
     },
-    {id: 'candidates', label: 'Waiting for a decision', isExpanded: true, children: candidates.map(toItem)},
+    {id: 'proposed', label: 'Waiting for a decision', isExpanded: true, children: proposed.map(toItem)},
+    {id: 'candidates', label: 'Too early to rank', isExpanded: false, children: candidates.map(toItem)},
     {id: 'set-aside', label: 'Set aside for now', isExpanded: false, children: setAside.map(toItem)},
   ];
   return (
@@ -432,6 +503,9 @@ function Pending({decisions, onDecide, onOpen}) {
   const reject = (p) => (p.opp ? decide(p.opp, {action: 'reject'}) : onDecide(p.id, 'Rejected'));
   return (
     <div className="pending">
+      {pendingSeed.length === 0 ? (
+        <p className="panel-text">Nothing is waiting for a decision. The proposals of the agent appear here after a run.</p>
+      ) : null}
       {pendingSeed.map((p) => {
         const decision = p.opp && cardDecisions[p.opp] ? DECISION_TEXT[cardDecisions[p.opp].action] : decisions[p.id];
         return (
@@ -446,8 +520,14 @@ function Pending({decisions, onDecide, onOpen}) {
               </p>
             ) : (
               <div className="actions">
-                <Button label="Approve" variant="primary" onClick={() => approve(p)} />
-                <Button label="Reject" variant="secondary" onClick={() => reject(p)} />
+                {isDemo ? (
+                  <>
+                    <Button label="Approve" variant="primary" onClick={() => approve(p)} />
+                    <Button label="Reject" variant="secondary" onClick={() => reject(p)} />
+                  </>
+                ) : (
+                  <NotionLink href={p.notion} className="drawer-notion">Decide in Notion</NotionLink>
+                )}
                 {p.opp ? <Button label="See the evidence" variant="ghost" onClick={() => onOpen(p.opp)} /> : null}
               </div>
             )}
@@ -475,7 +555,8 @@ function Changelog() {
 function OppDrawer({isOpen, oppId, onClose}) {
   const {byId, numberOf} = useTree();
   const opp = oppId ? byId[oppId] : null;
-  const items = useMemo(() => evidence.filter((e) => e.opp === oppId), [oppId]);
+  // A parent shows the evidence of its sub-opportunities with its own, as its counts do.
+  const items = useMemo(() => evidence.filter((e) => e.opp === oppId || byId[e.opp]?.parent === oppId), [oppId, byId]);
   const sols = solutionsOf(oppId);
   const shipped = sols.find((s) => s.status === 'shipped');
   const place = opp
@@ -497,6 +578,9 @@ function OppDrawer({isOpen, oppId, onClose}) {
                   <MetadataListItem label="Status">{STATUS[opp.status]}</MetadataListItem>
                   <MetadataListItem label="Evidence">{opp.evidence}</MetadataListItem>
                   <MetadataListItem label="Accounts">{opp.accounts}</MetadataListItem>
+                  <MetadataListItem label="Prospects">{opp.prospects ?? 0}</MetadataListItem>
+                  <MetadataListItem label="ARR of these accounts">{opp.arr ? formatArr(opp.arr) : 'Not known'}</MetadataListItem>
+                  <MetadataListItem label="Signals">{opp.signals ?? 'None'}</MetadataListItem>
                   <MetadataListItem label="Last evidence">{formatDay(opp.lastEvidence)}</MetadataListItem>
                   <MetadataListItem label="Shipped solution">
                     {shipped ? `${shipped.name}, ${formatDay(shipped.released)}` : 'None found'}
@@ -512,17 +596,32 @@ function OppDrawer({isOpen, oppId, onClose}) {
 
                 <h3 className="drawer-h">Evidence</h3>
                 {items.length === 0 ? (
-                  <p className="panel-text">No verbatim in the demo data for this opportunity.</p>
+                  <p className="panel-text">{isDemo ? 'No verbatim in the demo data for this opportunity.' : 'No evidence copied for this opportunity.'}</p>
                 ) : (
                   <ul className="evidence">
                     {items.map((e, i) => (
                       <li key={i}>
                         <blockquote>“{e.verbatim}”</blockquote>
                         <div className="ev-meta">
-                          {e.source} · {e.account} · {formatDay(e.date)}
-                          {e.confidence !== 'high' ? ` · ${e.confidence} confidence` : ''}
+                          {e.source} · {e.account}
+                          {e.type === 'prospect' ? ' (prospect)' : ''} · {formatDay(e.date)}
+                          {e.kind && e.kind !== 'need' ? ` · ${e.kind}` : ''}
+                          {e.confidence && e.confidence !== 'high' ? ` · ${e.confidence} confidence` : ''}
+                          {e.link ? (
+                            <>
+                              {' · '}
+                              <a href={e.link} target="_blank" rel="noreferrer">source</a>
+                            </>
+                          ) : null}
                         </div>
-                        <p className="ev-why">{e.rationale}</p>
+                        <p className="ev-why">
+                          {e.need ?? e.rationale}
+                          {e.opp !== oppId && byId[e.opp]
+                            ? numberOf[e.opp]
+                              ? ` · sub-opportunity ${numberOf[e.opp]}`
+                              : ` · ${byId[e.opp].name}`
+                            : ''}
+                        </p>
                       </li>
                     ))}
                   </ul>
@@ -538,7 +637,11 @@ function OppDrawer({isOpen, oppId, onClose}) {
                       {sols.map((s) => (
                         <li key={s.name}>
                           <NotionLink href={s.notion} className="sol-name">{s.name}</NotionLink>
-                          <span className="sol-status">{s.status}</span>
+                          <span className="sol-status">
+                {s.status}
+                {s.backlogStatus ? ` · backlog: ${s.backlogStatus}` : ''}
+                {s.released ? ` · ${formatDay(s.released)}` : ''}
+              </span>
                           {s.assumption ? (
                             <span className="sol-assumption">
                               Riskiest assumption: {s.assumption} ({s.assumptionResult})
@@ -588,18 +691,23 @@ export function App() {
     <div className="page">
       <header className="head">
         <h1 className="page-title">Opportunity Solution Tree · {meta.squad}</h1>
-        <Badge variant="warning" label="Demo data, fictional" />
+        {isDemo ? (
+          <Badge variant="warning" label="Demo data, fictional" />
+        ) : (
+          <Badge variant="info" label={`Copy of ${formatDateTime(meta.publishedAt)}`} />
+        )}
       </header>
 
       <section className="recap" aria-labelledby="recap-title">
         <div className="recap-head">
           <h2 id="recap-title" className="recap-title">
-            Last run, <Timestamp value={meta.lastRefresh} format="date_time" /> · {meta.recap.analysed} analysed
+            Last run, <Timestamp value={meta.lastRefresh} format="date_time" />
+            {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
           </h2>
           <SourceDots />
         </div>
         <ul>
-          {meta.recap.lines.map((l) => (
+          {(meta.recap?.lines ?? []).map((l) => (
             <li key={l}>{l}</li>
           ))}
         </ul>
@@ -624,6 +732,12 @@ export function App() {
       </main>
 
       <footer className="foot">
+        {isDemo ? null : (
+          <span className="foot-item">
+            A copy of the Notion tree, made on {formatDateTime(meta.publishedAt)}. It is refreshed at each run and on demand
+            with /live-product-discovery:ost-view.
+          </span>
+        )}
         <span className="foot-item">
           Plugin v{meta.pluginVersion} ·{' '}
           <a href={meta.changelogUrl} target="_blank" rel="noreferrer">changelog</a>

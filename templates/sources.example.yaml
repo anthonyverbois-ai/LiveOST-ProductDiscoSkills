@@ -13,6 +13,7 @@ outcomes:                   # one or more (one per product area for a squad that
   - "Reduce the time it takes a customer to build their first report"
 # To change course later (add, replace or retire an outcome), run /live-product-discovery:ost-change-outcome
 # instead of editing these lines: it keeps the history and reviews the tree.
+focus: null                 # optional, for a squad with no outcome yet: what the tree is for, shown at the top of the visual tree; never an outcome
 
 scope:
   owns:                     # product areas and features, named as in the product
@@ -118,6 +119,10 @@ export_folder: null         # folder read when a source uses via: export-folder 
 tree:
   workspace: notion
   location: "the page chosen during onboarding"
+
+view:                       # the visual tree, published and refreshed by ost-view
+  url: null                 # address of the page; written at the first publication, reused at every refresh
+  evidence_recent: 100      # most recent pieces of evidence copied into the page; 0 copies none
 
 schedule:
   runner: cloud             # cloud: runs with the computer off, sees no local file | desktop: sees local folders, only while the app is open | none: no scheduled run (a tree over a fixed period, or a trial of the plugin)

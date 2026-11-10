@@ -57,6 +57,7 @@ Then review the learned rules: keep rules about how customers express needs; fla
 ## Step 7 – Restart
 
 1. Write the reviewed tree. Rewrite the configuration block (`outcomes`, `north_star`, `paused: false`), then read it back: the Outcomes database is the source of truth for the active outcomes, and the configuration mirrors it.
-2. End with a summary: old and new direction, number of opportunities kept, reframed, parked and added, source changes, and what the next daily recap will show.
+2. Refresh the visual tree, following `ost-view`.
+3. End with a summary: the link to the visual tree, old and new direction, number of opportunities kept, reframed, parked and added, source changes, and what the next daily recap will show.
 
 The next daily recap opens with one line on the change of course.
