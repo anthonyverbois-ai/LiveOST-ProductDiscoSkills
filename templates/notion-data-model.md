@@ -77,7 +77,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - Ledger: per account and static weight, the latest date (see "Ranking" in `ost-rules`).
   - ARR: the total revenue of those customer accounts, from the accounts query (see "Evidence" in `ost-rules`); empty without the query.
   - A parent's values cover its own evidence and that of its sub-opportunities, with each account counted once.
-- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched and of their parents, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads the evidence edited since the previous run (by last edited time) and recomputes the opportunities concerned. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
+- **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched and of their parents, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads, before it writes anything, the evidence whose Last edited is later than the end of the previous run, and recomputes the opportunities concerned. The connector filters on the date a row was edited only through a property of that type, and a run's own writes count as edits: hence the Last edited property, and the read at the start of the run. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 - **Check large writes.** After writing more than about a hundred rows (a first tree, a backfill), read back what is stored and compare it with what was meant to be written: the number of rows per status, the relations, and the verbatims word for word. Fix the differences before showing the result: a write made of many calls can drop or alter a row without an error.
@@ -137,6 +137,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
 | Rationale | Text | One sentence: why this opportunity. For a piece grouped at a first tree or a consolidation, the reason is on the opportunity's `create` row |
 | Confidence | Select | high, medium, low; low-confidence attachments are reviewed first |
 | Run | Relation (Run log) | Run that created it |
+| Last edited | Last edited time | Set by Notion each time the row changes. A run reads the rows edited since the previous run, to find what a person moved or corrected by hand |
 
 ## Solutions
 | Property | Type | Notes |

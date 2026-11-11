@@ -95,7 +95,7 @@ sources:
   backlog:
     tool: "issue tracker (e.g. Jira, Linear)"
     via: connector
-    filter: "the squad's project, board or labels"
+    filter: "the squad's project, board or labels"   # an item already linked to a solution is read by its link, even outside this filter
     use: delivery           # what the squad delivered and plans; read only, not customer evidence
     status_map:             # agreed during onboarding: what each tracker status means for a linked solution; a status left out changes nothing
       planned: ["To do", "Ready"]
