@@ -2,10 +2,6 @@
 
 **An Opportunity Solution Tree that keeps itself up to date.**
 
-![The visual tree of a demo squad: the recap of the last run, the active outcome and the opportunities ranked by customer accounts](docs/img/visual-tree-demo.png)
-
-*The visual tree, shown here on fictional demo data.*
-
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery. An agent reads what is new in your squad's customer calls, support tickets and other feedback, attaches each piece of customer evidence to the right opportunity in your tree, and tells you what changed. Your team stays in charge of the decisions; the agent does the linking.
 
 > **Status: v0.1 in progress.** The onboarding and one daily run, asked by hand, have run on one real squad. The weekly synthesis and the scheduled runs have not run yet: expect rough edges.
@@ -129,7 +125,7 @@ agents/
   evidence-extractor.md  extraction and classification of a batch, on a fast model
 evals/                   test cases on fictional data, run with `claude plugin eval .`
 templates/               Notion data model and sources config example
-docs/                    specification of the visual tree (live view), and the image of this README
+docs/                    specification of the visual tree (live view)
 view/                    source and built page of the visual tree
 ```
 
@@ -137,7 +133,7 @@ view/                    source and built page of the visual tree
 
 ## Contributing
 
-Contributions are welcome, from code to ideas. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. The one non-negotiable rule: **never commit real customer data** (names, verbatims, accounts, metrics, screenshots of a real product). Every example in this repository is fictional, the screenshot above included.
+Contributions are welcome, from code to ideas. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. The one non-negotiable rule: **never commit real customer data** (names, verbatims, accounts, metrics, screenshots of a real product). Every example in this repository is fictional.
 
 ## License
 
