@@ -65,7 +65,7 @@ Every run writes to Notion, then publishes the visual tree again: the page is a 
 
 | Command | What it does | When to use it |
 | --- | --- | --- |
-| `/live-product-discovery:ost-setup` | The onboarding: sets the outcome, connects and tests the sources, creates the tree in Notion, builds a first tree on the last month, reviews it with you, extends it to the full history and schedules the runs. | Once per squad. Run it again to add another squad. |
+| `/live-product-discovery:ost-setup` | The onboarding: sets the outcome, connects and tests the sources, creates the tree in Notion, builds a first tree on the last month, reviews it with you, offers to extend it to the full history and schedules the runs. | Once per squad. Run it again to add another squad. |
 | `/live-product-discovery:daily-run`<br>or ask "refresh the tree" | Applies the squad's decisions, reads the new items of every source since the last run, attaches evidence, writes a log entry, refreshes the visual tree and returns a short recap. | Triggered by the schedule, on working days. Ask whenever you want the tree up to date now. |
 | `/live-product-discovery:weekly-synthesis` | Re-ranks opportunities, applies or proposes structural changes, learns from the corrections made during the week, and flags when the evidence drifts away from the outcome. | Triggered by the schedule, once a week. Its one-page summary feeds a review with the squad. |
 | `/live-product-discovery:ost-view` | Refreshes the visual tree from Notion, without reading the sources again. | After a change made by hand in Notion. |
