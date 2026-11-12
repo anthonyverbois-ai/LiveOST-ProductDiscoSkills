@@ -64,6 +64,7 @@ All notable changes to this plugin are listed here.
 - Live view: candidates are decided on their card. The card shows where the agent would place the candidate and why it did not add it on its own; accept, merge with an existing opportunity, set aside or reject, with the tree updating at once and the last decision undoable. Opportunities changed by the agent on its own carry a discreet marker with the reason. When the tree covers several features, each branch shows its feature on its own line ("Feature: Exports").
 
 ### Changed
+- README: the design principles say that the agent creates an opportunity on its own for each clear need that none holds.
 - README: an up-to-date status, how to get started before the roadmap, one diagram of the loop and one table of commands in place of six paragraphs, and a section on where the data stays.
 - On the visual tree, a card shows the customer accounts first and in bold, since they make the rank; evidence, prospects and revenue follow, lighter. The legend says what ranks: customer accounts, with revenue only breaking ties. Before, every count was in bold and evidence came first, so a branch with more evidence and more revenue looked misranked under one with more accounts.
 - Trending is a rule, and a narrower one: only ranked opportunities trend, and only customer and unknown accounts and their evidence make a trend. A candidate carried by a few prospects no longer shows as trending. The definition moves to "Ranking" in `ost-rules`.
