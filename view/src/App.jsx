@@ -307,13 +307,14 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
         </div>
         {opp.status !== 'active' ? <span className="opp-status">{STATUS[opp.status]}</span> : null}
         <button type="button" className="opp-stats" onClick={() => onOpen(opp.id)} title="See the evidence">
+          {/* Customer accounts make the rank: first and in bold. The other counts size the need. */}
+          <span className="stat stat-rank">
+            <span className="stat-n">{opp.accounts}</span>
+            <span className="stat-l">{opp.accounts === 1 ? 'customer account' : 'customer accounts'}</span>
+          </span>
           <span className="stat">
             <span className="stat-n">{opp.evidence}</span>
             <span className="stat-l">evidence</span>
-          </span>
-          <span className="stat">
-            <span className="stat-n">{opp.accounts}</span>
-            <span className="stat-l">{opp.accounts === 1 ? 'account' : 'accounts'}</span>
           </span>
           {opp.prospects ? (
             <span className="stat">
@@ -375,6 +376,7 @@ function DecisionNotice() {
 function TreeMap({onOpen}) {
   const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf, earlyOf} = useTree();
   const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
+  const hasArr = opportunities.some((o) => o.arr);
   const [openSols, setOpenSols] = useState(() => new Set());
   const allOpen = withSolutions.every((id) => openSols.has(id));
   const toggleSols = (id) =>
@@ -413,9 +415,13 @@ function TreeMap({onOpen}) {
       </div>
       <div className="map-tools">
         <p className="map-legend">
-          Numbered by priority: 1 is the top branch, 1.1 its top sub-opportunity. Titles open Notion; the counts open
-          the verbatims. A branch counts the evidence of its sub-opportunities with its own. Accounts are customers;
-          prospects are shown apart and do not move the rank.
+          Ranked by customer accounts: 1 is the top branch, 1.1 its top sub-opportunity. An account counts for less
+          when its evidence is old or dates from before a release.{' '}
+          {hasArr
+            ? 'Evidence, prospects and ARR size the need; ARR only breaks ties.'
+            : 'Evidence and prospects size the need; they do not move the rank.'}{' '}
+          A branch counts the evidence of its sub-opportunities with its own. Titles open Notion; the counts open the
+          verbatims.
         </p>
         <Button
           label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
@@ -520,7 +526,7 @@ function TreeAsList() {
     description: [
       hasFeatures && !opp.parent ? opp.area : null,
       opp.status !== 'active' ? STATUS[opp.status] : null,
-      `${opp.evidence} evidence${split(opp) ? ` (${split(opp).own} of its own)` : ''} · ${opp.accounts} accounts${opp.prospects ? ` · ${opp.prospects} prospects` : ''}${opp.arr ? ` · ARR ${formatArr(opp.arr)}` : ''}`,
+      `${opp.accounts} customer ${opp.accounts === 1 ? 'account' : 'accounts'} · ${opp.evidence} evidence${split(opp) ? ` (${split(opp).own} of its own)` : ''}${opp.prospects ? ` · ${opp.prospects} prospects` : ''}${opp.arr ? ` · ARR ${formatArr(opp.arr)}` : ''}`,
       signalText(opp),
     ]
       .filter(Boolean)
@@ -633,11 +639,11 @@ function OppDrawer({isOpen, oppId, onClose}) {
                 <MetadataList columns={2}>
                   <MetadataListItem label="Number in the tree">{place}</MetadataListItem>
                   <MetadataListItem label="Status">{STATUS[opp.status]}</MetadataListItem>
+                  <MetadataListItem label="Customer accounts (they make the rank)">{opp.accounts}</MetadataListItem>
                   <MetadataListItem label="Evidence">
                     {opp.evidence}
                     {parts ? ` (${splitText(parts)})` : ''}
                   </MetadataListItem>
-                  <MetadataListItem label="Accounts">{opp.accounts}</MetadataListItem>
                   <MetadataListItem label="Prospects">{opp.prospects ?? 0}</MetadataListItem>
                   <MetadataListItem label="ARR of these accounts">{opp.arr ? formatArr(opp.arr) : 'Not known'}</MetadataListItem>
                   <MetadataListItem label="Signals">{opp.signals ?? 'None'}</MetadataListItem>

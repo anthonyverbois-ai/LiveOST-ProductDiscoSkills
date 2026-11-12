@@ -141,7 +141,9 @@ body {
 .opp-stats:hover .stat { text-decoration: underline; text-underline-offset: 3px; }
 .opp-stats:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
 .stat { display: inline-flex; align-items: baseline; gap: 4px; }
-.stat-n { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
+.stat-n { font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; color: var(--color-text-secondary); }
+/* Customer accounts make the rank: the only count in bold. */
+.stat-rank .stat-n, .stat-rank .stat-l { font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
 .stat-l { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .signal { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
 .opp-last { font-size: var(--font-size-sm); color: var(--color-text-secondary); }
