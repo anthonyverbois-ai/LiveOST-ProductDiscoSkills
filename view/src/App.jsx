@@ -123,11 +123,16 @@ function SourceDots() {
   return (
     <ul className="source-dots" aria-label="Sources">
       {(meta.sources ?? []).map((s) => {
-        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}. Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
+        const volume =
+          s.items == null
+            ? ''
+            : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
+        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
           <li key={s.name} className={`source source-${s.status}`} title={tip}>
             <StatusDot variant={s.status} label={tip} />
             {s.name}
+            {s.items == null ? null : <span className="source-items">{plural(s.items, 'item')}</span>}
           </li>
         );
       })}

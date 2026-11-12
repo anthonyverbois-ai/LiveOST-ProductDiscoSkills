@@ -39,7 +39,7 @@ The nested display of sub-opportunities (Notion's Sub-items, based on Parent) ca
 Create these views on the tree's page, as linked views, and the four tabs of the opportunities in the Opportunities database too. One flat table sorted by rank mixes parents and sub-opportunities: a rank is an order among siblings, so several rows carry the rank 1.
 
 - **Visual tree**: at the very top of the page, the link to the page published by `ost-view`, once it exists.
-- **Sources**, below it: a table of the Sources database (source, tool, status, last successful read, detail).
+- **Sources**, below it: a table of the Sources database (source, tool, status, total items, in scope, last successful read, detail).
 - **Top level**: the opportunities with no Parent and the status `active`, sorted by Rank. Show Rank, Accounts, ARR, Prospects, Evidence count, Signals, Sub-opportunities, Product area, Solutions and Last evidence.
 - **Sub-opportunities**: the opportunities with a Parent, grouped by Parent, sorted by Rank. Show Rank, Status, Accounts, ARR, Prospects, Evidence count, Signals, Solutions and Last evidence.
 - **Candidates**: the status `candidate`, sorted by Accounts, then Prospects, then Evidence count, largest first. Show Parent, Accounts, ARR, Prospects, Evidence count, Signals, Product area and Last evidence.
@@ -59,6 +59,7 @@ Write this legend at the top of the tree's page, above the views, in the user's 
 - **Accounts**: the distinct customers behind that evidence. **Prospects** are counted apart and do not move the rank.
 - **ARR**: the total revenue of those customers. It sizes an opportunity and breaks ties; it is not part of the score.
 - **Signals**: volumes from sources with no customer words, such as tickets counted by category.
+- **Total items** and **In scope**, in the table of sources: what each source of evidence brought since the tree started, and how much of it is within the squad's scope.
 - **Candidate**: an opportunity with fewer than 2 pieces of evidence from 2 accounts. It is not ranked.
 - **Rank**: the order among siblings: top-level opportunities together, sub-opportunities within their parent.
 - A parent counts the evidence of its sub-opportunities with its own.
@@ -78,6 +79,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - ARR: the total revenue of those customer accounts, from the accounts query (see "Evidence" in `ost-rules`); empty without the query.
   - A parent's values cover its own evidence and that of its sub-opportunities, with each account counted once.
 - **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched and of their parents, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads, before it writes anything, the evidence whose Last edited is later than the end of the previous run, and recomputes the opportunities concerned. The connector filters on the date a row was edited only through a property of that type, and a run's own writes count as edits: hence the Last edited property, and the read at the start of the run. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
+- **Volumes per source are stored too.** On the row of each source of evidence, Total items counts every item of that source stored in the Evidence database, and In scope those within the squad's scope when they were stored. Each run adds what it stored; after a first tree or a backfill, set both from the rows read back (see "Check large writes"). The sources that store no evidence (signals, documentation, release notes, backlog, quantitative data) keep Items read only.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 - **Check large writes.** After writing more than about a hundred rows (a first tree, a backfill), read back what is stored and compare it with what was meant to be written: the number of rows per status, the relations, and the verbatims word for word. Fix the differences before showing the result: a write made of many calls can drop or alter a row without an error.
@@ -191,6 +193,8 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | Last successful read | Date (with time) | |
 | Last check | Date (with time) | The last time a run tried to read it |
 | Items read | Number | At the last check |
+| Total items | Number | Written by the plugin, for a source of evidence: every item of this source stored in the Evidence database since the tree started, out of scope included |
+| In scope | Number | Written by the plugin: among the total items, the pieces within the squad's scope when they were stored (attached, or left to sort) |
 | Detail | Text | One sentence: what went wrong and what the tree may miss, or what was read |
 
 ## Corrections
