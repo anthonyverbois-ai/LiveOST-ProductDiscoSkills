@@ -40,16 +40,15 @@ OST – <date> · <squad>: <n> items analysed (<n> calls, <n> tickets, <n> messa
 • Applied: <n> decisions of the squad carried out, for example merged "<a>" into "<b>" as accepted on <date>
 • To decide: new opportunity "<name>" (<n> evidence, <n> accounts: <names>) <link to the Changes row>
 • Unattached: <n> pieces too vague to name a need <link to the filtered Evidence view>; nothing to do, the agent reads them again at each run
-• Out of scope: <n> verbatims about other squads' areas (<n> for <other squad set up here>)
 • Sources: <status of each source>; when a source has failed for 3 working days in a row, add: "to replace or reconnect it, run /live-product-discovery:ost-change-sources"
 ```
 
 Drop every line whose count is zero. Keep the visual tree line: when the page could not be refreshed, say so there. Every opportunity, change and view named in the recap carries its Notion link. Never print a score or a rank in the recap: say "+3 accounts this week" or "now 2nd of its branch". On a day with nothing new: "Nothing new, tree unchanged."
 
-The recap is always written to the run log. Notify the user when something waits for them or changed without them: a decision, a change the agent made on its own other than a new candidate, a source failed or partial, or a change of course (`notify: decisions-only`, the default). On other days, when the scheduler notifies at the end of every run anyway, start the recap with "Nothing to decide" so it can be skipped at a glance. `notify: every-run` sends every recap.
+The recap is always written to the run log. Notify the user when something waits for them or changed without them: a decision, a change the agent made on its own other than a new candidate, a source failed or partial, or a change of course (`notify: decisions-only`, the default). The recap says only what happened and what waits: never add a line to say that nothing is to decide, and leave out what was read outside the squad's scope, which the run log keeps in its counts. `notify: every-run` sends every recap.
 
 With several squads, send one recap: a first line with the date, then one section per squad with the lines above, the squad's name as its title. A squad with nothing new takes one line: "<squad>: nothing new, tree unchanged." List the sources once, at the end.
 
-Out-of-scope evidence that falls within another squad set up here is not moved by this run: that squad's own pass reads the same sources with its own filters and attaches it. The recap only counts it.
+Out-of-scope evidence that falls within another squad set up here is not moved by this run: that squad's own pass reads the same sources with its own filters and attaches it.
 
 On the first run after a change of course, open the recap with one line: "New outcome since <date>: <outcome>."

@@ -31,7 +31,6 @@ export const meta = {
       'Trending: “I lose time reformatting my exports” (+4 evidence, moved up from 3 to 2)',
       'Done by the agent: created “I rebuild the same layout every month” under 1 (undo from the log)',
       'To decide: new opportunity “I’m not sure my numbers are up to date”',
-      'Out of scope: 2 verbatims about other squads’ areas',
     ],
   },
 };
