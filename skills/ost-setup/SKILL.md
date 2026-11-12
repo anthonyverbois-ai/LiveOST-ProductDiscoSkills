@@ -101,7 +101,7 @@ Never start processing without the user's explicit go. If the user wants to chan
 
 ## Step 5 – Trial batch
 
-Read the last month and the extra material, and extract candidate evidence. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process the items following "Before starting" and "Batches" of `backfill` only, and hold the candidates apart: the consolidation and the review are steps 6 and 7 of this onboarding, under the first-tree rule of `build-tree` (the whole tree is written, whatever the autonomy setting). If a source fails midway, finish the others and report what is missing.
+Read the last month and the extra material, and extract candidate evidence. Write the first day of that period in the configuration (`tree.since`): it is where the tree's evidence starts. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process the items following "Before starting" and "Batches" of `backfill` only, and hold the candidates apart: the consolidation and the review are steps 6 and 7 of this onboarding, under the first-tree rule of `build-tree` (the whole tree is written, whatever the autonomy setting). If a source fails midway, finish the others and report what is missing.
 
 ## Step 6 – First tree
 
@@ -130,7 +130,7 @@ This is the normal next step: propose it by default.
 
    The user can also choose a later start date instead of all time. Write the choice as `history` in the configuration.
 3. On go, process the full history with the rules drafted at step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
-4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7, then refresh the visual tree.
+4. Merge the result into the tree, move `tree.since` in the configuration back to the date of the earliest item processed, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7, then refresh the visual tree.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.
 

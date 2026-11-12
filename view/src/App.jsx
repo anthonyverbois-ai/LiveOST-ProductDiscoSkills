@@ -156,12 +156,18 @@ function SourceDots() {
               : s.inScope == null
                 ? ` ${plural(s.items, 'item')} read since the tree started.`
                 : ` ${plural(s.inScope, 'item')} in scope, out of ${s.items} read since the tree started.`;
-        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
+        // A limit the squad accepted (a connector that cannot reach everything) is not an incident: the read
+        // works, so the source shows as OK with a mention, and raises no banner.
+        const known = knownLimit(s);
+        const dot = known ? 'success' : s.status;
+        const state = known ? 'OK, with a known limit the squad accepted' : SOURCE_STATUS[s.status];
+        const tip = `${s.name} (${s.tool}): ${state}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
-          <li key={s.name} className={`source source-${s.status}`} title={tip}>
-            <StatusDot variant={s.status} label={tip} />
+          <li key={s.name} className={`source source-${dot}`} title={tip}>
+            <StatusDot variant={dot} label={tip} />
             {s.name}
             {shown == null ? null : <span className="source-items">{plural(shown, 'item')}</span>}
+            {known ? <span className="source-items">known limit</span> : null}
           </li>
         );
       })}
@@ -169,8 +175,14 @@ function SourceDots() {
   );
 }
 
+// A source the squad accepted as partial, with no other problem at the last run.
+function knownLimit(s) {
+  return s.status === 'warning' && Boolean(s.accepted);
+}
+
+// The banner is for incidents: a failed source, or a partial one the squad has not accepted as such.
 function SourceAlerts() {
-  const issues = (meta.sources ?? []).filter((s) => s.status === 'warning' || s.status === 'error');
+  const issues = (meta.sources ?? []).filter((s) => (s.status === 'warning' && !knownLimit(s)) || s.status === 'error');
   if (issues.length === 0) return null;
   return (
     <div className="source-alerts">
@@ -200,6 +212,22 @@ function daysAgo(iso) {
   const days = Math.round((midnight(new Date()) - midnight(new Date(iso))) / 86400000);
   if (days < 1) return '';
   return days === 1 ? ', yesterday' : `, ${days} days ago`;
+}
+
+// The period the tree covers: from the date its evidence starts to the day of the last refresh, in the
+// viewer's own time. Nothing when the data file gives no start.
+function periodText(since, lastRefresh) {
+  if (!since || !lastRefresh) return '';
+  const pad = (n) => String(n).padStart(2, '0');
+  const zoned = /(Z|[+-]\d\d:?\d\d)$/.test(lastRefresh);
+  const d = new Date(lastRefresh);
+  const end = zoned ? `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` : lastRefresh.split('T')[0];
+  const day = (iso) => {
+    const [y, m, dd] = iso.split('-').map(Number);
+    return new Date(y, m - 1, dd).getTime();
+  };
+  const days = Math.round((day(end) - day(since)) / 86400000);
+  return `${formatDay(since)} to ${formatDay(end)} (${plural(days, 'day')})`;
 }
 
 // How the evidence of a parent splits between its own pieces and those of its sub-opportunities.
@@ -767,6 +795,17 @@ export function App() {
       {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
     </>
   );
+  // The first line of the block: what the tree holds, and the period it covers.
+  const treeLine = [
+    totals
+      ? totals.inScope == null
+        ? `${plural(totals.items, 'item')} read since it started`
+        : `${plural(totals.inScope, 'item')} in scope`
+      : null,
+    periodText(meta.since, meta.lastRefresh),
+  ]
+    .filter(Boolean)
+    .join(' · ');
 
   return (
     <TreeContext.Provider value={{...tree, cardDecisions, decide, undo, lastDecision}}>
@@ -793,22 +832,19 @@ export function App() {
 
       <section className="recap" aria-labelledby="recap-title">
         {/* First what the tree holds in total, then what the last run added: the last ingestion is not the whole tree. */}
-        {totals ? (
+        {treeLine ? (
           <>
             <div className="recap-head">
               <h2
                 id="recap-title"
                 className="recap-title"
                 title={
-                  totals.inScope == null
+                  !totals || totals.inScope == null
                     ? undefined
                     : `${plural(totals.items, 'item')} read since the tree started, ${totals.items - totals.inScope} of them about other areas.`
                 }
               >
-                The tree ·{' '}
-                {totals.inScope == null
-                  ? `${plural(totals.items, 'item')} read since it started`
-                  : `${plural(totals.inScope, 'item')} in scope`}
+                The tree · {treeLine}
               </h2>
               <SourceDots />
             </div>

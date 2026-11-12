@@ -9,6 +9,7 @@ export const meta = {
   outcomeSince: '2026-09-01',
   outcomeNotion: 'https://www.notion.so/40f5d4385f6f81e58152c865d4ad9561',
   lastRefresh: '2026-11-05T07:42:00',
+  since: '2026-08-01',
   pluginVersion: '0.1.0',
   changelogUrl:
     'https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills/blob/main/CHANGELOG.md',
