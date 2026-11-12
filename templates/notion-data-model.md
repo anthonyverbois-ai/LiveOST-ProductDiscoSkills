@@ -36,21 +36,24 @@ The nested display of sub-opportunities (Notion's Sub-items, based on Parent) ca
 
 ## Views
 
-Create these views on the tree's page, as linked views, and the four tabs of the opportunities in the Opportunities database too. One flat table sorted by rank mixes parents and sub-opportunities: a rank is an order among siblings, so several rows carry the rank 1.
+Lay the tree's page out in the order below, with linked views, and create the four tabs of the opportunities in the Opportunities database too. The page asks nothing of the squad: what waits for a decision is in the recap and in the visual tree, each with the link to its row in Changes. One flat table sorted by rank mixes parents and sub-opportunities: a rank is an order among siblings, so several rows carry the rank 1.
 
-- **Visual tree**: at the very top of the page, the link to the page published by `ost-view`, once it exists.
-- **Sources**, below it: a table of the Sources database (source, tool, status, total items, in scope, last successful read, detail).
+- **Visual tree**: at the very top of the page, in a callout, the link to the page published by `ost-view`, once it exists.
 - **Top level**: the opportunities with no Parent and the status `active`, sorted by Rank. Show Rank, Accounts, ARR, Prospects, Evidence count, Signals, Sub-opportunities, Product area, Solutions and Last evidence.
 - **Sub-opportunities**: the opportunities with a Parent, grouped by Parent, sorted by Rank. Show Rank, Status, Accounts, ARR, Prospects, Evidence count, Signals, Solutions and Last evidence.
 - **Candidates**: the status `candidate`, sorted by Accounts, then Prospects, then Evidence count, largest first. Show Parent, Accounts, ARR, Prospects, Evidence count, Signals, Product area and Last evidence.
 - **All**: every opportunity, with Parent and Status next to the name.
 - **Solutions**: a board of the Solutions database grouped by Status.
+- **Sources**: a table of the Sources database (source, tool, status, total items, in scope, last successful read, detail).
+- **Unattached evidence**: the evidence with the status `unattached`, newest first, under one line saying there is nothing to do here: the agent reads it again at each run.
+- **The legend**, folded under "How to read this page".
+- **The databases and the configuration page**, last, under a heading saying they are written by the plugin: they are the plumbing, not what the squad comes to read.
 
 Leave ARR out of the views while the squad has no accounts query.
 
 ## Legend
 
-Write this legend at the top of the tree's page, above the views, in the user's language:
+Write this legend on the tree's page, folded, below the views (see "Views"), in the user's language:
 
 - **Evidence**: one thing one customer said, in one source, on one date. One row of the Evidence database.
 - **Verbatim**: the customer's exact words. **Need**: the need behind them, in one line.
