@@ -145,18 +145,23 @@ function SourceDots() {
   return (
     <ul className="source-dots" aria-label="Sources">
       {(meta.sources ?? []).map((s) => {
+        // A reader needs what feeds the tree: for a source of evidence, the items in the squad's scope. The total
+        // read, out-of-scope items included, stays in the hover text. A signal source shows what it counted.
+        const shown = s.items == null ? null : s.window ? s.items : (s.inScope ?? s.items);
         const volume =
           s.items == null
             ? ''
             : s.window
               ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}${s.inScope == null ? '' : `, ${s.inScope} mapped to an opportunity`}.`
-              : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
+              : s.inScope == null
+                ? ` ${plural(s.items, 'item')} read since the tree started.`
+                : ` ${plural(s.inScope, 'item')} in scope, out of ${s.items} read since the tree started.`;
         const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
           <li key={s.name} className={`source source-${s.status}`} title={tip}>
             <StatusDot variant={s.status} label={tip} />
             {s.name}
-            {s.items == null ? null : <span className="source-items">{plural(s.items, 'item')}</span>}
+            {shown == null ? null : <span className="source-items">{plural(shown, 'item')}</span>}
           </li>
         );
       })}
@@ -791,9 +796,19 @@ export function App() {
         {totals ? (
           <>
             <div className="recap-head">
-              <h2 id="recap-title" className="recap-title">
-                The tree · {plural(totals.items, 'item')} read since it started
-                {totals.inScope == null ? '' : `, ${totals.inScope} in scope`}
+              <h2
+                id="recap-title"
+                className="recap-title"
+                title={
+                  totals.inScope == null
+                    ? undefined
+                    : `${plural(totals.items, 'item')} read since the tree started, ${totals.items - totals.inScope} of them about other areas.`
+                }
+              >
+                The tree ·{' '}
+                {totals.inScope == null
+                  ? `${plural(totals.items, 'item')} read since it started`
+                  : `${plural(totals.inScope, 'item')} in scope`}
               </h2>
               <SourceDots />
             </div>
