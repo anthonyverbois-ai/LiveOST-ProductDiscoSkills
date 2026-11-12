@@ -44,7 +44,7 @@ Lay the tree's page out in the order below, with linked views, and create the fo
 - **Candidates**: the status `candidate`, sorted by Accounts, then Prospects, then Evidence count, largest first. Show Parent, Accounts, ARR, Prospects, Evidence count, Signals, Product area and Last evidence.
 - **All**: every opportunity, with Parent and Status next to the name.
 - **Solutions**: a board of the Solutions database grouped by Status.
-- **Sources**: a table of the Sources database (source, tool, status, total items, in scope, last successful read, detail).
+- **Sources**: a table of the Sources database (source, tool, status, in scope, last successful read, detail). It shows the items in scope only: what feeds the tree.
 - **Unattached evidence**: the evidence with the status `unattached`, newest first, under one line saying there is nothing to do here: the agent reads it again at each run.
 - **The legend**, folded under "How to read this page".
 - **The databases and the configuration page**, last, under a heading saying they are written by the plugin: they are the plumbing, not what the squad comes to read.
@@ -62,7 +62,7 @@ Write this legend on the tree's page, folded, below the views (see "Views"), in 
 - **Accounts**: the distinct customers behind that evidence. **Prospects** are counted apart and do not move the rank.
 - **ARR**: the total revenue of those customers. It sizes an opportunity and breaks ties; it is not part of the score.
 - **Signals**: volumes from sources with no customer words, such as tickets counted by category.
-- **Total items** and **In scope**, in the table of sources: what each source of evidence brought since the tree started, and how much of it is within the squad's scope; for a signal source, what it counted over its window, and how much of it is mapped to an opportunity.
+- **In scope**, in the table of sources: the items of each source that concern the squad's scope. For a source of evidence, since the tree started; for a signal source, over its window.
 - **Candidate**: an opportunity with fewer than 2 pieces of evidence from 2 accounts. It is not ranked.
 - **Rank**: the order among siblings: top-level opportunities together, sub-opportunities within their parent.
 - A parent counts the evidence of its sub-opportunities with its own.
@@ -82,7 +82,7 @@ The plugin must work on every Notion plan, free included. Read the databases thi
   - ARR: the total revenue of those customer accounts, from the accounts query (see "Evidence" in `ost-rules`); empty without the query.
   - A parent's values cover its own evidence and that of its sub-opportunities, with each account counted once.
 - **Recompute only what changed.** When a run attaches, moves or removes evidence, it recomputes the counts of the opportunities touched and of their parents, reading only their evidence. Evidence edited by hand in Notion counts too: each run reads, before it writes anything, the evidence whose Last edited is later than the end of the previous run, and recomputes the opportunities concerned. The connector filters on the date a row was edited only through a property of that type, and a run's own writes count as edits: hence the Last edited property, and the read at the start of the run. Never recompute every opportunity's counts in a daily or weekly run. Scores are refreshed from the Ledger property alone: daily for the opportunities touched, weekly for every ranked opportunity.
-- **Volumes per source are stored too.** On the row of each source of evidence, Total items counts every item of that source stored in the Evidence database, and In scope those within the squad's scope when they were stored. Each run adds what it stored; after a first tree or a backfill, set both from the rows read back (see "Check large writes"). A signal source stores no evidence: each run writes in Total items what the source's filter returns over the signal window, and in In scope the items of a category mapped to an opportunity. Both are replaced at each run, never added. The reference sources (documentation, release notes, backlog, quantitative data) keep Items read only.
+- **Volumes per source are stored too.** On the row of each source of evidence, Total items counts every item of that source stored in the Evidence database, and In scope those within the squad's scope when they were stored. Each run adds what it stored; after a first tree or a backfill, set both from the rows read back (see "Check large writes"). A signal source stores no evidence, and its filter is the squad's scope: each run writes in both what the filter returns over the signal window, replaced at each run, never added. The table on the page shows In scope only; Total items is kept for the record and for the hover text of the visual tree. The reference sources (documentation, release notes, backlog, quantitative data) keep Items read only.
 - **Grouped counts when allowed.** After a backfill, a query that groups and counts within one database (for example the Evidence database grouped by opportunity) recomputes all counts in one call. Use it when the connector accepts it: it is unlimited on Business and Enterprise, and draws on a shared workspace quota on other plans. If it is refused, recompute opportunity by opportunity.
 - **Skip what was already ingested** by filtering the Evidence database on Source ID.
 - **Check large writes.** After writing more than about a hundred rows (a first tree, a backfill), read back what is stored and compare it with what was meant to be written: the number of rows per status, the relations, and the verbatims word for word. Fix the differences before showing the result: a write made of many calls can drop or alter a row without an error.
@@ -196,8 +196,8 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | Last successful read | Date (with time) | |
 | Last check | Date (with time) | The last time a run tried to read it |
 | Items read | Number | At the last check |
-| Total items | Number | Written by the plugin. For a source of evidence: every item of this source stored in the Evidence database since the tree started, out of scope included. For a signal source: the items counted over the signal window at the last run |
-| In scope | Number | Written by the plugin, among the total items. For a source of evidence: the pieces within the squad's scope when they were stored (attached, or left unattached). For a signal source: the items of a category mapped to an opportunity |
+| Total items | Number | Written by the plugin. For a source of evidence: every item of this source stored in the Evidence database since the tree started, out of scope included. For a signal source: the same figure as In scope. Kept for the record, not shown in the table of the page |
+| In scope | Number | Written by the plugin: what the source brings that concerns the squad. For a source of evidence: the pieces within the squad's scope when they were stored (attached, or left unattached). For a signal source: the items its filter returns over the signal window, the filter being the squad's scope |
 | Detail | Text | One sentence: what went wrong and what the tree may miss, or what was read |
 
 ## Corrections

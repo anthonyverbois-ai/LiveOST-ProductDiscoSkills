@@ -152,7 +152,7 @@ function SourceDots() {
           s.items == null
             ? ''
             : s.window
-              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}${s.inScope == null ? '' : `, ${s.inScope} mapped to an opportunity`}.`
+              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}.`
               : s.inScope == null
                 ? ` ${plural(s.items, 'item')} read since the tree started.`
                 : ` ${plural(s.inScope, 'item')} in scope, out of ${s.items} read since the tree started.`;
