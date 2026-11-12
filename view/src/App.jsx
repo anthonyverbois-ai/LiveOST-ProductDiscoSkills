@@ -375,10 +375,8 @@ function DecisionNotice() {
 
 function TreeMap({onOpen}) {
   const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf, earlyOf} = useTree();
-  const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
   const hasArr = opportunities.some((o) => o.arr);
   const [openSols, setOpenSols] = useState(() => new Set());
-  const allOpen = withSolutions.every((id) => openSols.has(id));
   const toggleSols = (id) =>
     setOpenSols((prev) => {
       const next = new Set(prev);
@@ -423,11 +421,6 @@ function TreeMap({onOpen}) {
           A branch counts the evidence of its sub-opportunities with its own. Titles open Notion; the counts open the
           verbatims.
         </p>
-        <Button
-          label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
-          variant="secondary"
-          onClick={() => setOpenSols(allOpen ? new Set() : new Set(withSolutions))}
-        />
       </div>
       <DecisionNotice />
       {hasFeatures ? (
@@ -752,6 +745,24 @@ export function App() {
     setLastOpened(id);
   };
 
+  // What the tree holds in total: the items of every source of evidence. A signal source counts over a window,
+  // so it is left out of the sum and keeps its own figure next to its name.
+  const evidenceSources = (meta.sources ?? []).filter((s) => s.items != null && !s.window);
+  const totals = evidenceSources.length
+    ? {
+        items: evidenceSources.reduce((n, s) => n + s.items, 0),
+        inScope: evidenceSources.every((s) => s.inScope != null)
+          ? evidenceSources.reduce((n, s) => n + s.inScope, 0)
+          : null,
+      }
+    : null;
+  const lastRun = (
+    <>
+      Last run, <Timestamp value={meta.lastRefresh} format="date_time" />
+      {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
+    </>
+  );
+
   return (
     <TreeContext.Provider value={{...tree, cardDecisions, decide, undo, lastDecision}}>
     <div className="page">
@@ -776,13 +787,24 @@ export function App() {
       </header>
 
       <section className="recap" aria-labelledby="recap-title">
-        <div className="recap-head">
-          <h2 id="recap-title" className="recap-title">
-            Last run, <Timestamp value={meta.lastRefresh} format="date_time" />
-            {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
-          </h2>
-          <SourceDots />
-        </div>
+        {/* First what the tree holds in total, then what the last run added: the last ingestion is not the whole tree. */}
+        {totals ? (
+          <>
+            <div className="recap-head">
+              <h2 id="recap-title" className="recap-title">
+                The tree · {plural(totals.items, 'item')} read since it started
+                {totals.inScope == null ? '' : `, ${totals.inScope} in scope`}
+              </h2>
+              <SourceDots />
+            </div>
+            <h3 className="recap-title recap-last">{lastRun}</h3>
+          </>
+        ) : (
+          <div className="recap-head">
+            <h2 id="recap-title" className="recap-title">{lastRun}</h2>
+            <SourceDots />
+          </div>
+        )}
         <ul>
           {(meta.recap?.lines ?? []).map((l) => (
             <li key={l}>{l}</li>
