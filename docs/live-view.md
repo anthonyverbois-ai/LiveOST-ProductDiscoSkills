@@ -15,10 +15,10 @@ The sections below describe the page in full. What the copy does not do yet is m
 
 - **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions.
   - Opportunities are numbered by priority among their siblings: 1, 2, 3 for branches, 1.1, 1.2 for the sub-opportunities of branch 1. Never show the global rank on the tree: it reads like an outline number.
-  - Each opportunity shows its evidence and accounts counts in bold, never larger than its title, then the date of its last evidence. Its prospects, the revenue of its accounts and its signals follow when the tree holds them. "New today" and "+N today" are the only tags on a card.
+  - Each opportunity shows its evidence and accounts counts in bold, never larger than its title, then the date of its last evidence. Its prospects, the revenue of its accounts and its signals follow when the tree holds them. "New today" and "+N today" are the only tags on a card. A branch with sub-opportunities says how its evidence splits ("18 of its own, 31 in 7 sub-opportunities"): its count covers both, so the counts of the sub-opportunities shown do not add up to it.
 - **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree. With several outcomes, the tree shows one section per outcome; with none yet, it starts with its opportunities.
   - Solutions are a foldable level under each opportunity, folded by default, with a control to show or hide them all. A solution linked to the backlog shows its backlog status.
-  - Proposed creations sit below the tree, unnumbered, under "Waiting for a decision"; candidates (below the evidence threshold) under "Too early to rank". Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
+  - Proposed creations sit below the tree, unnumbered, under "Waiting for a decision"; candidates (below the evidence threshold) under "Too early to rank", except a candidate that belongs under a branch of the tree: it is shown there, unnumbered, after the ranked sub-opportunities. Parked opportunities sit below too, under "Set aside for now", with one sentence saying what that means.
 - **Filter by feature**: when the tree covers several features of the squad, a filter shows one feature at a time. Opportunities keep their priority number when filtered.
 - **Links to Notion**: the outcome, every opportunity and every solution open their Notion page in a new tab.
 - **What changed today**: a badge on everything that moved since the previous run, and the latest daily recap in a side panel.
@@ -32,7 +32,7 @@ The sections below describe the page in full. What the copy does not do yet is m
 
 Shown discreetly, at the bottom or in the margin of the page:
 
-- **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the title of the daily recap so the reader knows which day "today" is. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
+- **Last refresh**: date and time of the last run (`Finished at` in the run log), shown in the badge at the top of the page, with its age in days, and in the title of the daily recap, so the reader knows how fresh the tree is. The date the copy was made is never shown as the date of the tree: a page published again without a run is not a refreshed tree. It sits in the badge's hover text and in the footer. If the last run is older than expected (for example more than one working day for the daily run), show it as a warning.
 - **Source health**: one dot per source next to the recap title (green ok, yellow partial, red failed, gray not connected), followed by its number of items when it is a source of evidence (what it brought since the tree started) or a signal source (what it counted over its window); the tool, the last successful read, the items in scope or mapped to an opportunity, and the detail on hover. When a source is partial or failed, a banner under the recap says which one, since when, and what the tree may miss. Replaced and removed sources are not shown. Read from the Sources database.
 - **Tree changelog**: the latest changes to the tree, newest first. For each: date, what changed, and who made it (applied by the agent, or decided by the squad), with a link to its run. Built from the Changes database.
 - **Agent autonomy** (later): a small panel that shows what the agent does on its own and what it still proposes, one line per type of structural change, in three groups:
@@ -59,8 +59,8 @@ The page reads Notion with the viewer's own connector, so it follows "Reading th
 | Key | Content |
 | --- | --- |
 | `meta.squad` | The squad's name |
-| `meta.publishedAt` | When this copy was made |
-| `meta.lastRefresh` | Finished at of the last finished run |
+| `meta.publishedAt` | When this copy was made (hover text of the badge and footer) |
+| `meta.lastRefresh` | Finished at of the last finished run, written with its time zone (the badge at the top) |
 | `meta.treeNotion` | Link to the tree's Notion page |
 | `meta.outcome`, `meta.outcomeSince`, `meta.outcomeNotion`, `meta.northStar` | The active outcome, its start date, its Notion page, and the north star |
 | `meta.focus` | For a squad with no outcome yet: what the tree is for |
