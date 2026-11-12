@@ -150,8 +150,8 @@ freshness:
   addressed_after_weeks: 8  # no evidence this long after a release before proposing "addressed"
   dormant_after_weeks: 24   # no evidence this long before asking whether an opportunity is still current
 
-autonomy: earned            # earned: each type of change is proposed until the squad accepts 4 of its last 5, then made alone when sure
-                            # proactive: made alone when sure from the first day | propose-only: every change is a proposal
+autonomy: proactive         # proactive (default): the agent acts on its own whenever it is sure, and proposes only when it is not
+                            # earned: each type of change is proposed until the squad accepts 4 of its last 5 | propose-only: every change is a proposal
 autonomy_threshold:
   accepted: 4
   of_last: 5

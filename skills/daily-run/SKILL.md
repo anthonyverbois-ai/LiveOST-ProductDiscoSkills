@@ -25,7 +25,7 @@ When several squads are set up, run the steps below for each squad in turn, each
 7. **Act or propose**: read again the evidence left unattached over the last `unattached_window_weeks` (8 by default), against the tree as it now stands: attach a piece that fits an opportunity created since, and create an opportunity when several pieces together state a need (see "Evidence" in `ost-rules`). Never recreate a need the squad rejected. Make the other structural changes when the conditions in "Changes and autonomy" (`ost-rules`) hold; otherwise propose them.
 8. **Close the run**: complete the run log entry: what was ingested, attached and anomalous, every change made on its own and every proposal written to the Changes database and linked to the entry, the status of each source (OK, partial or failed), the plugin version, Finished at, Duration, Status `finished` and the Recap. They feed the "last refresh" and the tree changelog of the live view. Close the entry even when nothing changed, so the last refresh stays accurate. Then refresh the visual tree, following `ost-view`: after the entry is closed, since the page shows it. A run that stops before this step leaves its entry `running`, which the next run reports and closes as `interrupted`.
 
-The autonomy setting and the types of change already earned decide what is applied and what is proposed (see "Changes and autonomy" in `ost-rules`).
+The autonomy setting decides what is applied and what is proposed (see "Changes and autonomy" in `ost-rules`): by default, the agent applies what it is sure of and proposes the rest.
 
 ## Recap
 

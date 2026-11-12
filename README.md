@@ -82,7 +82,7 @@ Opportunity Solution Trees (the continuous discovery framework popularized by Te
 
 ## Design principles
 
-- **Autonomy earned, transparency always.** The agent attaches evidence on its own, and creates an opportunity for each clear need that none holds, so no feedback waits to be sorted by hand. It proposes each other type of structural change until your decisions show it gets that type right, then makes it on its own when the evidence is clear. Everything it does is listed in the recap and can be undone. Only a human changes the outcome, parks, splits or archives.
+- **Independent by default, transparent always.** The agent acts on its own whenever it is sure: it attaches evidence, creates an opportunity for each clear need that none holds, so no feedback waits to be sorted by hand, and makes the other structural changes when the evidence is clear. It proposes only when it is not sure. Everything it does is listed in the recap and can be undone. Only a human changes the outcome, parks, splits or archives. A squad that prefers to approve first can ask for it in the configuration.
 - **No evidence without a source.** Every piece of evidence carries a verbatim, a source, an account, a date and a link.
 - **Tool-agnostic.** You declare your own sources (Gong, Modjo, Zendesk, Intercom, Amplitude, …) in a configuration page in Notion.
 - **Notion is the source of truth** for the tree, its configuration and the rules it learned.
