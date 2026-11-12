@@ -2,15 +2,31 @@
 
 **An Opportunity Solution Tree that keeps itself up to date.**
 
-LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery. An agent reads what is new in your squad's customer calls, support tickets and other feedback, attaches each piece of customer evidence to the right opportunity in your tree, and tells you what changed. Your team stays in charge of the decisions; the agent does the linking.
+Your opportunity tree is right on the day of the workshop and stale three weeks later: nobody has time to re-read every call and ticket and connect the dots. LiveOST does it every morning. It reads what your customers said in calls, tickets and team chat, maps each piece of evidence onto your Opportunity Solution Tree, links your backlog to the solutions it delivers, and tells you in a short recap what changed. Your squad decides; the agent does the linking.
 
-> **Status: v0.1 in progress.** The onboarding and one daily run, asked by hand, have run on one real squad. The weekly synthesis and the scheduled runs have not run yet: expect rough edges.
+![Every morning, the agent reads what is new in calls, tickets, team chat, docs and the backlog, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities with their customer accounts, solutions linked to backlog items, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.svg)
+
+LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery, the framework popularized by Teresa Torres.
+
+## Why LiveOST
+
+Existing OST skills generate a tree once, from notes you paste in. LiveOST maintains it over time:
+
+| | One-shot OST generators | LiveOST |
+| --- | --- | --- |
+| How it runs | Once, on demand | Every day on a schedule, or when you ask |
+| Inputs | Notes pasted by hand | Calls, tickets and product data through your connectors |
+| Evidence | Not traced | Every opportunity linked to its verbatims |
+| Backlog | Not linked | Each solution linked to its backlog item, its delivery status following the tracker |
+| Learning | None | Your team's corrections become rules |
 
 ## What you get
 
 - **The visual tree.** One page that shows the squad's tree as it stands: opportunities ranked among their siblings, each one linked to its verbatims.
 - **A recap after each run.** Readable in ten seconds: what was attached, what is trending, what the agent did on its own and what waits for your decision.
 - **The tree in Notion.** The source of truth: opportunities, evidence, solutions, and every change made or proposed. It is where the squad decides.
+
+> **Status: v0.1 in progress.** The onboarding and one daily run, asked by hand, have run on one real squad. The weekly synthesis and the scheduled runs have not run yet: expect rough edges.
 
 ## Get started
 
@@ -69,17 +85,6 @@ Every run writes to Notion, then publishes the visual tree again: the page is a 
 | `/live-product-discovery:ost-change-outcome` | Re-anchors the tree on a new outcome or north star. Opportunities are kept, reframed or parked, nothing is deleted, and the squad reviews the result. | When the squad changes course. |
 | `/live-product-discovery:ost-change-sources` | Adds, replaces or removes a source without touching the tree. The new tool is connected and tested, old and new figures are compared before switching, and no evidence is ingested twice. | When a tool is added, replaced or removed, for example one data warehouse for another. |
 
-## Why
-
-Opportunity Solution Trees (the continuous discovery framework popularized by Teresa Torres) are powerful, but they go stale fast: nobody has time to re-read every call and ticket and connect the dots. Existing OST skills generate a tree once from notes you paste in. This plugin maintains it over time:
-
-| | One-shot OST generators | LiveOST |
-| --- | --- | --- |
-| How it runs | Once, on demand | Every day on a schedule, or when you ask |
-| Inputs | Notes pasted by hand | Calls, tickets and product data through your connectors |
-| Evidence | Not traced | Every opportunity linked to its verbatims |
-| Learning | None | Your team's corrections become rules |
-
 ## Design principles
 
 - **Independent by default, transparent always.** The agent acts on its own whenever it is sure: it attaches evidence, creates an opportunity for each clear need that none holds, so no feedback waits to be sorted by hand, and makes the other structural changes when the evidence is clear. It proposes only when it is not sure. Everything it does is listed in the recap and can be undone. Only a human changes the outcome, parks, splits or archives. A squad that prefers to approve first can ask for it in the configuration.
@@ -125,7 +130,7 @@ agents/
   evidence-extractor.md  extraction and classification of a batch, on a fast model
 evals/                   test cases on fictional data, run with `claude plugin eval .`
 templates/               Notion data model and sources config example
-docs/                    specification of the visual tree (live view)
+docs/                    specification of the visual tree (live view), and the image of this README
 view/                    source and built page of the visual tree
 ```
 
