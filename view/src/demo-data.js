@@ -9,6 +9,7 @@ export const meta = {
   outcomeSince: '2026-09-01',
   outcomeNotion: 'https://www.notion.so/40f5d4385f6f81e58152c865d4ad9561',
   lastRefresh: '2026-11-05T07:42:00',
+  since: '2026-08-01',
   pluginVersion: '0.1.0',
   changelogUrl:
     'https://github.com/anthonyverbois-ai/LiveOST-ProductDiscoSkills/blob/main/CHANGELOG.md',
@@ -17,7 +18,7 @@ export const meta = {
   sources: [
     {name: 'Calls', tool: 'Call recorder', status: 'success', lastOk: '2026-11-05T07:40:00', detail: '3 calls read', items: 200, inScope: 120},
     {name: 'Tickets', tool: 'Support tool', status: 'success', lastOk: '2026-11-05T07:41:00', detail: '7 tickets read', items: 600, inScope: 250},
-    {name: 'Usage alerts', tool: 'Monitoring tool (signals)', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'Counted by category, no customer words', items: 100, inScope: 60, window: 90},
+    {name: 'Usage alerts', tool: 'Monitoring tool (signals)', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'Counted by category, no customer words', items: 100, inScope: 100, window: 90},
     {name: 'Usage and ARR', tool: 'Data warehouse', status: 'warning', lastOk: '2026-11-03T07:39:00', detail: 'The usage table has not been refreshed since Nov 3. Sizing by usage may be out of date.'},
     {name: 'Docs', tool: 'Help center', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No change since the last run'},
     {name: 'Release notes', tool: 'Product changelog', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No new release'},
@@ -30,7 +31,6 @@ export const meta = {
       'Trending: “I lose time reformatting my exports” (+4 evidence, moved up from 3 to 2)',
       'Done by the agent: created “I rebuild the same layout every month” under 1 (undo from the log)',
       'To decide: new opportunity “I’m not sure my numbers are up to date”',
-      'Out of scope: 2 verbatims about other squads’ areas',
     ],
   },
 };

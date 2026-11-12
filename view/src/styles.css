@@ -50,6 +50,8 @@ body {
 .source-alerts { display: flex; flex-direction: column; gap: var(--spacing-2); }
 .recap-title { margin: 0 0 var(--spacing-2); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); }
 .recap-title * { font: inherit; color: inherit; }
+/* The last run comes under what the tree holds in total, behind a hairline. */
+.recap-last { margin-top: var(--spacing-3); padding-top: var(--spacing-3); border-top: 1px solid var(--color-border); }
 .recap ul { margin: 0; padding-left: 1.2em; list-style: disc; display: grid; gap: var(--spacing-1); color: var(--color-text-secondary); }
 
 .tab-body { min-width: 0; }

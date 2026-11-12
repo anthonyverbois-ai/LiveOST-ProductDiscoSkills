@@ -86,7 +86,7 @@ The tree lives in a configuration page and ten Notion databases described in `${
 3. **Flag visibility**: the databases will hold customer verbatims. Tell the user who can see that location (a whole teamspace, or a page restricted to the squad) and let them choose another place if needed.
 4. **Detect an existing tree**: if databases from this plugin already exist at that location (for example after a previous onboarding), offer to reuse them instead of creating duplicates. If the user has a tree elsewhere (another page, a document, a whiteboard), offer to import it instead of starting empty.
 5. **Confirm, then create**: recap the location, the configuration page, the ten databases and who will have access, and create them only after the user confirms. Write the configuration gathered at step 2 to the configuration page, then read it back. Follow the creation order in `${CLAUDE_PLUGIN_ROOT}/templates/notion-data-model.md`: a relation needs its target database to exist. Create the Product area options from the areas the squad owns; above about fifteen areas, group them with the user first. Write each property's description in Notion and the legend at the top of the tree's page, as the data model says: the squad reads there what each column and each word means. Then open the onboarding's run log entry (see "Keep the user oriented").
-6. **Set up the page**, in the order given in "Views" of the data model: the four tabs of the opportunities (Top level, Sub-opportunities, Candidates, All), on the page and in the Opportunities database; a board of the solutions grouped by status; a table of the Sources database (source, tool, status, total items, in scope, last successful read, detail), filled with the results of the step 2 tests and one row per feedback file imported; the unattached evidence; the legend, folded; and the databases at the bottom.
+6. **Set up the page**, in the order given in "Views" of the data model: the four tabs of the opportunities (Top level, Sub-opportunities, Candidates, All), on the page and in the Opportunities database; a board of the solutions grouped by status; a table of the Sources database (source, tool, status, in scope, last successful read, detail), filled with the results of the step 2 tests and one row per feedback file imported; the unattached evidence; the legend, folded; and the databases at the bottom.
 7. **Mention the optional manual step**: the four tabs read well as they are. A user who prefers sub-opportunities nested under their parent can turn on Sub-items with the Parent property, in the menu of the All tab: the connector cannot do it.
 
 ## Step 4 – Trial batch: go
@@ -101,7 +101,7 @@ Never start processing without the user's explicit go. If the user wants to chan
 
 ## Step 5 – Trial batch
 
-Read the last month and the extra material, and extract candidate evidence. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process the items following "Before starting" and "Batches" of `backfill` only, and hold the candidates apart: the consolidation and the review are steps 6 and 7 of this onboarding, under the first-tree rule of `build-tree` (the whole tree is written, whatever the autonomy setting). If a source fails midway, finish the others and report what is missing.
+Read the last month and the extra material, and extract candidate evidence. Write the first day of that period in the configuration (`tree.since`): it is where the tree's evidence starts. For a feedback file, take its last month by the date column; without a date column, take a sample of about 200 rows and say so. Then process the items following "Before starting" and "Batches" of `backfill` only, and hold the candidates apart: the consolidation and the review are steps 6 and 7 of this onboarding, under the first-tree rule of `build-tree` (the whole tree is written, whatever the autonomy setting). If a source fails midway, finish the others and report what is missing.
 
 ## Step 6 – First tree
 
@@ -130,7 +130,7 @@ This is the normal next step: propose it by default.
 
    The user can also choose a later start date instead of all time. Write the choice as `history` in the configuration.
 3. On go, process the full history with the rules drafted at step 7, following `backfill`: batches, checkpoints, deduplication by source ID, then a consolidation pass and a check against shipped features.
-4. Merge the result into the tree, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7, then refresh the visual tree.
+4. Merge the result into the tree, move `tree.since` in the configuration back to the date of the earliest item processed, then show the user what changed and only what the agent is unsure of (low-confidence attachments, consolidated candidates it did not create on its own). Record the user's corrections as in step 7, then refresh the visual tree.
 
 The user may decline, for example when the product changed so much that older feedback no longer applies. Say that the full history can still be processed later by running this onboarding's step 8 again, then continue to activation.
 

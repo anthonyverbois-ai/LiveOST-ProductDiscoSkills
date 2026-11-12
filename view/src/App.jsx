@@ -145,18 +145,29 @@ function SourceDots() {
   return (
     <ul className="source-dots" aria-label="Sources">
       {(meta.sources ?? []).map((s) => {
+        // A reader needs what feeds the tree: for a source of evidence, the items in the squad's scope. The total
+        // read, out-of-scope items included, stays in the hover text. A signal source shows what it counted.
+        const shown = s.items == null ? null : s.window ? s.items : (s.inScope ?? s.items);
         const volume =
           s.items == null
             ? ''
             : s.window
-              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}${s.inScope == null ? '' : `, ${s.inScope} mapped to an opportunity`}.`
-              : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
-        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
+              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}.`
+              : s.inScope == null
+                ? ` ${plural(s.items, 'item')} read since the tree started.`
+                : ` ${plural(s.inScope, 'item')} in scope, out of ${s.items} read since the tree started.`;
+        // A limit the squad accepted (a connector that cannot reach everything) is not an incident: the read
+        // works, so the source shows as OK with a mention, and raises no banner.
+        const known = knownLimit(s);
+        const dot = known ? 'success' : s.status;
+        const state = known ? 'OK, with a known limit the squad accepted' : SOURCE_STATUS[s.status];
+        const tip = `${s.name} (${s.tool}): ${state}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
-          <li key={s.name} className={`source source-${s.status}`} title={tip}>
-            <StatusDot variant={s.status} label={tip} />
+          <li key={s.name} className={`source source-${dot}`} title={tip}>
+            <StatusDot variant={dot} label={tip} />
             {s.name}
-            {s.items == null ? null : <span className="source-items">{plural(s.items, 'item')}</span>}
+            {shown == null ? null : <span className="source-items">{plural(shown, 'item')}</span>}
+            {known ? <span className="source-items">known limit</span> : null}
           </li>
         );
       })}
@@ -164,8 +175,14 @@ function SourceDots() {
   );
 }
 
+// A source the squad accepted as partial, with no other problem at the last run.
+function knownLimit(s) {
+  return s.status === 'warning' && Boolean(s.accepted);
+}
+
+// The banner is for incidents: a failed source, or a partial one the squad has not accepted as such.
 function SourceAlerts() {
-  const issues = (meta.sources ?? []).filter((s) => s.status === 'warning' || s.status === 'error');
+  const issues = (meta.sources ?? []).filter((s) => (s.status === 'warning' && !knownLimit(s)) || s.status === 'error');
   if (issues.length === 0) return null;
   return (
     <div className="source-alerts">
@@ -195,6 +212,22 @@ function daysAgo(iso) {
   const days = Math.round((midnight(new Date()) - midnight(new Date(iso))) / 86400000);
   if (days < 1) return '';
   return days === 1 ? ', yesterday' : `, ${days} days ago`;
+}
+
+// The period the tree covers: from the date its evidence starts to the day of the last refresh, in the
+// viewer's own time. Nothing when the data file gives no start.
+function periodText(since, lastRefresh) {
+  if (!since || !lastRefresh) return '';
+  const pad = (n) => String(n).padStart(2, '0');
+  const zoned = /(Z|[+-]\d\d:?\d\d)$/.test(lastRefresh);
+  const d = new Date(lastRefresh);
+  const end = zoned ? `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` : lastRefresh.split('T')[0];
+  const day = (iso) => {
+    const [y, m, dd] = iso.split('-').map(Number);
+    return new Date(y, m - 1, dd).getTime();
+  };
+  const days = Math.round((day(end) - day(since)) / 86400000);
+  return `${formatDay(since)} to ${formatDay(end)} (${plural(days, 'day')})`;
 }
 
 // How the evidence of a parent splits between its own pieces and those of its sub-opportunities.
@@ -375,10 +408,8 @@ function DecisionNotice() {
 
 function TreeMap({onOpen}) {
   const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf, earlyOf} = useTree();
-  const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
   const hasArr = opportunities.some((o) => o.arr);
   const [openSols, setOpenSols] = useState(() => new Set());
-  const allOpen = withSolutions.every((id) => openSols.has(id));
   const toggleSols = (id) =>
     setOpenSols((prev) => {
       const next = new Set(prev);
@@ -423,11 +454,6 @@ function TreeMap({onOpen}) {
           A branch counts the evidence of its sub-opportunities with its own. Titles open Notion; the counts open the
           verbatims.
         </p>
-        <Button
-          label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
-          variant="secondary"
-          onClick={() => setOpenSols(allOpen ? new Set() : new Set(withSolutions))}
-        />
       </div>
       <DecisionNotice />
       {hasFeatures ? (
@@ -752,6 +778,35 @@ export function App() {
     setLastOpened(id);
   };
 
+  // What the tree holds in total: the items of every source of evidence. A signal source counts over a window,
+  // so it is left out of the sum and keeps its own figure next to its name.
+  const evidenceSources = (meta.sources ?? []).filter((s) => s.items != null && !s.window);
+  const totals = evidenceSources.length
+    ? {
+        items: evidenceSources.reduce((n, s) => n + s.items, 0),
+        inScope: evidenceSources.every((s) => s.inScope != null)
+          ? evidenceSources.reduce((n, s) => n + s.inScope, 0)
+          : null,
+      }
+    : null;
+  const lastRun = (
+    <>
+      Last run, <Timestamp value={meta.lastRefresh} format="date_time" />
+      {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
+    </>
+  );
+  // The first line of the block: what the tree holds, and the period it covers.
+  const treeLine = [
+    totals
+      ? totals.inScope == null
+        ? `${plural(totals.items, 'item')} read since it started`
+        : `${plural(totals.inScope, 'item')} in scope`
+      : null,
+    periodText(meta.since, meta.lastRefresh),
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   return (
     <TreeContext.Provider value={{...tree, cardDecisions, decide, undo, lastDecision}}>
     <div className="page">
@@ -776,13 +831,31 @@ export function App() {
       </header>
 
       <section className="recap" aria-labelledby="recap-title">
-        <div className="recap-head">
-          <h2 id="recap-title" className="recap-title">
-            Last run, <Timestamp value={meta.lastRefresh} format="date_time" />
-            {meta.recap?.analysed ? ` · ${meta.recap.analysed} analysed` : ''}
-          </h2>
-          <SourceDots />
-        </div>
+        {/* First what the tree holds in total, then what the last run added: the last ingestion is not the whole tree. */}
+        {treeLine ? (
+          <>
+            <div className="recap-head">
+              <h2
+                id="recap-title"
+                className="recap-title"
+                title={
+                  !totals || totals.inScope == null
+                    ? undefined
+                    : `${plural(totals.items, 'item')} read since the tree started, ${totals.items - totals.inScope} of them about other areas.`
+                }
+              >
+                The tree · {treeLine}
+              </h2>
+              <SourceDots />
+            </div>
+            <h3 className="recap-title recap-last">{lastRun}</h3>
+          </>
+        ) : (
+          <div className="recap-head">
+            <h2 id="recap-title" className="recap-title">{lastRun}</h2>
+            <SourceDots />
+          </div>
+        )}
         <ul>
           {(meta.recap?.lines ?? []).map((l) => (
             <li key={l}>{l}</li>

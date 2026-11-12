@@ -119,6 +119,7 @@ export_folder: null         # folder read when a source uses via: export-folder 
 tree:
   workspace: notion
   location: "the page chosen during onboarding"
+  since: null               # the date the tree's evidence starts: written by the onboarding (first day of the trial period), moved back when the full history is processed
 
 view:                       # the visual tree, published and refreshed by ost-view
   url: null                 # address of the page; written at the first publication, reused at every refresh
