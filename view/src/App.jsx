@@ -117,7 +117,9 @@ const useTree = () => useContext(TreeContext);
 
 const DECISION_TEXT = {accept: 'Accepted', merge: 'Merged', park: 'Set aside', reject: 'Rejected'};
 
+// A date Notion does not hold is left out of data.json: never let one missing value blank the page.
 function formatDay(iso) {
+  if (typeof iso !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return '';
   const [y, m, d] = iso.split('-').map(Number);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   return `${months[m - 1]} ${d}, ${y}`;
@@ -365,7 +367,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
         </button>
         {parts ? <span className="opp-last">{splitText(parts)}</span> : null}
         <span className="opp-last">
-          Last evidence {formatDay(opp.lastEvidence)}
+          {opp.lastEvidence ? `Last evidence ${formatDay(opp.lastEvidence)}` : null}
           {opp.byAgent ? (
             <span className="by-agent" title={opp.byAgent}>
               {' '}· {opp.byAgentLabel ?? 'Changed by the agent'}
@@ -673,9 +675,9 @@ function OppDrawer({isOpen, oppId, onClose}) {
                   <MetadataListItem label="Prospects">{opp.prospects ?? 0}</MetadataListItem>
                   <MetadataListItem label="ARR of these accounts">{opp.arr ? formatArr(opp.arr) : 'Not known'}</MetadataListItem>
                   <MetadataListItem label="Signals">{opp.signals ?? 'None'}</MetadataListItem>
-                  <MetadataListItem label="Last evidence">{formatDay(opp.lastEvidence)}</MetadataListItem>
+                  <MetadataListItem label="Last evidence">{opp.lastEvidence ? formatDay(opp.lastEvidence) : 'Not known'}</MetadataListItem>
                   <MetadataListItem label="Shipped solution">
-                    {shipped ? `${shipped.name}, ${formatDay(shipped.released)}` : 'None found'}
+                    {shipped ? `${shipped.name}${shipped.released ? `, ${formatDay(shipped.released)}` : ''}` : 'None found'}
                   </MetadataListItem>
                 </MetadataList>
 
@@ -696,7 +698,7 @@ function OppDrawer({isOpen, oppId, onClose}) {
                         <blockquote>“{e.verbatim}”</blockquote>
                         <div className="ev-meta">
                           {e.source} · {e.account}
-                          {e.type === 'prospect' ? ' (prospect)' : ''} · {formatDay(e.date)}
+                          {e.type === 'prospect' ? ' (prospect)' : ''}{e.date ? ` · ${formatDay(e.date)}` : ''}
                           {e.kind && e.kind !== 'need' ? ` · ${e.kind}` : ''}
                           {e.confidence && e.confidence !== 'high' ? ` · ${e.confidence} confidence` : ''}
                           {e.link ? (
