@@ -69,13 +69,23 @@ function applyDecisions(opps, decisions) {
 
 function buildTree(opps) {
   const byId = Object.fromEntries(opps.map((o) => [o.id, o]));
-  // Only ranked opportunities are numbered: a candidate under a parent sits below the tree with the other candidates.
+  // Only ranked opportunities are numbered. A candidate that belongs under a branch of the tree is shown there,
+  // unnumbered, after the ranked sub-opportunities; the other candidates sit below the tree.
   const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).filter((c) => c && inTree(c)).sort(byPriority);
   const roots = opps.filter((o) => !o.parent && inTree(o)).sort(byPriority);
   const proposed = opps.filter((o) => o.status === 'proposed');
-  const candidates = opps
-    .filter((o) => o.status === 'candidate')
-    .sort((a, b) => b.accounts - a.accounts || (b.prospects ?? 0) - (a.prospects ?? 0) || b.evidence - a.evidence);
+  const byWeight = (a, b) => b.accounts - a.accounts || (b.prospects ?? 0) - (a.prospects ?? 0) || b.evidence - a.evidence;
+  const underBranch = (o) => Boolean(o.parent && byId[o.parent] && !byId[o.parent].parent && inTree(byId[o.parent]));
+  const earlyOf = (opp) => opps.filter((c) => c.status === 'candidate' && c.parent === opp.id && underBranch(c)).sort(byWeight);
+  const candidates = opps.filter((o) => o.status === 'candidate' && !underBranch(o)).sort(byWeight);
+  // A parent's stored count covers its sub-opportunities: say what it holds itself and what they hold.
+  const split = (opp) => {
+    const kids = opps.filter((c) => c.parent === opp.id && !['proposed', 'merged', 'archived'].includes(c.status));
+    if (kids.length === 0) return null;
+    const inKids = kids.reduce((n, c) => n + (c.evidence ?? 0), 0);
+    const own = opp.evidence - inKids;
+    return own < 0 ? null : {own, inKids, kids: kids.length};
+  };
   const setAside = opps.filter((o) => o.status === 'parked');
   // Features (product areas) of the squad, in the order of their highest-priority branch.
   const features = [...new Set([...roots, ...proposed, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
@@ -87,7 +97,19 @@ function buildTree(opps) {
       numberOf[child.id] = `${i + 1}.${j + 1}`;
     });
   });
-  return {byId, childrenOf, roots, proposed, candidates, setAside, features, hasFeatures: features.length > 1, numberOf};
+  return {
+    byId,
+    childrenOf,
+    earlyOf,
+    split,
+    roots,
+    proposed,
+    candidates,
+    setAside,
+    features,
+    hasFeatures: features.length > 1,
+    numberOf,
+  };
 }
 
 const TreeContext = createContext(null);
@@ -123,11 +145,18 @@ function SourceDots() {
   return (
     <ul className="source-dots" aria-label="Sources">
       {(meta.sources ?? []).map((s) => {
-        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}. Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
+        const volume =
+          s.items == null
+            ? ''
+            : s.window
+              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}${s.inScope == null ? '' : `, ${s.inScope} mapped to an opportunity`}.`
+              : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
+        const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
           <li key={s.name} className={`source source-${s.status}`} title={tip}>
             <StatusDot variant={s.status} label={tip} />
             {s.name}
+            {s.items == null ? null : <span className="source-items">{plural(s.items, 'item')}</span>}
           </li>
         );
       })}
@@ -156,6 +185,22 @@ function signalText(opp) {
   if (opp.isNewToday) return 'New today';
   if (opp.trend) return `+${opp.trend} today`;
   return null;
+}
+
+// How many days ago a time was, counted in calendar days of the viewer. Nothing for today, or when the time
+// carries no zone.
+function daysAgo(iso) {
+  if (!iso || !/(Z|[+-]\d\d:?\d\d)$/.test(iso)) return '';
+  const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round((midnight(new Date()) - midnight(new Date(iso))) / 86400000);
+  if (days < 1) return '';
+  return days === 1 ? ', yesterday' : `, ${days} days ago`;
+}
+
+// How the evidence of a parent splits between its own pieces and those of its sub-opportunities.
+function splitText(parts) {
+  const subs = `${parts.kids} sub-${parts.kids > 1 ? 'opportunities' : 'opportunity'}`;
+  return parts.own === 0 ? `All in ${subs}` : `${parts.own} of its own, ${parts.inKids} in ${subs}`;
 }
 
 function plural(n, word) {
@@ -246,8 +291,9 @@ function CandidateActions({opp}) {
 }
 
 function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
-  const {numberOf, byId} = useTree();
+  const {numberOf, byId, split} = useTree();
   const sols = solutionsOf(opp.id);
+  const parts = split(opp);
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
   const signal = signalText(opp);
@@ -283,6 +329,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
           ) : null}
           {signal ? <Badge variant="info" label={signal} /> : null}
         </button>
+        {parts ? <span className="opp-last">{splitText(parts)}</span> : null}
         <span className="opp-last">
           Last evidence {formatDay(opp.lastEvidence)}
           {opp.byAgent ? (
@@ -292,7 +339,7 @@ function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
           ) : null}
         </span>
         {opp.signals ? <span className="opp-last">{opp.signals}</span> : null}
-        {opp.status === 'candidate' && opp.parent && byId[opp.parent] ? (
+        {opp.status === 'candidate' && !isChild && opp.parent && byId[opp.parent] ? (
           <span className="opp-last">Under: {byId[opp.parent].name}</span>
         ) : null}
         {opp.status === 'proposed' ? <CandidateActions opp={opp} /> : null}
@@ -326,7 +373,7 @@ function DecisionNotice() {
 }
 
 function TreeMap({onOpen}) {
-  const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf} = useTree();
+  const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf, earlyOf} = useTree();
   const withSolutions = opportunities.filter((o) => solutionsOf(o.id).length > 0).map((o) => o.id);
   const [openSols, setOpenSols] = useState(() => new Set());
   const allOpen = withSolutions.every((id) => openSols.has(id));
@@ -367,7 +414,8 @@ function TreeMap({onOpen}) {
       <div className="map-tools">
         <p className="map-legend">
           Numbered by priority: 1 is the top branch, 1.1 its top sub-opportunity. Titles open Notion; the counts open
-          the verbatims. Accounts are customers; prospects are shown apart and do not move the rank.
+          the verbatims. A branch counts the evidence of its sub-opportunities with its own. Accounts are customers;
+          prospects are shown apart and do not move the rank.
         </p>
         <Button
           label={allOpen ? 'Hide all solutions' : 'Show all solutions'}
@@ -391,7 +439,7 @@ function TreeMap({onOpen}) {
         {shownRoots.map((root) => (
           <div className="branch" key={root.id}>
             <OppCard opp={root} {...cardProps} />
-            {childrenOf(root).map((child) => (
+            {[...childrenOf(root), ...earlyOf(root)].map((child) => (
               <OppCard key={child.id} opp={child} isChild {...cardProps} />
             ))}
           </div>
@@ -418,7 +466,7 @@ function TreeMap({onOpen}) {
           <h2 id="candidates-title" className="aside-title">Too early to rank</h2>
           <p className="aside-note">
             Needs with fewer than 2 pieces of evidence from 2 customer accounts. They are not ranked yet; some are carried
-            by prospects only.
+            by prospects only. A need that belongs under a branch of the tree is shown there, not here.
           </p>
           <div className="aside-row">
             {shownCandidates.map((o) => (
@@ -447,7 +495,7 @@ function TreeMap({onOpen}) {
 }
 
 function TreeAsList() {
-  const {roots, proposed, candidates, setAside, hasFeatures, childrenOf, numberOf} = useTree();
+  const {roots, proposed, candidates, setAside, hasFeatures, childrenOf, earlyOf, split, numberOf} = useTree();
   const solutionGroup = (opp) => {
     const sols = solutionsOf(opp.id);
     if (sols.length === 0) return [];
@@ -472,7 +520,7 @@ function TreeAsList() {
     description: [
       hasFeatures && !opp.parent ? opp.area : null,
       opp.status !== 'active' ? STATUS[opp.status] : null,
-      `${opp.evidence} evidence · ${opp.accounts} accounts${opp.prospects ? ` · ${opp.prospects} prospects` : ''}${opp.arr ? ` · ARR ${formatArr(opp.arr)}` : ''}`,
+      `${opp.evidence} evidence${split(opp) ? ` (${split(opp).own} of its own)` : ''} · ${opp.accounts} accounts${opp.prospects ? ` · ${opp.prospects} prospects` : ''}${opp.arr ? ` · ARR ${formatArr(opp.arr)}` : ''}`,
       signalText(opp),
     ]
       .filter(Boolean)
@@ -480,7 +528,7 @@ function TreeAsList() {
     href: opp.notion,
     target: '_blank',
     isExpanded: true,
-    children: [...solutionGroup(opp), ...childrenOf(opp).map(toItem)],
+    children: [...solutionGroup(opp), ...childrenOf(opp).map(toItem), ...earlyOf(opp).map(toItem)],
   });
   const items = [
     {
@@ -561,8 +609,9 @@ function Changelog() {
 }
 
 function OppDrawer({isOpen, oppId, onClose}) {
-  const {byId, numberOf} = useTree();
+  const {byId, numberOf, split} = useTree();
   const opp = oppId ? byId[oppId] : null;
+  const parts = opp ? split(opp) : null;
   // A parent shows the evidence of its sub-opportunities with its own, as its counts do.
   const items = useMemo(() => evidence.filter((e) => e.opp === oppId || byId[e.opp]?.parent === oppId), [oppId, byId]);
   const sols = solutionsOf(oppId);
@@ -584,7 +633,10 @@ function OppDrawer({isOpen, oppId, onClose}) {
                 <MetadataList columns={2}>
                   <MetadataListItem label="Number in the tree">{place}</MetadataListItem>
                   <MetadataListItem label="Status">{STATUS[opp.status]}</MetadataListItem>
-                  <MetadataListItem label="Evidence">{opp.evidence}</MetadataListItem>
+                  <MetadataListItem label="Evidence">
+                    {opp.evidence}
+                    {parts ? ` (${splitText(parts)})` : ''}
+                  </MetadataListItem>
                   <MetadataListItem label="Accounts">{opp.accounts}</MetadataListItem>
                   <MetadataListItem label="Prospects">{opp.prospects ?? 0}</MetadataListItem>
                   <MetadataListItem label="ARR of these accounts">{opp.arr ? formatArr(opp.arr) : 'Not known'}</MetadataListItem>
@@ -702,7 +754,18 @@ export function App() {
         {isDemo ? (
           <Badge variant="warning" label="Demo data, fictional" />
         ) : (
-          <Badge variant="info" label={`Copy of ${formatDateTime(meta.publishedAt)}`} />
+          <span
+            title={`The sources were last read on ${formatDateTime(meta.lastRefresh)}. This page is a copy of the Notion tree, made on ${formatDateTime(meta.publishedAt)}.`}
+          >
+            <Badge
+              variant="info"
+              label={
+                meta.lastRefresh
+                  ? `Last refresh: ${formatDateTime(meta.lastRefresh)}${daysAgo(meta.lastRefresh)}`
+                  : `Copy of ${formatDateTime(meta.publishedAt)}`
+              }
+            />
+          </span>
         )}
       </header>
 
@@ -742,8 +805,8 @@ export function App() {
       <footer className="foot">
         {isDemo ? null : (
           <span className="foot-item">
-            A copy of the Notion tree, made on {formatDateTime(meta.publishedAt)}. It is refreshed at each run and on demand
-            with /live-product-discovery:ost-view.
+            The sources were last read on {formatDateTime(meta.lastRefresh)}: ask to refresh the tree to read them again.
+            This page is a copy of the Notion tree, made on {formatDateTime(meta.publishedAt)}.
           </span>
         )}
         <span className="foot-item">

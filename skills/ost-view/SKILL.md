@@ -26,7 +26,7 @@ Read Notion as described in "Reading the databases" in `${CLAUDE_PLUGIN_ROOT}/te
 - The configuration page: the squad, its outcomes or its focus, the north star, and `view`.
 - Opportunities: every page whose status is `active`, `addressed`, `proposed`, `candidate` or `parked`, with its stored counts. Leave out `merged` and `archived`.
 - Solutions: name, status, backlog status, release date and opportunity.
-- Sources: every row except `replaced` and `removed`.
+- Sources: every row except `replaced` and `removed`, with Total items and In scope when they are set. For a signal source, add its signal window in days (`signals_window_days`).
 - Run log: the last finished run (Finished at, Recap, Plugin version).
 - Changes: the rows with the status `proposed` (the pending decisions), and the 30 latest others (the changelog).
 - Evidence: the most recent attached pieces, newest first, up to `view.evidence_recent` (100 by default; 0 copies none). Leave out duplicates. Never copy a piece out of scope or unattached.
