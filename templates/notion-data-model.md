@@ -194,7 +194,7 @@ One row per source, kept up to date by every run, so anyone can see at a glance 
 | Last check | Date (with time) | The last time a run tried to read it |
 | Items read | Number | At the last check |
 | Total items | Number | Written by the plugin. For a source of evidence: every item of this source stored in the Evidence database since the tree started, out of scope included. For a signal source: the items counted over the signal window at the last run |
-| In scope | Number | Written by the plugin, among the total items. For a source of evidence: the pieces within the squad's scope when they were stored (attached, or left to sort). For a signal source: the items of a category mapped to an opportunity |
+| In scope | Number | Written by the plugin, among the total items. For a source of evidence: the pieces within the squad's scope when they were stored (attached, or left unattached). For a signal source: the items of a category mapped to an opportunity |
 | Detail | Text | One sentence: what went wrong and what the tree may miss, or what was read |
 
 ## Corrections
