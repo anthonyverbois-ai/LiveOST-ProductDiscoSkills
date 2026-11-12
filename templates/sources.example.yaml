@@ -132,7 +132,7 @@ schedule:
 
 duplicate_window_days: 3    # same account, same need, within this many days, from another source: counted once
 signals_window_days: 90     # window of the volumes written from signal sources
-unattached_window_weeks: 8  # unattached evidence older than this is no longer grouped into new proposals
+unattached_window_weeks: 8  # unattached evidence older than this is no longer read again at each run
 batch_tokens: 40000         # text per extraction batch (one or two call transcripts, or fifty tickets)
 paused: false               # true while a change of course is being reviewed: the runs skip the squad
 
@@ -155,6 +155,6 @@ autonomy: earned            # earned: each type of change is proposed until the 
 autonomy_threshold:
   accepted: 4
   of_last: 5
-autonomy_per_type: {}       # overrides for one type, e.g. {merge: propose} or {rename: auto}; ost-undo offers to set it
+autonomy_per_type: {}       # overrides for one type, e.g. {merge: propose} or {rename: auto}; {create: propose} to approve each new opportunity; ost-undo offers to set it
 trial_days: 30              # trial batch processed and reviewed first
 history: all                # then the full history: "all", a start date (YYYY-MM-DD), or "none"
