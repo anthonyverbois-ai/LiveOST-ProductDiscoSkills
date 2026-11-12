@@ -126,7 +126,9 @@ function SourceDots() {
         const volume =
           s.items == null
             ? ''
-            : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
+            : s.window
+              ? ` ${plural(s.items, 'item')} over ${plural(s.window, 'day')}${s.inScope == null ? '' : `, ${s.inScope} mapped to an opportunity`}.`
+              : ` ${plural(s.items, 'item')} since the tree started${s.inScope == null ? '' : `, ${s.inScope} in scope`}.`;
         const tip = `${s.name} (${s.tool}): ${SOURCE_STATUS[s.status]}.${volume} Last successful read ${formatDateTime(s.lastOk)}. ${s.detail}`;
         return (
           <li key={s.name} className={`source source-${s.status}`} title={tip}>
