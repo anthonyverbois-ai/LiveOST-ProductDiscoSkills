@@ -15,9 +15,9 @@ export const meta = {
   // Mirrors the Sources database. Status: success (ok), warning (partial), error (failed), neutral (not connected).
   // One source is partial in the demo, to show the warning banner.
   sources: [
-    {name: 'Calls', tool: 'Call recorder', status: 'success', lastOk: '2026-11-05T07:40:00', detail: '3 calls read', items: 214, inScope: 139},
-    {name: 'Tickets', tool: 'Support tool', status: 'success', lastOk: '2026-11-05T07:41:00', detail: '7 tickets read', items: 652, inScope: 288},
-    {name: 'Usage alerts', tool: 'Monitoring tool (signals)', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'Counted by category, no customer words', items: 96, inScope: 61, window: 90},
+    {name: 'Calls', tool: 'Call recorder', status: 'success', lastOk: '2026-11-05T07:40:00', detail: '3 calls read', items: 200, inScope: 120},
+    {name: 'Tickets', tool: 'Support tool', status: 'success', lastOk: '2026-11-05T07:41:00', detail: '7 tickets read', items: 600, inScope: 250},
+    {name: 'Usage alerts', tool: 'Monitoring tool (signals)', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'Counted by category, no customer words', items: 100, inScope: 60, window: 90},
     {name: 'Usage and ARR', tool: 'Data warehouse', status: 'warning', lastOk: '2026-11-03T07:39:00', detail: 'The usage table has not been refreshed since Nov 3. Sizing by usage may be out of date.'},
     {name: 'Docs', tool: 'Help center', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No change since the last run'},
     {name: 'Release notes', tool: 'Product changelog', status: 'success', lastOk: '2026-11-05T07:41:00', detail: 'No new release'},
