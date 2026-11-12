@@ -62,18 +62,18 @@ flowchart LR
     D["Daily run<br>reads what is new,<br>attaches evidence"]
     N[("Tree in Notion<br>source of truth")]
     V["Visual tree<br>and recap"]
-    W["Weekly synthesis<br>ranks, proposes,<br>learns rules"]
-    Q(["The squad<br>reads, decides,<br>corrects"])
+    W["Weekly synthesis<br>ranks, restructures,<br>learns rules"]
+    Q(["The squad<br>reads, and steps in<br>when it wants to"])
 
     S --> D
     D --> N
     N --> V
     N <--> W
     V --> Q
-    Q -.->|"decisions feed<br>the next run"| D
+    Q -.->|"answers proposals,<br>corrects"| N
 ```
 
-Every run writes to Notion, then publishes the visual tree again: the page is a copy of the Notion tree. The squad decides in Notion, and the next run carries the decisions out. Each week, the synthesis turns the squad's corrections into rules for the runs that follow.
+The tree runs on its own: every run writes to Notion, then publishes the visual tree again, a copy of the Notion tree. The squad steps in only when it wants to: it answers the rare proposals the agent is not sure about, corrects in Notion or asks Claude to undo, and the next run carries its decisions out. Each week, the synthesis turns the squad's corrections into rules for the runs that follow. Only a human changes the outcome, parks, splits or archives.
 
 | Command | What it does | When to use it |
 | --- | --- | --- |

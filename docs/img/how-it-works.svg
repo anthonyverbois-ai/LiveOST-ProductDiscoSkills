@@ -76,8 +76,8 @@
     <text x="68" y="588">• To decide: merge two similar needs</text>
   </g>
 
-  <text x="40" y="656" class="g">The squad decides and corrects in Notion,</text>
-  <text x="40" y="674" class="g">or asks Claude to undo; the agent learns from it.</text>
+  <text x="40" y="656" class="g">When it wants to, the squad decides and corrects</text>
+  <text x="40" y="674" class="g">in Notion or asks Claude to undo; the agent learns.</text>
 
   <!-- Arrow between panels -->
   <path d="M448 316 L472 330 L448 344 Z" fill="#8c959f"/>
