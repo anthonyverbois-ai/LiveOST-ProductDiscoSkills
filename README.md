@@ -155,6 +155,11 @@ view/                    source and built page of the visual tree
 
 Contributions are welcome, from code to ideas. Read [CONTRIBUTING.md](CONTRIBUTING.md) first. The one non-negotiable rule: **never commit real customer data** (names, verbatims, accounts, metrics, screenshots of a real product). Every example in this repository is fictional.
 
+## Author
+
+Built by **Anthony Verbois**, product leader with 10+ years in B2B SaaS. I use LiveOST with my own squad every day, and it changes with what we learn.
+Questions, ideas or feedback: open an issue, or reach me on [LinkedIn](https://www.linkedin.com/in/anthony-verbois-23789161/).
+
 ## License
 
 [MIT](LICENSE)
