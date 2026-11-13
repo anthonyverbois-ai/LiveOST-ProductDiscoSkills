@@ -153,7 +153,9 @@ function Tree() {
   const paths = useConnectors(ref);
   return (
     <section className="tree-panel">
-      <h2 className="panel-title">Your Opportunity Solution Tree, always up to date</h2>
+      <h2 className="panel-title title-with-badge">
+        Your Opportunity Solution Tree, always up to date <Badge variant="neutral" label="Concept" />
+      </h2>
       <p className="panel-sub">Teresa Torres’ framework, fed every day by real customer evidence</p>
       <div className="tree" ref={ref}>
         <svg className="links" aria-hidden="true">
@@ -212,7 +214,7 @@ function Tree() {
           <Badge variant="yellow" label="REP-142" /> backlog item; its delivery status follows the tracker
         </li>
       </ul>
-      <p className="muted footnote">Customer accounts make the rank; ARR comes from your product data and breaks ties. Every count opens the verbatims behind it. Fictional example.</p>
+      <p className="muted footnote">Customer accounts make the rank; ARR comes from your product data and breaks ties. A concept view with fictional data: the visual tree shows the same cards, laid out by branch.</p>
     </section>
   );
 }

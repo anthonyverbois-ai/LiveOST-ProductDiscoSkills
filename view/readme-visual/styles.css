@@ -13,6 +13,7 @@ body { margin: 0; background: var(--color-background-card); }
   background: var(--color-background-card);
 }
 .panel-title { margin: 0; font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+.title-with-badge { display: flex; align-items: center; gap: var(--spacing-2); }
 .panel-sub { margin: var(--spacing-1) 0 var(--spacing-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .muted { margin: 0; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .footnote { margin-top: var(--spacing-4); }
