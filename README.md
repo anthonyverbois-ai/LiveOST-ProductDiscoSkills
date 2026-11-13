@@ -17,7 +17,7 @@ Your opportunity tree is right on the day of the workshop and stale three weeks 
 
 The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
-![Every morning, the agent reads what is new in calls, tickets, team chat, docs and the backlog, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities with their customer accounts, solutions linked to backlog items, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.svg)
+![Every morning, the agent reads what is new in calls, tickets, chat, docs, the backlog and product data, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts with their ARR, solutions with their backlog item, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.png)
 
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery, the framework popularized by Teresa Torres.
 
@@ -146,7 +146,7 @@ agents/
 evals/                   test cases on fictional data, run with `claude plugin eval .`
 templates/               Notion data model and sources config example
 docs/                    specification of the visual tree (live view), and the image of this README
-view/                    source and built page of the visual tree
+view/                    source and built page of the visual tree, and the source of the README image
 ```
 
 `ost-rules`, `build-tree` and `backfill` are not commands: the other skills load them.
