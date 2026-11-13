@@ -8,7 +8,7 @@ import {neutralTheme} from '@astryxdesign/theme-neutral/built';
 import {Badge} from '@astryxdesign/core/Badge';
 import {Blockquote} from '@astryxdesign/core/Blockquote';
 import {Icon} from '@astryxdesign/core/Icon';
-import {ArrowRight, FileText, ListChecks, MessageSquare, Phone, Ticket} from 'lucide-react';
+import {ArrowRight, Database, FileText, ListChecks, MessageSquare, Phone, Ticket} from 'lucide-react';
 
 const SOURCES = [
   {icon: Phone, label: 'Calls'},
@@ -16,6 +16,7 @@ const SOURCES = [
   {icon: MessageSquare, label: 'Chat'},
   {icon: FileText, label: 'Docs'},
   {icon: ListChecks, label: 'Backlog'},
+  {icon: Database, label: 'Product data'},
 ];
 
 function Step({n, title, children}) {
@@ -45,7 +46,7 @@ function Morning() {
               </li>
             ))}
           </ul>
-          <p className="muted">3 calls · 7 tickets · 2 messages since yesterday</p>
+          <p className="muted">3 calls · 7 tickets · 2 messages since yesterday, with usage and ARR per account</p>
         </Step>
         <Step n={2} title="Maps everything onto the tree">
           <Blockquote cite="Account A · call">“I rebuild the same export every Monday.”</Blockquote>
@@ -75,7 +76,8 @@ function Morning() {
   );
 }
 
-function Stats({accounts, evidence}) {
+// The same counts as the visual tree's cards: customer accounts first and in bold, since they make the rank.
+function Stats({accounts, evidence, arr}) {
   return (
     <span className="opp-stats">
       <span className="stat stat-rank">
@@ -86,11 +88,17 @@ function Stats({accounts, evidence}) {
         <span className="stat-n">{evidence}</span>
         <span className="stat-l">evidence</span>
       </span>
+      {arr ? (
+        <span className="stat">
+          <span className="stat-n">{arr}</span>
+          <span className="stat-l">ARR</span>
+        </span>
+      ) : null}
     </span>
   );
 }
 
-function Opp({id, parent, num, name, accounts, evidence, badge, col, row}) {
+function Opp({id, parent, num, name, accounts, evidence, arr, badge, col, row}) {
   return (
     <div className="node opp-card" data-id={id} data-parent={parent} style={{gridColumn: col, gridRow: row}}>
       {badge ? <span className="node-badge">{badge}</span> : null}
@@ -98,7 +106,7 @@ function Opp({id, parent, num, name, accounts, evidence, badge, col, row}) {
         <span className={`opp-num${String(num).includes('.') ? ' opp-num-child' : ''}`}>{num}</span>
         <span className="opp-name">{name}</span>
       </div>
-      <Stats accounts={accounts} evidence={evidence} />
+      <Stats accounts={accounts} evidence={evidence} arr={arr} />
     </div>
   );
 }
@@ -163,7 +171,7 @@ function Tree() {
           <span className="muted">Active outcome</span>
         </div>
 
-        <Opp id="a" parent="o" num={1} name="I don’t know where to start building a report" accounts={11} evidence={26} col={2} row={2} />
+        <Opp id="a" parent="o" num={1} name="I don’t know where to start building a report" accounts={11} evidence={26} arr="520k" col={2} row={2} />
         <Opp
           id="b"
           parent="o"
@@ -171,6 +179,7 @@ function Tree() {
           name="I lose time reformatting my exports"
           accounts={7}
           evidence={18}
+          arr="310k"
           badge={<Badge variant="green" label="+4 today" />}
           col={3}
           row={2}
@@ -182,12 +191,13 @@ function Tree() {
           name="I’m not sure my numbers are up to date"
           accounts={2}
           evidence={3}
+          arr="45k"
           badge={<Badge variant="blue" label="New" />}
           col={4}
           row={2}
         />
-        <Opp id="a1" parent="a" num="1.1" name="I can’t find the right template for my use case" accounts={8} evidence={14} col={2} row={3} />
-        <Opp id="b1" parent="b" num="2.1" name="Charts break when I paste them elsewhere" accounts={4} evidence={9} col={3} row={3} />
+        <Opp id="a1" parent="a" num="1.1" name="I can’t find the right template for my use case" accounts={8} evidence={14} arr="380k" col={2} row={3} />
+        <Opp id="b1" parent="b" num="2.1" name="Charts break when I paste them elsewhere" accounts={4} evidence={9} arr="150k" col={3} row={3} />
         <Sol id="s1" parent="a1" name="Template gallery" status="In discovery" col={2} row={4} />
         <Sol id="s2" parent="b1" name="Paste charts as images" status="In delivery" ticket="REP-142" col={3} row={4} />
       </div>
@@ -202,7 +212,7 @@ function Tree() {
           <Badge variant="yellow" label="REP-142" /> backlog item; its delivery status follows the tracker
         </li>
       </ul>
-      <p className="muted footnote">Customer accounts make the rank. Every count opens the verbatims behind it. Fictional example.</p>
+      <p className="muted footnote">Customer accounts make the rank; ARR comes from your product data and breaks ties. Every count opens the verbatims behind it. Fictional example.</p>
     </section>
   );
 }

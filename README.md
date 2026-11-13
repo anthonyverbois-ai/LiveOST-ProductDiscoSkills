@@ -17,7 +17,7 @@ Your opportunity tree is right on the day of the workshop and stale three weeks 
 
 The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
-![Every morning, the agent reads what is new in calls, tickets, chat, docs and the backlog, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts, solutions with their backlog item, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.png)
+![Every morning, the agent reads what is new in calls, tickets, chat, docs, the backlog and product data, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts with their ARR, solutions with their backlog item, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.png)
 
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery, the framework popularized by Teresa Torres.
 
