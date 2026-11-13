@@ -153,9 +153,7 @@ function Tree() {
   const paths = useConnectors(ref);
   return (
     <section className="tree-panel">
-      <h2 className="panel-title title-with-badge">
-        Your Opportunity Solution Tree, always up to date <Badge variant="neutral" label="Concept explained" />
-      </h2>
+      <h2 className="panel-title">Your Opportunity Solution Tree, always up to date</h2>
       <p className="panel-sub">Teresa Torres’ framework, fed every day by real customer evidence</p>
       <div className="tree" ref={ref}>
         <svg className="links" aria-hidden="true">
@@ -222,6 +220,10 @@ function Tree() {
 function Visual() {
   return (
     <main className="visual" id="visual">
+      <div className="visual-head">
+        <Badge variant="neutral" label="Concept explained" />
+        <span className="muted">How LiveOST works, on fictional data</span>
+      </div>
       <Morning />
       <div className="between" aria-hidden="true">
         <Icon icon={ArrowRight} size="lg" color="tertiary" />
