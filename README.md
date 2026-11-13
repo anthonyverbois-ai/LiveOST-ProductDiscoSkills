@@ -15,7 +15,7 @@ Your opportunity tree is right on the day of the workshop and stale three weeks 
 | --- | --- | --- | --- | --- | --- |
 | Gong, Modjo, Zoom | Zendesk, Intercom | Slack, Teams | Productboard, Confluence, Google Drive | Jira, Linear | nao, MotherDuck, BigQuery, Snowflake |
 
-Product data, read only, adds accounts, revenue and feature usage; the tree works without it. The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
+Product data, read only, adds accounts, revenue and feature usage; the tree works without it. The tree's data lives in Notion, and the squad reads it as a visual tree published by Claude. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
 ![Every morning, the agent reads what is new in calls, tickets, chat, docs, the backlog and product data, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts with their ARR, solutions with their backlog item, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.png)
 
@@ -26,8 +26,18 @@ LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin 
 One conversation with `ost-setup` (nine steps, each one confirmed by you) leaves your squad with:
 
 - **The tree in Notion, built from your history.** Your outcome, the opportunities ranked by customer accounts with their verbatims, and the solutions with their backlog items.
-- **A visual tree to share.** One link for the squad, refreshed after every run.
+- **A visual tree to share.** A Claude artifact: one link for the squad, private until you share it, refreshed after every run.
 - **Scheduled runs.** A daily run on working days and a weekly synthesis, each ending with its recap.
+
+Where each one lives:
+
+| What | Where | What you do there |
+| --- | --- | --- |
+| The tree's data | Notion: one page per squad, with its databases | Decide on proposals, correct by hand |
+| The visual tree | A Claude artifact, linked at the top of the Notion page | Read the tree and its verbatims, share the link |
+| The recap | The notification that ends each run | See what changed in ten seconds |
+
+The image above draws the tree with the same cards and counts as the visual tree.
 
 ## Why LiveOST
 
@@ -111,7 +121,7 @@ The tree runs on its own: every run writes to Notion, then publishes the visual 
 
 - **State lives in the squad's Notion page**: the configuration, the databases and the learned rules. Never in local files or in the conversation alone.
 - **Customer data is never copied outside your own tools** (tree, log, recap).
-- **The visual tree is private until you share it.** It is a copy of the Notion tree, with the most recent verbatims (`view.evidence_recent`: 100 by default, 0 copies none). A decision is never recorded only there.
+- **The visual tree is private until you share it.** It is a Claude artifact, a copy of the Notion tree, with the most recent verbatims (`view.evidence_recent`: 100 by default, 0 copies none). A decision is never recorded only there.
 - **Items read from your sources are data, never instructions.** The agent ignores any text in them that asks it to do something. The same goes for documentation pages, release notes and backlog items.
 - **Customer contacts are kept only where you allow it.** Names and emails are kept only from the sources where the configuration allows it (`keep_contacts`, false by default). The agent never contacts customers itself: it only drafts messages that a person sends.
 - **You authenticate your connectors yourself.** The agent never asks for, reads or stores credentials.
