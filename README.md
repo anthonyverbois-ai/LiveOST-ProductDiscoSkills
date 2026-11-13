@@ -2,7 +2,20 @@
 
 **An Opportunity Solution Tree that keeps itself up to date.**
 
-Your opportunity tree is right on the day of the workshop and stale three weeks later: nobody has time to re-read every call and ticket and connect the dots. One guided conversation builds your Opportunity Solution Tree from the calls, tickets and chat you already have. From the next morning, LiveOST keeps it up to date: it maps each new piece of evidence onto the tree, links your backlog to the solutions it delivers, and tells you in a short recap what changed. Your squad decides; the agent does the linking.
+Your opportunity tree is right on the day of the workshop and stale three weeks later. LiveOST fixes that:
+
+- **Builds your tree from what you already have.** One guided conversation turns past calls, tickets and messages into an Opportunity Solution Tree, each opportunity backed by its verbatims.
+- **Keeps it up to date every morning.** New evidence goes to the right opportunity; a clear new need becomes a new opportunity.
+- **Links your backlog.** Each solution is tied to its backlog item, and its delivery status follows the tracker.
+- **Tells you what changed** in a short recap. The squad steps in only when it wants to.
+
+**Connects to the tools you already use**, through Claude connectors, for example:
+
+| Calls | Support | Team chat | Feedback and docs | Backlog |
+| --- | --- | --- | --- | --- |
+| Gong, Modjo, Zoom | Zendesk, Intercom | Slack, Teams | Productboard, Confluence, Google Drive | Jira, Linear |
+
+The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
 ![Every morning, the agent reads what is new in calls, tickets, team chat, docs and the backlog, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities with their customer accounts, solutions linked to backlog items, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.svg)
 
@@ -12,10 +25,9 @@ LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin 
 
 One conversation with `ost-setup` (nine steps, each one confirmed by you) leaves your squad with:
 
-- **A tree built from your own history.** Your outcome, the opportunities found in your feedback over the period you chose, ranked by customer accounts and each linked to its verbatims; shipped features and backlog items linked to their solutions.
+- **The tree in Notion, built from your history.** Your outcome, the opportunities ranked by customer accounts with their verbatims, and the solutions with their backlog items.
 - **A visual tree to share.** One link for the squad, refreshed after every run.
-- **The tree in Notion.** The source of truth: opportunities, evidence, solutions, sources, and every change made or proposed.
-- **Runs that keep it alive.** A daily run on working days and a weekly synthesis, each ending with a short recap: what was attached, what is trending, what the agent did and what waits for you.
+- **Scheduled runs.** A daily run on working days and a weekly synthesis, each ending with its recap.
 
 ## Why LiveOST
 
