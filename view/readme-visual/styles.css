@@ -1,0 +1,105 @@
+/* The README image. It reuses the cards, counts and recap of the visual tree (src/styles.css)
+   and only lays them out as a flow and a classic, top-down Opportunity Solution Tree. */
+body { margin: 0; background: var(--color-background-card); }
+
+.visual {
+  box-sizing: border-box;
+  width: 1280px;
+  padding: var(--spacing-6);
+  display: grid;
+  grid-template-columns: 380px 32px 1fr;
+  gap: var(--spacing-4);
+  align-items: stretch;
+  background: var(--color-background-card);
+}
+.panel-title { margin: 0; font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+.panel-sub { margin: var(--spacing-1) 0 var(--spacing-4); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.muted { margin: 0; font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.footnote { margin-top: var(--spacing-4); }
+
+/* Every morning */
+.morning {
+  background: var(--color-background-muted);
+  border-radius: var(--radius-container);
+  padding: var(--spacing-5);
+  display: flex;
+  flex-direction: column;
+}
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-4); }
+.step { display: grid; grid-template-columns: 24px 1fr; gap: var(--spacing-3); }
+.step-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--color-text-primary); color: var(--color-background-body);
+  font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+}
+.step-body { display: flex; flex-direction: column; gap: var(--spacing-2); min-width: 0; }
+.step-title { margin: 2px 0 0; font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
+.sources { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--spacing-1-5); }
+.source-tile {
+  display: flex; flex-direction: column; align-items: center; gap: var(--spacing-1);
+  padding: var(--spacing-2) 0;
+  background: var(--color-background-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-element);
+  font-size: var(--font-size-xsm, 12px);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+.maps-to { margin: 0; display: flex; align-items: center; gap: var(--spacing-1-5); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.maps-to b { font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+.morning .recap { padding: var(--spacing-3); background: var(--color-background-card); }
+.morning blockquote { font-size: var(--font-size-sm); }
+.morning .recap-title { margin: 0 0 var(--spacing-1-5); font-size: var(--font-size-sm); }
+.morning .recap ul { font-size: var(--font-size-sm); }
+.morning .footnote { margin-top: auto; padding-top: var(--spacing-4); }
+
+.between { display: grid; place-items: center; }
+
+/* The tree: level names on the left, nodes on a grid, elbow links drawn behind them. */
+.tree {
+  position: relative;
+  display: grid;
+  grid-template-columns: 148px repeat(3, 1fr);
+  grid-template-rows: auto auto auto auto;
+  gap: var(--spacing-6) var(--spacing-3);
+  align-items: start;
+}
+.links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.links path { fill: none; stroke: var(--lpd-map-rail); stroke-width: 2; }
+.level {
+  grid-column: 1;
+  align-self: center;
+  font-size: var(--font-size-xsm, 12px);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+}
+.node { position: relative; z-index: 1; }
+.outcome {
+  justify-self: center;
+  width: 70%;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; gap: var(--spacing-1); align-items: center; text-align: center;
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-background-card);
+  border: 2px solid var(--color-text-primary);
+  border-radius: var(--radius-element);
+}
+.tree .opp-card { gap: var(--spacing-1-5); }
+.tree .opp-stats { margin: 0; padding: 0; }
+.node-badge { position: absolute; top: -11px; right: var(--spacing-2); }
+.sol-node {
+  box-sizing: border-box;
+  display: flex; flex-direction: column; gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--color-background-muted);
+  border: 1px dashed var(--color-border-emphasized);
+  border-radius: var(--radius-element);
+}
+.sol-name { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
+.sol-status { display: flex; align-items: center; gap: var(--spacing-1-5); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+
+.legend { list-style: none; margin: var(--spacing-6) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--spacing-2) var(--spacing-5); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.legend li { display: flex; align-items: center; gap: var(--spacing-1-5); }
