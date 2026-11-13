@@ -154,7 +154,7 @@ function Tree() {
   return (
     <section className="tree-panel">
       <h2 className="panel-title title-with-badge">
-        Your Opportunity Solution Tree, always up to date <Badge variant="neutral" label="Concept" />
+        Your Opportunity Solution Tree, always up to date <Badge variant="neutral" label="Concept explained" />
       </h2>
       <p className="panel-sub">Teresa Torres’ framework, fed every day by real customer evidence</p>
       <div className="tree" ref={ref}>
