@@ -11,11 +11,11 @@ Your opportunity tree is right on the day of the workshop and stale three weeks 
 
 **Connects to the tools you already use**, through Claude connectors, for example:
 
-| Calls | Support | Team chat | Feedback and docs | Backlog |
-| --- | --- | --- | --- | --- |
-| Gong, Modjo, Zoom | Zendesk, Intercom | Slack, Teams | Productboard, Confluence, Google Drive | Jira, Linear |
+| Calls | Support | Team chat | Feedback and docs | Backlog | Product data (optional) |
+| --- | --- | --- | --- | --- | --- |
+| Gong, Modjo, Zoom | Zendesk, Intercom | Slack, Teams | Productboard, Confluence, Google Drive | Jira, Linear | nao, MotherDuck, BigQuery, Snowflake |
 
-The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
+Product data, read only, adds accounts, revenue and feature usage; the tree works without it. The tree lives in Notion. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
 ![Every morning, the agent reads what is new in calls, tickets, team chat, docs and the backlog, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities with their customer accounts, solutions linked to backlog items, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.svg)
 
