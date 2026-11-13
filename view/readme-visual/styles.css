@@ -103,3 +103,6 @@ body { margin: 0; background: var(--color-background-card); }
 
 .legend { list-style: none; margin: var(--spacing-6) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--spacing-2) var(--spacing-5); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
 .legend li { display: flex; align-items: center; gap: var(--spacing-1-5); }
+
+/* The label that says the whole image explains the concept: it is not a screenshot of the visual tree. */
+.visual-head { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--spacing-2); margin-bottom: calc(-1 * var(--spacing-2)); }

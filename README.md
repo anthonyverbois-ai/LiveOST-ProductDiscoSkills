@@ -17,7 +17,7 @@ Your opportunity tree is right on the day of the workshop and stale three weeks 
 
 Product data, read only, adds accounts, revenue and feature usage; the tree works without it. The tree's data lives in Notion, and the squad reads it as a visual tree published by Claude. Any tool with a connector works, and exports (transcripts, CSV) do too.
 
-![Every morning, the agent reads what is new in calls, tickets, chat, docs, the backlog and product data, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts with their ARR, solutions with their backlog item, and markers for what changed since yesterday. Fictional example.](docs/img/how-it-works.png)
+![Every morning, the agent reads what is new in calls, tickets, chat, docs, the backlog and product data, maps it onto the tree and sends a short recap. On the right, the resulting Opportunity Solution Tree: an outcome, opportunities and sub-opportunities ranked by customer accounts with their ARR, solutions with their backlog item, and markers for what changed since yesterday. A concept view with fictional data.](docs/img/how-it-works.png)
 
 LiveOST (plugin name: `live-product-discovery`) is an open-source Claude plugin for product managers who practice continuous discovery, the framework popularized by Teresa Torres.
 
@@ -37,7 +37,7 @@ Where each one lives:
 | The visual tree | A Claude artifact, linked at the top of the Notion page | Read the tree and its verbatims, share the link |
 | The recap | The notification that ends each run | See what changed in ten seconds |
 
-The image above draws the tree with the same cards and counts as the visual tree.
+The image above is a concept view: the visual tree shows the same cards and counts, laid out by branch.
 
 ## Why LiveOST
 

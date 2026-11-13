@@ -212,7 +212,7 @@ function Tree() {
           <Badge variant="yellow" label="REP-142" /> backlog item; its delivery status follows the tracker
         </li>
       </ul>
-      <p className="muted footnote">Customer accounts make the rank; ARR comes from your product data and breaks ties. Every count opens the verbatims behind it. Fictional example.</p>
+      <p className="muted footnote">Customer accounts make the rank; ARR comes from your product data and breaks ties. A concept view with fictional data: the visual tree shows the same cards, laid out by branch.</p>
     </section>
   );
 }
@@ -220,6 +220,10 @@ function Tree() {
 function Visual() {
   return (
     <main className="visual" id="visual">
+      <div className="visual-head">
+        <Badge variant="neutral" label="Concept explained" />
+        <span className="muted">How LiveOST works, on fictional data</span>
+      </div>
       <Morning />
       <div className="between" aria-hidden="true">
         <Icon icon={ArrowRight} size="lg" color="tertiary" />
