@@ -1,5 +1,6 @@
 {
   "name": "live-product-discovery",
+  "description": "LiveOST: a Claude plugin that keeps an Opportunity Solution Tree up to date every day from a squad's customer evidence.",
   "owner": {
     "name": "Anthony Verbois"
   },

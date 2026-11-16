@@ -1,6 +1,6 @@
 ---
 name: ost-view
-description: Publishes the visual tree of a squad for live-product-discovery, or refreshes it. The visual tree is the page the squad looks at, a copy of the Notion tree. It refreshes the page only, without reading the sources: when the user asks to refresh the tree, run daily-run, which reads what is new, updates Notion and ends with this skill.
+description: Publishes the visual tree of a squad for live-product-discovery, or refreshes it. The visual tree is the page the squad looks at, a copy of the Notion tree. It refreshes the page only, without reading the sources. When the user asks to refresh the tree, run daily-run instead, which reads what is new, updates Notion and ends with this skill.
 argument-hint: "[optional: squad name]"
 ---
 
