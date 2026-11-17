@@ -78,7 +78,9 @@ function buildTree(opps) {
   // In the tree, and so is every opportunity above it (three levels at most, so a loop in the data cannot hang the page).
   const shownInTree = (o, depth = 1) =>
     depth <= 3 && inTree(o) && (!o.parent || Boolean(byId[o.parent] && shownInTree(byId[o.parent], depth + 1)));
-  const underBranch = (o) => Boolean(o.parent && byId[o.parent] && shownInTree(byId[o.parent]));
+  // A candidate is shown under its parent only when the parent is at the first or second level: the tree shows no
+  // fourth level, so a candidate under a third-level opportunity sits with the other candidates below the tree.
+  const underBranch = (o) => Boolean(o.parent && byId[o.parent] && shownInTree(byId[o.parent], 2));
   const earlyOf = (opp) => opps.filter((c) => c.status === 'candidate' && c.parent === opp.id && underBranch(c)).sort(byWeight);
   const candidates = opps.filter((o) => o.status === 'candidate' && !underBranch(o)).sort(byWeight);
   // A parent's stored count covers its sub-opportunities: say what it holds itself and what they hold.
