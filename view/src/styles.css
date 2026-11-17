@@ -91,6 +91,8 @@ body {
 
 .opp { min-width: 0; display: flex; flex-direction: column; gap: var(--spacing-1-5); }
 .opp-child { margin-left: var(--spacing-5); padding-left: var(--spacing-3); border-left: 2px solid var(--lpd-map-rail); }
+/* A third level sits under its parent, one step further in. */
+.opp-grandchild { margin-left: calc(2 * var(--spacing-5) + var(--spacing-3)); }
 /* Addressed and set-aside opportunities stay readable but step back. */
 .opp-dim .opp-card { background: var(--color-background-muted); }
 .opp-card {
