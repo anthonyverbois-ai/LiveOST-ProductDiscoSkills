@@ -1,4 +1,4 @@
-import {createContext, useContext, useMemo, useState} from 'react';
+import {Fragment, createContext, useContext, useMemo, useState} from 'react';
 import {Badge} from '@astryxdesign/core/Badge';
 import {Banner} from '@astryxdesign/core/Banner';
 import {Button} from '@astryxdesign/core/Button';
@@ -69,13 +69,18 @@ function applyDecisions(opps, decisions) {
 
 function buildTree(opps) {
   const byId = Object.fromEntries(opps.map((o) => [o.id, o]));
-  // Only ranked opportunities are numbered. A candidate that belongs under a branch of the tree is shown there,
+  // Only ranked opportunities are numbered. A candidate that belongs under an opportunity of the tree is shown there,
   // unnumbered, after the ranked sub-opportunities; the other candidates sit below the tree.
   const childrenOf = (opp) => (opp.children ?? []).map((id) => byId[id]).filter((c) => c && inTree(c)).sort(byPriority);
   const roots = opps.filter((o) => !o.parent && inTree(o)).sort(byPriority);
   const proposed = opps.filter((o) => o.status === 'proposed');
   const byWeight = (a, b) => b.accounts - a.accounts || (b.prospects ?? 0) - (a.prospects ?? 0) || b.evidence - a.evidence;
-  const underBranch = (o) => Boolean(o.parent && byId[o.parent] && !byId[o.parent].parent && inTree(byId[o.parent]));
+  // In the tree, and so is every opportunity above it (three levels at most, so a loop in the data cannot hang the page).
+  const shownInTree = (o, depth = 1) =>
+    depth <= 3 && inTree(o) && (!o.parent || Boolean(byId[o.parent] && shownInTree(byId[o.parent], depth + 1)));
+  // A candidate is shown under its parent only when the parent is at the first or second level: the tree shows no
+  // fourth level, so a candidate under a third-level opportunity sits with the other candidates below the tree.
+  const underBranch = (o) => Boolean(o.parent && byId[o.parent] && shownInTree(byId[o.parent], 2));
   const earlyOf = (opp) => opps.filter((c) => c.status === 'candidate' && c.parent === opp.id && underBranch(c)).sort(byWeight);
   const candidates = opps.filter((o) => o.status === 'candidate' && !underBranch(o)).sort(byWeight);
   // A parent's stored count covers its sub-opportunities: say what it holds itself and what they hold.
@@ -89,14 +94,15 @@ function buildTree(opps) {
   const setAside = opps.filter((o) => o.status === 'parked');
   // Features (product areas) of the squad, in the order of their highest-priority branch.
   const features = [...new Set([...roots, ...proposed, ...candidates, ...setAside].map((o) => o.area).filter(Boolean))];
-  // Outline numbers follow priority among siblings: 1, 2, 3 for branches; 1.1, 1.2 under branch 1.
+  // Outline numbers follow priority among siblings, at every level: 1, 2, 3 for branches; 1.1, 1.2 under branch 1;
+  // 1.2.1, 1.2.2 under 1.2.
   const numberOf = {};
-  roots.forEach((root, i) => {
-    numberOf[root.id] = `${i + 1}`;
-    childrenOf(root).forEach((child, j) => {
-      numberOf[child.id] = `${i + 1}.${j + 1}`;
+  const numberAll = (list, prefix, depth) =>
+    list.forEach((opp, i) => {
+      numberOf[opp.id] = `${prefix}${i + 1}`;
+      if (depth < 3) numberAll(childrenOf(opp), `${prefix}${i + 1}.`, depth + 1);
     });
-  });
+  numberAll(roots, '', 1);
   return {
     byId,
     childrenOf,
@@ -325,15 +331,17 @@ function CandidateActions({opp}) {
   );
 }
 
-function OppCard({opp, onOpen, isChild, openSols, toggleSols, showFeature}) {
+// depth: 0 for a branch, 1 for a sub-opportunity, 2 for one level further in.
+function OppCard({opp, onOpen, depth = 0, openSols, toggleSols, showFeature}) {
   const {numberOf, byId, split} = useTree();
+  const isChild = depth > 0;
   const sols = solutionsOf(opp.id);
   const parts = split(opp);
   const dim = opp.status === 'parked' || opp.status === 'addressed';
   const number = numberOf[opp.id];
   const signal = signalText(opp);
   return (
-    <div className={`opp${isChild ? ' opp-child' : ''}${dim ? ' opp-dim' : ''}`}>
+    <div className={`opp${isChild ? ' opp-child' : ''}${depth > 1 ? ' opp-grandchild' : ''}${dim ? ' opp-dim' : ''}`}>
       <div className="opp-card">
         {showFeature && !isChild && opp.area ? <span className="opp-feature">Feature: {opp.area}</span> : null}
         <div className="opp-head">
@@ -474,7 +482,12 @@ function TreeMap({onOpen}) {
           <div className="branch" key={root.id}>
             <OppCard opp={root} {...cardProps} />
             {[...childrenOf(root), ...earlyOf(root)].map((child) => (
-              <OppCard key={child.id} opp={child} isChild {...cardProps} />
+              <Fragment key={child.id}>
+                <OppCard opp={child} depth={1} {...cardProps} />
+                {[...childrenOf(child), ...earlyOf(child)].map((grandchild) => (
+                  <OppCard key={grandchild.id} opp={grandchild} depth={2} {...cardProps} />
+                ))}
+              </Fragment>
             ))}
           </div>
         ))}
