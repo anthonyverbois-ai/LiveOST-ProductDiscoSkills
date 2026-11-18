@@ -1,4 +1,4 @@
-import {Fragment, createContext, useContext, useMemo, useState} from 'react';
+import {createContext, useContext, useMemo, useState} from 'react';
 import {Badge} from '@astryxdesign/core/Badge';
 import {Banner} from '@astryxdesign/core/Banner';
 import {Button} from '@astryxdesign/core/Button';
@@ -240,8 +240,12 @@ function periodText(since, lastRefresh) {
 
 // How the evidence of a parent splits between its own pieces and those of its sub-opportunities.
 function splitText(parts) {
-  const subs = `${parts.kids} sub-${parts.kids > 1 ? 'opportunities' : 'opportunity'}`;
+  const subs = subsText(parts.kids);
   return parts.own === 0 ? `All in ${subs}` : `${parts.own} of its own, ${parts.inKids} in ${subs}`;
+}
+
+function subsText(n) {
+  return `${n} sub-${n > 1 ? 'opportunities' : 'opportunity'}`;
 }
 
 function plural(n, word) {
@@ -294,6 +298,22 @@ function SolutionTree({sols, isOpen, onToggle}) {
   );
 }
 
+// The sub-opportunities of an opportunity, folded under it like its solutions. Folded by default: the tree opens
+// on its branches, and each one unfolds on demand.
+function SubOpportunities({count, isOpen, onToggle, children}) {
+  return (
+    <Collapsible
+      className="sub-block"
+      trigger={<span className="sol-trigger">{subsText(count)}</span>}
+      isOpen={isOpen}
+      onOpenChange={onToggle}
+      chevronPosition="start"
+    >
+      <div className="sub-list">{children}</div>
+    </Collapsible>
+  );
+}
+
 function CandidateActions({opp}) {
   const {byId, roots, childrenOf, numberOf, decide} = useTree();
   const [merging, setMerging] = useState(false);
@@ -331,8 +351,9 @@ function CandidateActions({opp}) {
   );
 }
 
-// depth: 0 for a branch, 1 for a sub-opportunity, 2 for one level further in.
-function OppCard({opp, onOpen, depth = 0, openSols, toggleSols, showFeature}) {
+// depth: 0 for a branch, 1 for a sub-opportunity, 2 for one level further in. children: its folded
+// sub-opportunities, shown after its solutions.
+function OppCard({opp, onOpen, depth = 0, openSols, toggleSols, showFeature, children}) {
   const {numberOf, byId, split} = useTree();
   const isChild = depth > 0;
   const sols = solutionsOf(opp.id);
@@ -391,6 +412,7 @@ function OppCard({opp, onOpen, depth = 0, openSols, toggleSols, showFeature}) {
       {sols.length > 0 ? (
         <SolutionTree sols={sols} isOpen={openSols.has(opp.id)} onToggle={() => toggleSols(opp.id)} />
       ) : null}
+      {children}
     </div>
   );
 }
@@ -419,14 +441,18 @@ function DecisionNotice() {
 function TreeMap({onOpen}) {
   const {roots, proposed, candidates, setAside, features, hasFeatures, childrenOf, earlyOf} = useTree();
   const hasArr = opportunities.some((o) => o.arr);
-  const [openSols, setOpenSols] = useState(() => new Set());
-  const toggleSols = (id) =>
-    setOpenSols((prev) => {
+  const toggler = (setOpen) => (id) =>
+    setOpen((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
       return next;
     });
+  // Solutions and sub-opportunities start folded: nothing is open until the reader opens it.
+  const [openSols, setOpenSols] = useState(() => new Set());
+  const toggleSols = toggler(setOpenSols);
+  const [openSubs, setOpenSubs] = useState(() => new Set());
+  const toggleSubs = toggler(setOpenSubs);
   const [feature, setFeature] = useState('all');
   const inFeature = (o) => feature === 'all' || o.area === feature;
   const cardProps = {onOpen, openSols, toggleSols, showFeature: hasFeatures && feature === 'all'};
@@ -434,6 +460,20 @@ function TreeMap({onOpen}) {
   const shownProposed = proposed.filter(inFeature);
   const shownCandidates = candidates.filter(inFeature);
   const shownSetAside = setAside.filter(inFeature);
+  // An opportunity and, folded under it, its sub-opportunities: the ranked ones first, then the candidates that
+  // belong under it. The tree shows three levels, so a third-level opportunity folds nothing.
+  const withSubs = (opp, depth) => {
+    const subs = depth < 2 ? [...childrenOf(opp), ...earlyOf(opp)] : [];
+    return (
+      <OppCard key={opp.id} opp={opp} depth={depth} {...cardProps}>
+        {subs.length > 0 ? (
+          <SubOpportunities count={subs.length} isOpen={openSubs.has(opp.id)} onToggle={() => toggleSubs(opp.id)}>
+            {subs.map((sub) => withSubs(sub, depth + 1))}
+          </SubOpportunities>
+        ) : null}
+      </OppCard>
+    );
+  };
 
   return (
     <div className="map">
@@ -480,15 +520,7 @@ function TreeMap({onOpen}) {
         {shownRoots.length === 0 ? <p className="aside-note">No branch in the tree for this feature.</p> : null}
         {shownRoots.map((root) => (
           <div className="branch" key={root.id}>
-            <OppCard opp={root} {...cardProps} />
-            {[...childrenOf(root), ...earlyOf(root)].map((child) => (
-              <Fragment key={child.id}>
-                <OppCard opp={child} depth={1} {...cardProps} />
-                {[...childrenOf(child), ...earlyOf(child)].map((grandchild) => (
-                  <OppCard key={grandchild.id} opp={grandchild} depth={2} {...cardProps} />
-                ))}
-              </Fragment>
-            ))}
+            {withSubs(root, 0)}
           </div>
         ))}
       </div>
@@ -574,7 +606,8 @@ function TreeAsList() {
       .join(' · '),
     href: opp.notion,
     target: '_blank',
-    isExpanded: true,
+    // Folded like the tree: an opportunity opens on demand to show its solutions and sub-opportunities.
+    isExpanded: false,
     children: [...solutionGroup(opp), ...childrenOf(opp).map(toItem), ...earlyOf(opp).map(toItem)],
   });
   const items = [

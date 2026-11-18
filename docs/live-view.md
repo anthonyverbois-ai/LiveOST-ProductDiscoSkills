@@ -15,6 +15,7 @@ The sections below describe the page in full. What the copy does not do yet is m
 
 - **The whole tree**: north star (if any), active outcome, opportunities, sub-opportunities, solutions, assumptions.
   - Opportunities are numbered by priority among their siblings: 1, 2, 3 for branches, 1.1, 1.2 for the sub-opportunities of branch 1, and 1.2.1, 1.2.2 for those of 1.2, shown under their parent one step further in. Never show the global rank on the tree: it reads like an outline number.
+  - Sub-opportunities are folded under their parent by default, so the tree opens on its branches. A toggle under the parent, below its solutions ("3 sub-opportunities"), unfolds them, and a sub-opportunity folds its own the same way. The outline folds them too.
   - Each opportunity shows its customer accounts first and in bold: they make the rank. Its evidence count, its prospects and the revenue of its accounts follow, lighter: they size the need without moving the rank (revenue only breaks ties). No count is larger than the title. The date of its last evidence and its signals come next. The legend above the tree says the same in one line ("Ranked by customer accounts ..."), so a reader does not take the largest number for the reason of a rank. "New today" and "+N today" are the only tags on a card. A branch with sub-opportunities says how its evidence splits ("6 of its own, 14 in 3 sub-opportunities"): its count covers both, so the counts of the sub-opportunities shown do not add up to it.
 - **Header**: the page title only (tree and squad). The outcome and the north star appear once, at the top of the tree. With several outcomes, the tree shows one section per outcome; with none yet, it starts with its opportunities.
   - Solutions are a foldable level under each opportunity, folded by default. A solution linked to the backlog shows its backlog status.
@@ -92,7 +93,7 @@ The view is built with [Astryx](https://github.com/meta/astryx), Meta's open-sou
 | --- | --- |
 | The tree as a navigable, keyboard-accessible list | `TreeList` |
 | Evidence of an opportunity, opened on click | `Drawer` |
-| Solutions folded under each opportunity | `Collapsible` |
+| Solutions and sub-opportunities folded under each opportunity | `Collapsible` |
 | Link to the Notion page | `Icon` (`externalLink`) |
 | "New today" and statuses, as plain text | `Text` |
 | Approve or reject a pending proposal | `Button`, `Toast` |

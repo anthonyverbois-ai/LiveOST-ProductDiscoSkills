@@ -91,8 +91,14 @@ body {
 
 .opp { min-width: 0; display: flex; flex-direction: column; gap: var(--spacing-1-5); }
 .opp-child { margin-left: var(--spacing-5); padding-left: var(--spacing-3); border-left: 2px solid var(--lpd-map-rail); }
-/* A third level sits under its parent, one step further in. */
-.opp-grandchild { margin-left: calc(2 * var(--spacing-5) + var(--spacing-3)); }
+/* A third level sits under its parent, one step further in. It is folded inside its parent, after the parent's
+   rail (2px) and padding, so it lands where it did when the levels were listed flat. */
+.opp-grandchild { margin-left: calc(var(--spacing-5) - 2px); }
+
+/* Sub-opportunities: folded under their parent by default. The toggle lines up with the solutions toggle; the
+   cards it opens keep their place in the tree. */
+.sub-block > button { width: auto; margin-left: var(--spacing-3); }
+.sub-list { display: flex; flex-direction: column; gap: var(--spacing-2); }
 /* Addressed and set-aside opportunities stay readable but step back. */
 .opp-dim .opp-card { background: var(--color-background-muted); }
 .opp-card {
